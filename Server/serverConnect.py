@@ -71,7 +71,6 @@ while True:
         k = k+1
 
         if(k == len(data)):
-            #print(len(data))
             break
         
     if(k == len(data)):
@@ -81,5 +80,30 @@ while True:
     #conn.close()
 print("Parsing demo completed")
 
+ipArr = []
+for k in range (0,len(iparray[0])):
+    ipTemp = ""
+    for temp in range (0,len(iparray[0,k])):
+        ipTemp = ipTemp + iparray[0,k][temp]
+    ipArr.append(ipTemp)
 
-    
+
+#______________________________________________________________________________________________________#
+#Code Test
+
+#https://www.geeksforgeeks.org/socket-programming-python/
+#i_add = 0
+#cont = True
+#serv.listen(40)
+
+#while True:
+#    while cont:
+#        c, add = serv.accept()
+#        if(add == ipArr[i_add]):
+#            cont = False
+#        else:
+#            cont = True
+#            c.close()
+#
+#    c.send(("testLED").encode())
+#    c.close()
