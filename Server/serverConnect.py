@@ -56,9 +56,12 @@ while True:
 
             recData = pos
 
+        print("iparray[13]: ")
+        print(iparray[int(pos)-1])
+        print('\n')
+        break
+
         #conn.send((recData).encode())
     #conn.close()
     #print('Client Disconnected')
-    print("iparray[13]: ")
-    print(iparray[int(pos)-1])
-    print('\n')
+    
