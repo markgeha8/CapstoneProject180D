@@ -52,6 +52,9 @@ while True:
                 i = i+1
 
             #Add the IP address to the array of IP addresses that will later be referenced
+            print("ip: ")
+            print(ip)
+            print('\n')
             iparray[int(pos)-1] = ip
 
             recData = pos
