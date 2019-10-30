@@ -4,7 +4,7 @@ import numpy as np
 import socket
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-iparray = np.empty((1,40),dtype=str)
+iparray = np.empty((1,40,15),dtype=str)
 
 #Test/Demo Purposes
 data = "14,10.15.32.15"
