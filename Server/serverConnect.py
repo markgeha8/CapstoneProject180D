@@ -7,7 +7,7 @@ serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 iparray = np.empty((1,40,16),dtype=str)
 
 #Test/Demo Purposes
-data = ["14,10.15.32.15", "RESET", "1,234.520.134.253"]
+data = ["14,10.15.32.15", "RESET", "1,234.520.134.253", "3,512.0.1.215", "2,321.532.23.123"]
 k = 0
 
 # Assigns a port for the server that listens to clients connecting to this port.
@@ -79,4 +79,6 @@ while True:
         #conn.send((recData).encode())
     #conn.close()
 print("Parsing demo completed")
+
+
     
