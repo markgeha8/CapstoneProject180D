@@ -40,6 +40,7 @@ while True:
             while posBool:
                 if(data[i] == ','):
                     posBool = False
+                    i = i+1
                     break
                 pos = pos + data[i]
                 i = i+1
