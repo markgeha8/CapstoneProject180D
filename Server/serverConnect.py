@@ -59,7 +59,7 @@ while True:
             for j in range (0, len(ip)):
                 iparray[(0,int(pos)-1)] = iparray[(0,int(pos)-1)] + ip[j]
                 print(ip[j])
-                print(iparray[(0,int(pos)-1)][j])
+                print(len(iparray[(0,int(pos)-1)]))
             print('\n')
             recData = pos
 
