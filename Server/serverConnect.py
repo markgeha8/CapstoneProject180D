@@ -53,7 +53,8 @@ while True:
                 i = i+1
 
             #Add the IP address to the array of IP addresses that will later be referenced
-            iparray[(0,int(pos)-1)] = ip
+            for j = 0:len(ip):
+                iparray[(0,int(pos)-1)].append(ip[j])
 
             recData = pos
 
