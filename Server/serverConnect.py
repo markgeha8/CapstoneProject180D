@@ -55,7 +55,8 @@ while True:
             #Add the IP address to the array of IP addresses that will later be referenced
             for j in range (0, len(ip)):
                 iparray[(0,int(pos)-1)] = iparray[(0,int(pos)-1)] + ip[j]
-
+                print(ip[j])
+            print('\n')
             recData = pos
 
         print("iparray[13]: ")
