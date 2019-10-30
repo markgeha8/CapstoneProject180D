@@ -71,6 +71,7 @@ while True:
         k = k+1
 
         if(k == len(data)):
+            #print(len(data))
             break
         
     if(k == len(data)):
