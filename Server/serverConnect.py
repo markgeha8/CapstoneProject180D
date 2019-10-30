@@ -68,13 +68,15 @@ while True:
         print(ipAdd)
         print('\n')
 
-        if(k == 2):
-            k = 0
-
         k = k+1
+
+        if(k == 3):
+            break
+        
+    if(k == 3):
         break
 
         #conn.send((recData).encode())
     #conn.close()
-    #print('Client Disconnected')
+print('Client Disconnected')
     
