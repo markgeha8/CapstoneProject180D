@@ -78,5 +78,5 @@ while True:
 
         #conn.send((recData).encode())
     #conn.close()
-print('Client Disconnected')
+print("Parsing demo completed")
     
