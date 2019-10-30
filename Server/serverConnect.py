@@ -69,14 +69,12 @@ while True:
         print('\n')
 
         if(k == 2):
-            break
+            k = 0
 
         k = k+1
         break
 
         #conn.send((recData).encode())
-    if(k == 2):
-        break
     #conn.close()
-    print('Client Disconnected')
+    #print('Client Disconnected')
     
