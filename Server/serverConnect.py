@@ -58,9 +58,8 @@ while True:
 
             recData = pos
 
-        print("iparray[")
-        print(int(pos)-1)
-        print("]: ")
+        print("iparray["+(int(pos)-1)+"]: ")
+
         ipAdd = ""
 
         for l in range (0,len(iparray[0,int(pos)-1])):
@@ -70,13 +69,14 @@ while True:
         print('\n')
 
         if(k == 2):
-            k = 0
             break
 
         k = k+1
         break
 
         #conn.send((recData).encode())
+    if(k == 2):
+        break
     #conn.close()
-    #print('Client Disconnected')
+    print('Client Disconnected')
     
