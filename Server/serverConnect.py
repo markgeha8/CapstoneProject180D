@@ -27,7 +27,7 @@ while True:
         #Empty the array if the received data is a RESET function
         if(data == "RESET"):
             del iparray[:]
-            iparray = np.empty(40,dtype=str)
+            iparray = np.empty((1,40,15),dtype=str)
             recData = "Reset"
 
         #Parse the data into position and IP address.
@@ -53,8 +53,8 @@ while True:
                 i = i+1
 
             #Add the IP address to the array of IP addresses that will later be referenced
-            #for j in range (0, len(ip)):
-            iparray[(0,int(pos)-1)] = ip
+            for j in range (0, len(ip)):
+                iparray[(0,int(pos)-1)][j] = ip[j]
 
             recData = pos
 
