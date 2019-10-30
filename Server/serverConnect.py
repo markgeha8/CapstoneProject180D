@@ -70,10 +70,10 @@ while True:
 
         k = k+1
 
-        if(k == 3):
+        if(k == len(data)):
             break
         
-    if(k == 3):
+    if(k == len(data)):
         break
 
         #conn.send((recData).encode())
