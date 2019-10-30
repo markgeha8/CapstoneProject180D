@@ -62,8 +62,8 @@ while True:
         print("iparray[")
         print(int(pos)-1)
         print("]: ")
-        for l in range (0,len(iparray[int(pos)-1])-1):
-            print(iparray[int(pos)-1][l])
+        for l in range (0,len(iparray[0,int(pos)-1])-1):
+            print(iparray[0,int(pos)-1][l])
         print('\n')
 
         if(k == 2):
