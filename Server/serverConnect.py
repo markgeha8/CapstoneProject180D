@@ -45,7 +45,7 @@ while True:
                 i = i+1
             
             while ipBool:
-                if(i > len(data)):
+                if(i >= len(data)):
                     ipBool = False
                     break
                 ip = ip + data[i]
