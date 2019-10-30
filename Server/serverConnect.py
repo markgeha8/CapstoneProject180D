@@ -4,7 +4,7 @@ import numpy as np
 import socket
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-iparray = np.empty(40,dtype=str)
+iparray = np.empty((1,40),dtype=str)
 
 #Test/Demo Purposes
 data = "14,10.15.32.15"
@@ -53,15 +53,12 @@ while True:
                 i = i+1
 
             #Add the IP address to the array of IP addresses that will later be referenced
-            print("ip: ")
-            print(ip)
-            print('\n')
-            iparray[int(pos)-1] = ip
+            iparray[(1,int(pos)-1)] = ip
 
             recData = pos
 
         print("iparray[13]: ")
-        print(iparray[int(pos)-1])
+        print(iparray[(1,int(pos)-1)])
         print('\n')
         break
 
