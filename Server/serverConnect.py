@@ -13,7 +13,7 @@ data = "14,10.15.32.15"
 serv.bind(('0.0.0.0', 8080))
 #serv.listen(40) #Assuming there will be 40 RPis attempting to connect (or something like that)
 while True:
-    conn, addr = serv.accept()
+    #conn, addr = serv.accept()
     while True:
         #data = conn.recv(4096)
         #if not data: break
