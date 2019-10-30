@@ -60,6 +60,9 @@ while True:
         print("iparray[13]: ")
         print(iparray[(0,int(pos)-1)])
         print('\n')
+        print("iparray[14]: ")
+        print(iparray[(0,int(pos)-1+1)])
+        print('\n')
         break
 
         #conn.send((recData).encode())
