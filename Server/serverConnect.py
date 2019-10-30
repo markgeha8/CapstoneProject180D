@@ -4,10 +4,11 @@ import numpy as np
 import socket
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-iparray = np.zeros(40,dtype=str)
+iparray = np.empty((1,40,16),dtype=str)
 
 #Test/Demo Purposes
-data = "14,10.15.32.15"
+data = ["14,10.15.32.15", "RESET", "1,234.520.134.253"]
+k = 0
 
 # Assigns a port for the server that listens to clients connecting to this port.
 serv.bind(('0.0.0.0', 8080))
@@ -19,16 +20,15 @@ while True:
         #if not data: break
         #data.decode()
         print("Data provided is: ")
-        print(data)
+        print(data[k])
         print('\n')
 
         recData = ""
 
         #Empty the array if the received data is a RESET function
-        if(data == "RESET"):
-            del iparray[:]
-            iparray = np.zeros(40,dtype=str)
-            recData = "Reset"
+        if(data[k] == "RESET"):
+            iparray = np.empty((1,40,16),dtype=str)
+            recData = "RESET"
 
         #Parse the data into position and IP address.
         else:
@@ -38,34 +38,45 @@ while True:
             ip = ""
             i = 0
             while posBool:
-                if(data[i] == ','):
+                if(data[k][i] == ','):
                     posBool = False
                     i = i+1
                     break
-                pos = pos + data[i]
+                pos = pos + data[k][i]
                 i = i+1
             
             while ipBool:
-                if(i >= len(data)):
+                if(i >= len(data[k])):
                     ipBool = False
                     break
-                ip = ip + data[i]
+                ip = ip + data[k][i]
                 i = i+1
 
             #Add the IP address to the array of IP addresses that will later be referenced
-            print("ip: ")
-            print(ip)
-            print('\n')
-            iparray[int(pos)-1] = ip
+            for j in range (0, len(ip)):
+                iparray[(0,int(pos)-1)][j] = ip[j]
 
             recData = pos
 
-        print("iparray[13]: ")
-        print(iparray[int(pos)-1])
+        print("iparray[" + str((int(pos)-1)) + "]: ")
+
+        ipAdd = ""
+
+        for l in range (0,len(iparray[0,int(pos)-1])):
+            ipAdd = ipAdd + iparray[0,int(pos)-1][l]
+
+        print(ipAdd)
         print('\n')
+
+        k = k+1
+
+        if(k == 3):
+            break
+        
+    if(k == 3):
         break
 
         #conn.send((recData).encode())
     #conn.close()
-    #print('Client Disconnected')
+print("Parsing demo completed")
     
