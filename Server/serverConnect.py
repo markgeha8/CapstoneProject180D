@@ -58,7 +58,7 @@ while True:
 
             recData = pos
 
-        print("iparray["+(int(pos)-1)+"]: ")
+        print("iparray[" + str((int(pos)-1)) + "]: ")
 
         ipAdd = ""
 
