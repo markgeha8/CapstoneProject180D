@@ -27,7 +27,7 @@ while True:
 
         #Empty the array if the received data is a RESET function
         if(data[k] == "RESET"):
-            del iparray[:]
+            del iparray[:,:]
             iparray = np.empty((1,40,16),dtype=str)
             recData = "Reset"
 
@@ -62,7 +62,7 @@ while True:
         print("iparray[")
         print(int(pos)-1)
         print("]: ")
-        for l in range (0,len(iparray[0,int(pos)-1])-1):
+        for l in range (0,len(iparray[0,int(pos)-1])):
             print(iparray[0,int(pos)-1][l])
         print('\n')
 
