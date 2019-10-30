@@ -4,7 +4,7 @@ import numpy as np
 import socket
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-iparray = np.zeros(40,dtype=str)
+iparray = np.empty(40,dtype=str)
 
 #Test/Demo Purposes
 data = "14,10.15.32.15"
@@ -27,7 +27,7 @@ while True:
         #Empty the array if the received data is a RESET function
         if(data == "RESET"):
             del iparray[:]
-            iparray = np.zeros(40,dtype=str)
+            iparray = np.empty(40,dtype=str)
             recData = "Reset"
 
         #Parse the data into position and IP address.
