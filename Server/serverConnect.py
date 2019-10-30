@@ -27,9 +27,8 @@ while True:
 
         #Empty the array if the received data is a RESET function
         if(data[k] == "RESET"):
-            del iparray[:,:]
             iparray = np.empty((1,40,16),dtype=str)
-            recData = "Reset"
+            recData = "RESET"
 
         #Parse the data into position and IP address.
         else:
