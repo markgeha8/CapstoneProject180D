@@ -88,6 +88,8 @@ for k in range (0,len(iparray[0])):
     ipArr.append(ipTemp)
 
 
+#https://wiki.python.org/moin/UdpCommunication
+
 #______________________________________________________________________________________________________#
 #Code Test
 
