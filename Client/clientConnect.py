@@ -1,3 +1,7 @@
+# Code obtained and then modified from this source
+# http://code.activestate.com/recipes/439094-get-the-ip-address-associated-with-a-network-inter/
+
+
 import socket
 import fcntl
 import struct
@@ -12,3 +16,11 @@ def get_ip_address(ifname):
 
 ip = get_ip_address('wlan0');
 print(ip)
+
+import socket
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(('192.168.1.3', 8080))
+client.send(ip.encode())
+from_server = client.recv(4096)
+client.close()
+print(from_server.decode())
