@@ -17,7 +17,6 @@ def get_ip_address(ifname):
 ip = get_ip_address('wlan0');
 print(ip)
 
-import socket
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(('192.168.1.3', 8080))
 client.send(ip.encode())
