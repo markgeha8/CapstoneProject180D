@@ -1,3 +1,5 @@
+# Source: https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
+
 import sys
 
 import numpy as np
