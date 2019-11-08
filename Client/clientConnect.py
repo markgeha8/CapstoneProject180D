@@ -32,11 +32,13 @@ init_bool = False
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 #enter server IP address - must be known beforehand
+client.bind((ip, 8080))
 
 while(not init_bool):
     client.sendto(init_msg.encode(),('172.20.10.5',8080))
 
-    client.bind(('172.20.10.5',8080))
+    
+
 #    while(not init_bool):
 #        from_server = client.recvfrom(4096)
 #        if(from_server.decode() == "RESET"):
@@ -47,7 +49,6 @@ while(not init_bool):
 #        else:
 #            print("server doesn't match client")
 #            break
-
 
 
 
