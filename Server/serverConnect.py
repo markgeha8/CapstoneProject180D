@@ -67,7 +67,7 @@ while True:
 
         k = k + 1
 
-        recData = recData.encode()
+        recData = (str(recData)).encode()
 
         serv.sendto(recData,(ipAdd,8080))
 
