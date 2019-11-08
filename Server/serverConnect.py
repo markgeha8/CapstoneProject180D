@@ -20,13 +20,13 @@ while True:
         if not data: break
         data.decode()
         print("Data provided is: ")
-        print(data[k])
+        print(data)
         print('\n')
 
         recData = ""
 
         #Empty the array if the received data is a RESET function
-        if(data[k] == "RESET"):
+        if(data == "RESET"):
             iparray = np.empty((1,40,16),dtype=str)
             recData = "RESET"
 
@@ -38,18 +38,18 @@ while True:
             ip = ""
             i = 0
             while posBool:
-                if(data[k][i] == ','):
+                if(data[i] == ','):
                     posBool = False
                     i = i+1
                     break
-                pos = pos + data[k][i]
+                pos = pos + data[i]
                 i = i+1
             
             while ipBool:
-                if(i >= len(data[k])):
+                if(i >= len(data)):
                     ipBool = False
                     break
-                ip = ip + data[k][i]
+                ip = ip + data[i]
                 i = i+1
 
             #Add the IP address to the array of IP addresses that will later be referenced
@@ -68,15 +68,12 @@ while True:
         print(ipAdd)
         print('\n')
 
-        k = k+1
-
-        if(k == len(data)):
-            break
-        
-    if(k == len(data)):
-        break
-
         conn.send((recData).encode())
+
+        break
+        
+    break
+
     conn.close()
 print("Parsing demo completed")
 
