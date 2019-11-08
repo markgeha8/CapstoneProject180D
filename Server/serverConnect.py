@@ -67,12 +67,12 @@ while True:
 
         k = k + 1
 
-        serv.sendto((recData).encode(),(ipAdd,8080))
+        #serv.sendto((recData).encode(),(ipAdd,8080))
 
-        if (k > 1000):
+        if (k > 80):
             break
         
-    if (k > 1000):
+    if (k > 80):
         break
 
 print("Parsing demo completed")
