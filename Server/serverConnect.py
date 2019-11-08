@@ -54,7 +54,6 @@ while True:
                 iparray[(0,int(pos)-1)][j] = ip[j]
 
             recData = pos
-            print(recData)
 
         print("iparray[" + str((int(pos)-1)) + "]: ")
 
