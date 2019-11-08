@@ -7,17 +7,14 @@ serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 iparray = np.empty((1,40,16),dtype=str)
 
 #Test/Demo Purposes
-#data = ["14,10.15.32.15", "RESET", "1,234.520.134.253", "3,512.0.1.215", "2,321.532.23.123"]
+k = 0
 
 # Assigns a port for the server that listens to clients connecting to this port.
 serv.bind(('172.20.10.5', 8080))
 while True:
-    #conn, addr = serv.accept()
     while True:
         data, addr = serv.recvfrom(4096)
-        if not data: 
-            print("Did not receive")
-            break
+        if not data: break
         data = data.decode()
         print("Data provided is: ")
         print(data)
@@ -56,7 +53,7 @@ while True:
             for j in range (0, len(ip)):
                 iparray[(0,int(pos)-1)][j] = ip[j]
 
-            recData = pos
+            recData = pos + 1
 
         print("iparray[" + str((int(pos)-1)) + "]: ")
 
@@ -68,11 +65,13 @@ while True:
         print(ipAdd)
         print('\n')
 
+        k = k + 1
         #serv.sendto((recData).encode(),(ipAdd,8080))
-
-        break
+        if (k > 1000):
+            break
         
-    break
+    if (k > 1000):
+        break
 
 print("Parsing demo completed")
 
