@@ -17,7 +17,7 @@ def get_ip_address(ifname):
 
 ip = get_ip_address('wlan0')
 #Test print of IP address
-#print(ip)
+print(ip)
 
 #Read in position(pos)
 #Use code from Charlotte
@@ -29,31 +29,26 @@ init_msg = pos_string + "," + ip
 init_bool = False
 
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 #enter server IP address - must be known beforehand
-client.connect(('192.168.1.3', 8080))
 
-while(not init_bool)
-{
-    client.send(init_msg.encode())
-    from_server = client.recv(4096)
-    if(from_server.decode() == "RESET")
-    {
-        client.close()
-    }
-    print(from_server.decode())
-    if(from_server.decode() == pos_string)
-    {
-        init_bool = True
-        print("server matches client")
-    }
-    else
-    {
-        print("server does not match client")
-    }
+while(not init_bool):
+    client.sendto(init_msg.encode(),('172.20.10.5',8080))
 
-}
+    client.bind((ip,8080))
+    while(not init_bool):
+        from_server = client.recvfrom(4096)
+        if(from_server.decode() == "RESET"):
+            print(from_server.decode())
+        if(from_server.decode() == pos_string):
+            init_bool = True
+            print("server matches client")
+        else:
+            print("server doesn't match client")
+            break
+
+
 
 
 #test while loop to constantly read in directions from server
