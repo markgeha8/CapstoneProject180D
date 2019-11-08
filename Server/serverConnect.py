@@ -67,7 +67,9 @@ while True:
 
         k = k + 1
 
-        serv.sendto((recData).encode(),(ipAdd,8080))
+        recData = recData.encode()
+
+        serv.sendto(recData,(ipAdd,8080))
 
         if (k > 80):
             break
