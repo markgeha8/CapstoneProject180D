@@ -39,6 +39,7 @@ while(not init_bool):
     while(not init_bool):
         from_server = client.recvfrom(4096)
         from_server = str(from_server)
+        print(from_server)
         if(from_server == "RESET"):
             print(from_server)
         if(from_server == pos_string):
