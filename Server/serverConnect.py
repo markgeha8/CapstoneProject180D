@@ -14,7 +14,7 @@ serv.bind(('0.0.0.0', 8080))
 while True:
     #conn, addr = serv.accept()
     while True:
-        data = serv.recvfrom(4096)
+        data, addr = serv.recvfrom(4096)
         if not data: 
             print("Did not receive")
             break
