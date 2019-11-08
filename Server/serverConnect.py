@@ -2,7 +2,7 @@
 # You don’t install this. The second line is initialization to add TCP/IP protocol to the endpoint.
 import numpy as np
 import socket
-serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 iparray = np.empty((1,40,16),dtype=str)
 
