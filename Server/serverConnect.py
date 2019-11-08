@@ -12,7 +12,7 @@ k = 0
 
 # Assigns a port for the server that listens to clients connecting to this port.
 serv.bind(('0.0.0.0', 8080))
-serv.listen(40) #Assuming there will be 40 RPis attempting to connect (or something like that)
+#serv.listen(40) #Assuming there will be 40 RPis attempting to connect (or something like that)
 while True:
     conn, addr = serv.accept()
     while True:
