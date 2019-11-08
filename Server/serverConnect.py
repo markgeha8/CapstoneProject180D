@@ -16,7 +16,7 @@ serv.bind(('0.0.0.0', 8080))
 while True:
     conn, addr = serv.accept()
     while True:
-        data = conn.recv(4096)
+        data = conn.recvfrom(4096)
         if not data: break
         data.decode()
         print("Data provided is: ")
