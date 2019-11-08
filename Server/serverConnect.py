@@ -53,7 +53,7 @@ while True:
             for j in range (0, len(ip)):
                 iparray[(0,int(pos)-1)][j] = ip[j]
 
-            recData = pos
+            recData = str(int(pos)+1)
 
         print("iparray[" + str((int(pos)-1)) + "]: ")
 
@@ -67,7 +67,7 @@ while True:
 
         k = k + 1
 
-        #serv.sendto((recData).encode(),(ipAdd,8080))
+        serv.sendto((recData).encode(),(ipAdd,8080))
 
         if (k > 1000):
             break
