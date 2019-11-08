@@ -16,7 +16,9 @@ while True:
     #conn, addr = serv.accept()
     while True:
         data = serv.recvfrom(4096)
-        if not data: break
+        if not data: 
+            print("Did not receive")
+            break
         data.decode()
         print("Data provided is: ")
         print(data)
