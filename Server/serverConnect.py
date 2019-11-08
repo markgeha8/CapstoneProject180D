@@ -18,7 +18,7 @@ while True:
         if not data: 
             print("Did not receive")
             break
-        data.encode()
+        data = data.decode()
         print("Data provided is: ")
         print(data)
         print('\n')
