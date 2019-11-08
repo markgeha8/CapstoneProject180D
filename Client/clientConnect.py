@@ -36,19 +36,19 @@ client.bind((ip, 8080))
 
 while(not init_bool):
     client.sendto(init_msg.encode(),('172.20.10.5',8080))
-
+    while(not init_bool):
+        from_server = client.recvfrom(4096)
+        if(from_server.decode() == "RESET"):
+            print(from_server.decode())
+        if(from_server.decode() == pos_string):
+            init_bool = True
+            print("server matches client")
+        else:
+            print("server doesn't match client")
+            break
     
 
-#    while(not init_bool):
-#        from_server = client.recvfrom(4096)
-#        if(from_server.decode() == "RESET"):
-#            print(from_server.decode())
-#        if(from_server.decode() == pos_string):
-#            init_bool = True
-#            print("server matches client")
-#        else:
-#            print("server doesn't match client")
-#            break
+
 
 
 
