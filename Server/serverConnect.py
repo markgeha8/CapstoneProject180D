@@ -7,18 +7,18 @@ serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 iparray = np.empty((1,40,16),dtype=str)
 
 #Test/Demo Purposes
-data = ["14,10.15.32.15", "RESET", "1,234.520.134.253", "3,512.0.1.215", "2,321.532.23.123"]
+#data = ["14,10.15.32.15", "RESET", "1,234.520.134.253", "3,512.0.1.215", "2,321.532.23.123"]
 k = 0
 
 # Assigns a port for the server that listens to clients connecting to this port.
 serv.bind(('0.0.0.0', 8080))
-#serv.listen(40) #Assuming there will be 40 RPis attempting to connect (or something like that)
+serv.listen(40) #Assuming there will be 40 RPis attempting to connect (or something like that)
 while True:
-    #conn, addr = serv.accept()
+    conn, addr = serv.accept()
     while True:
-        #data = conn.recv(4096)
-        #if not data: break
-        #data.decode()
+        data = conn.recv(4096)
+        if not data: break
+        data.decode()
         print("Data provided is: ")
         print(data[k])
         print('\n')
@@ -76,8 +76,8 @@ while True:
     if(k == len(data)):
         break
 
-        #conn.send((recData).encode())
-    #conn.close()
+        conn.send((recData).encode())
+    conn.close()
 print("Parsing demo completed")
 
 ipArr = []
@@ -97,7 +97,7 @@ for k in range (0,len(iparray[0])):
 #i_add = 0
 #cont = True
 #serv.listen(40)
-
+#
 #while True:
 #    while cont:
 #        c, add = serv.accept()
@@ -106,7 +106,7 @@ for k in range (0,len(iparray[0])):
 #        else:
 #            cont = True
 #            c.close()
-#
+
 #    c.send(("testLED").encode())
 #    c.close()
 
@@ -126,12 +126,12 @@ for k in range (0,len(iparray[0])):
 #        else:
 #            cont = True
 #            c.close()
-#
+
 #    c.send(("startLED").encode())
-#
+
 #    while hold:
 #        msg = c.recv(4096)
 #        if((msg.decode()) == "Done"):
 #            hold = False
-#
+
 #    c.close()
