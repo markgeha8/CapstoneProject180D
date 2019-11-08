@@ -10,7 +10,7 @@ iparray = np.empty((1,40,16),dtype=str)
 k = 0
 
 # Assigns a port for the server that listens to clients connecting to this port.
-serv.bind(('172.20.10.5', 8080))
+serv.bind(("172.20.10.5", 8080))
 while True:
     while True:
         data, addr = serv.recvfrom(4096)
@@ -67,7 +67,7 @@ while True:
 
         k = k + 1
 
-        #serv.sendto((recData).encode(),(ipAdd,8080))#
+        #serv.sendto((recData).encode(),(ipAdd,8080))
 
         if (k > 80):
             break
