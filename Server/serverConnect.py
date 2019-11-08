@@ -14,9 +14,9 @@ k = 0
 serv.bind(('0.0.0.0', 8080))
 #serv.listen(40) #Assuming there will be 40 RPis attempting to connect (or something like that)
 while True:
-    conn, addr = serv.accept()
+    #conn, addr = serv.accept()
     while True:
-        data = conn.recvfrom(4096)
+        data = serv.recvfrom(4096)
         if not data: break
         data.decode()
         print("Data provided is: ")
@@ -68,13 +68,12 @@ while True:
         print(ipAdd)
         print('\n')
 
-        conn.send((recData).encode())
+        serv.sendto((recData).encode(),(ipAdd,8080))
 
         break
         
     break
 
-    conn.close()
 print("Parsing demo completed")
 
 ipArr = []
