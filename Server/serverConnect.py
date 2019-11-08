@@ -10,7 +10,7 @@ iparray = np.empty((1,40,16),dtype=str)
 #data = ["14,10.15.32.15", "RESET", "1,234.520.134.253", "3,512.0.1.215", "2,321.532.23.123"]
 
 # Assigns a port for the server that listens to clients connecting to this port.
-serv.bind(('172.20.10.8', 8080))
+serv.bind(('0.0.0.0', 8080))
 while True:
     #conn, addr = serv.accept()
     while True:
