@@ -54,6 +54,7 @@ while True:
                 iparray[(0,int(pos)-1)][j] = ip[j]
 
             recData = str(int(pos)+1)
+            print(recData)
 
         print("iparray[" + str((int(pos)-1)) + "]: ")
 
@@ -67,7 +68,7 @@ while True:
 
         k = k + 1
 
-        recData = (str(recData)).encode()
+        recData = (recData).encode()
 
         serv.sendto(recData,(ipAdd,8080))
 
