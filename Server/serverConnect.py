@@ -3,6 +3,8 @@
 
 import numpy as np
 import socket
+import fcntl
+import struct
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 iparray = np.empty((1,40,16),dtype=str)
@@ -10,8 +12,18 @@ iparray = np.empty((1,40,16),dtype=str)
 #Test/Demo Purposes
 k = 0
 
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s'.encode(), ifname[:15].encode())
+    )[20:24])
+
+ip = get_ip_address('wlan0')
+
 # Assigns a port for the server that listens to clients connecting to this port.
-serv.bind(('172.20.10.5', 8080))
+serv.bind((ip, 8080))
 while True:
     while True:
         data, addr = serv.recvfrom(4096)
