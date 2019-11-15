@@ -85,10 +85,10 @@ while True:
 
         serv.sendto(recData,(ipAdd,8080))
 
-        if (k > 80):
+        if (k > 0):
             break
         
-    if (k > 80):
+    if (k > 0):
         break
 
 print("Parsing demo completed")
