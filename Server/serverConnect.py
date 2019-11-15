@@ -106,6 +106,8 @@ for add in range (0,len(iparray[0])):
         if (data == "testDone"):
                 break
 
+#Check if something is wrong (received a "RESET" message)
+
 #______________________________________________________________________________________________________#
 #Time Increment
 
