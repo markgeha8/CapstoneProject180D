@@ -104,20 +104,24 @@ for k in range (0,len(iparray[0])):
 #Code Test
 
 for add in range (0,len(iparray[0])):
-    ipAdd = ipArr[add]
-    testStr = "testLED"
-    testStr = testStr.encode()
-    serv.sendto(testStr,(ipAdd,8080))
+    if(ipArr[add] == ''):
+        print("Empty")
+    else:
+        ipAdd = ipArr[add]
+        print
+        testStr = "testLED"
+        testStr = testStr.encode()
+        serv.sendto(testStr,(ipAdd,8080))
 
-    while True:
         while True:
-            data, addr = serv.recvfrom(4096)
-            if not data: break
-            data = data.decode()
+            while True:
+                data, addr = serv.recvfrom(4096)
+                if not data: break
+                data = data.decode()
+                if (data == "testDone"):
+                    break
             if (data == "testDone"):
-                break
-        if (data == "testDone"):
-                break
+                    break
 
 #Check if something is wrong (received a "RESET" message)
 
