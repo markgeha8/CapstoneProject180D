@@ -116,6 +116,7 @@ for add in range (0,len(iparray[0])):
                 data, addr = serv.recvfrom(4096)
                 if not data: break
                 data = data.decode()
+                print(data)
                 if (data == "testDone"):
                     break
             if (data == "testDone"):
