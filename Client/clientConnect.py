@@ -5,6 +5,7 @@
 import socket
 import fcntl
 import struct
+import time
 
 #Read in IP
 def get_ip_address(ifname):
@@ -23,7 +24,7 @@ print(ip)
 #Use code from Charlotte
 
 #This is a filler for now
-pos = 5
+pos = randint()
 pos_string = str(pos)
 init_msg = pos_string + "," + ip
 init_bool = False
@@ -47,23 +48,37 @@ while(not init_bool):
         else:
             print("server doesn't match client")
             break
-    
+
+LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
+
+#check that we have initialized the system
+
+test_count = 0
+
+from_server = client.recvfrom(4096)
+data = (from_server[0]).decode()  #Temporary fix for Tuple issue
+#this data variable would actually be converted to an int
+testLED = data
+print(testLED)
+if(testLED == "testLED"):
+    tested = "testDone"
+    client.sendto(,(tested.encode(),'172.20.10.5',8080))
+
+while(init_bool & test_count<5 ):
+    from_server = client.recvfrom(4096)
+    data = (from_server[0]).decode()  #Temporary fix for Tuple issue
+    ##this data variable would actually be converted to an int
+    runLED = data
+    print(runLED)
+    if(testLED == "runLED"):
+        ran = "runDone"
+        client.sendto(,(ran.encode(),'172.20.10.5',8080))
+        print("running LED: " + str(LED_displays[test_count]))
+    test_count += 1
 
 
 
 
-
-#test while loop to constantly read in directions from server
-#while(init_bool)
-#{
-#    from_server = client.recv(4096)
-#    if(from_server.decode() == "RESET")
-#    {
-#        client.close()
-#    }
-#    print(from_server.decode())
-#
-#}
 
 
 
