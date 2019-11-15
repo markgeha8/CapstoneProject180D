@@ -21,6 +21,7 @@ def get_ip_address(ifname):
     )[20:24])
 
 ip = get_ip_address('wlan0')
+print(ip)
 
 # Assigns a port for the server that listens to clients connecting to this port.
 serv.bind((ip, 8080))
