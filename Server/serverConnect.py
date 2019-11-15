@@ -104,9 +104,7 @@ for k in range (0,len(iparray[0])):
 #Code Test
 
 for add in range (0,len(iparray[0])):
-    if(ipArr[add] == ''):
-        print("Empty")
-    else:
+    if(ipArr[add] != ''):
         ipAdd = ipArr[add]
         print
         testStr = "testLED"
@@ -130,17 +128,18 @@ for add in range (0,len(iparray[0])):
 
 while True:
     for add in range (0,len(iparray[0])):
-        ipAdd = ipArr[add]
-        runStr = "runLED"
-        runStr = runStr.encode()
-        serv.sendto(runStr,(ipAdd,8080))
+        if(ipArr[add] != ''):
+            ipAdd = ipArr[add]
+            runStr = "runLED"
+            runStr = runStr.encode()
+            serv.sendto(runStr,(ipAdd,8080))
 
-        while True:
             while True:
-                data, addr = serv.recvfrom(4096)
-                if not data: break
-                data = data.decode()
+                while True:
+                    data, addr = serv.recvfrom(4096)
+                    if not data: break
+                    data = data.decode()
+                    if (data == "runDone"):
+                        break
                 if (data == "runDone"):
-                    break
-            if (data == "runDone"):
-                    break
+                        break
