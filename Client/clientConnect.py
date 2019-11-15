@@ -6,6 +6,7 @@ import socket
 import fcntl
 import struct
 import time
+import random
 
 #Read in IP
 def get_ip_address(ifname):
@@ -24,7 +25,7 @@ print(ip)
 #Use code from Charlotte
 
 #This is a filler for now
-pos = randint()
+pos = random.randint(1,10)
 pos_string = str(pos)
 init_msg = pos_string + "," + ip
 init_bool = False
@@ -62,7 +63,7 @@ testLED = data
 print(testLED)
 if(testLED == "testLED"):
     tested = "testDone"
-    client.sendto(,(tested.encode(),'172.20.10.5',8080))
+    client.sendto(tested.encode(),('172.20.10.5',8080))
 
 while(init_bool & test_count<5 ):
     from_server = client.recvfrom(4096)
@@ -72,7 +73,7 @@ while(init_bool & test_count<5 ):
     print(runLED)
     if(testLED == "runLED"):
         ran = "runDone"
-        client.sendto(,(ran.encode(),'172.20.10.5',8080))
+        client.sendto(ran.encode(),('172.20.10.5',8080))
         print("running LED: " + str(LED_displays[test_count]))
     test_count += 1
 
