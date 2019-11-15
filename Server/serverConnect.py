@@ -106,7 +106,7 @@ for k in range (0,len(iparray[0])):
 for add in range (0,len(iparray[0])):
     if(ipArr[add] != ''):
         ipAdd = ipArr[add]
-        print
+        print(ipAdd)
         testStr = "testLED"
         testStr = testStr.encode()
         serv.sendto(testStr,(ipAdd,8080))
