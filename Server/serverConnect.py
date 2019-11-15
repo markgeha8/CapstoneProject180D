@@ -104,8 +104,7 @@ for k in range (0,len(iparray[0])):
 #Code Test
 
 for add in range (0,len(iparray[0])):
-    ipAdd = str(iparray[0,add])
-    print(ipAdd)
+    ipAdd = ipArr[add]
     testStr = "testLED"
     testStr = testStr.encode()
     serv.sendto(testStr,(ipAdd,8080))
@@ -127,7 +126,7 @@ for add in range (0,len(iparray[0])):
 
 while True:
     for add in range (0,len(iparray[0])):
-        ipAdd = str(iparray[0,add])
+        ipAdd = ipArr[add]
         runStr = "runLED"
         runStr = runStr.encode()
         serv.sendto(runStr,(ipAdd,8080))
