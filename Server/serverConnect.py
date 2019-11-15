@@ -1,5 +1,6 @@
-# Reminder: This is a comment. The first line imports a default library "socket" into Python.
-# You don’t install this. The second line is initialization to add TCP/IP protocol to the endpoint.
+#https://wiki.python.org/moin/UdpCommunication
+#https://www.geeksforgeeks.org/socket-programming-python/
+
 import numpy as np
 import socket
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -86,51 +87,41 @@ for k in range (0,len(iparray[0])):
         ipTemp = ipTemp + iparray[0,k][temp]
     ipArr.append(ipTemp)
 
-
-#https://wiki.python.org/moin/UdpCommunication
-
 #______________________________________________________________________________________________________#
 #Code Test
 
-#https://www.geeksforgeeks.org/socket-programming-python/
-#i_add = 0
-#cont = True
-#serv.listen(40)
-#
-#while True:
-#    while cont:
-#        c, add = serv.accept()
-#        if(add == ipArr[i_add]):
-#            cont = False
-#        else:
-#            cont = True
-#            c.close()
+for add in range (0,len(iparray[0])):
+    ipAdd = iparray[0,add]
+    testStr = "testLED"
+    testStr = testStr.encode()
+    serv.sendto(testStr,(ipAdd,8080))
 
-#    c.send(("testLED").encode())
-#    c.close()
+    while True:
+        while True:
+            data, addr = serv.recvfrom(4096)
+            if not data: break
+            data = data.decode()
+            if (data == "testDone"):
+                break
+        if (data == "testDone"):
+                break
 
 #______________________________________________________________________________________________________#
 #Time Increment
 
-#i_add = 0
-#cont = True
-#hold = True
-#serv.listen(40)
+while True:
+    for add in range (0,len(iparray[0])):
+        ipAdd = iparray[0,add]
+        runStr = "runLED"
+        runStr = runStr.encode()
+        serv.sendto(runStr,(ipAdd,8080))
 
-#while True:
-#    while cont:
-#        c, add = serv.accept()
-#        if(add == ipArr[i_add]):
-#            cont = False
-#        else:
-#            cont = True
-#            c.close()
-
-#    c.send(("startLED").encode())
-
-#    while hold:
-#        msg = c.recv(4096)
-#        if((msg.decode()) == "Done"):
-#            hold = False
-
-#    c.close()
+        while True:
+            while True:
+                data, addr = serv.recvfrom(4096)
+                if not data: break
+                data = data.decode()
+                if (data == "runDone"):
+                    break
+            if (data == "runDone"):
+                    break
