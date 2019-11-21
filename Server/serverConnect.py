@@ -159,3 +159,9 @@ while True:
                         break
                 if (data == "runDone"):
                         break
+
+#Multithreading Idea:
+#Global IP address array that will constantly update.
+#One thread constantly listens for a Client connecting with a string that holds "position,IP address"
+#and will constantly update Global IP address array.
+#Other thread will use Global IP address array to run the tests and send messages to/receive messages from Clients.
