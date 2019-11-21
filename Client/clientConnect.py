@@ -1,12 +1,10 @@
-# Code obtained and then modified from this source
-# http://code.activestate.com/recipes/439094-get-the-ip-address-associated-with-a-network-inter/
-
-
 import socket
 import fcntl
 import struct
 import time
 import random
+import RPi.GPIO as GPIO
+
 
 #Read in IP
 def get_ip_address(ifname):
@@ -65,6 +63,19 @@ if(testLED == "testLED"):
     tested = "testDone"
     client.sendto(tested.encode(),('172.20.10.5',8080))
 
+
+
+#Testing script for LED_displays
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+#pin numbers can change as needed
+GPIO.setup(17, GPIO.OUT)
+GPIO.setup(18, GPIO.OUT)
+GPIO.setup(22, GPIO.OUT)
+GPIO.setup(23, GPIO.OUT)
+
+
 while(init_bool & test_count<5 ):
     from_server = client.recvfrom(4096)
     data = (from_server[0]).decode()  #Temporary fix for Tuple issue
@@ -75,7 +86,24 @@ while(init_bool & test_count<5 ):
         ran = "runDone"
         client.sendto(ran.encode(),('172.20.10.5',8080))
         print("running LED: " + str(LED_displays[test_count]))
+        if(test_count == 1):
+            GPIO.output(17,GPIO.HIGH)
+            time.sleep(2)
+            GPIO.output(17,GPIO.LOW)
+        if(test_count == 2):
+            GPIO.output(18,GPIO.HIGH)
+            time.sleep(2)
+            GPIO.output(18,GPIO.LOW)
+        if(test_count == 3):
+            GPIO.output(22,GPIO.HIGH)
+            time.sleep(2)
+            GPIO.output(22,GPIO.LOW)
+        if(test_count == 4):
+            GPIO.output(23,GPIO.HIGH)
+            time.sleep(2)
+            GPIO.output(23,GPIO.LOW)
     test_count += 1
+
 
 
 
