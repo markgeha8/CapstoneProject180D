@@ -99,8 +99,14 @@ while(init_bool & test_count<5 ):
             time.sleep(2)
             GPIO.output(22,GPIO.LOW)
         if(test_count == 4):
+            GPIO.output(17,GPIO.HIGH)
+            GPIO.output(18,GPIO.HIGH)
+            GPIO.output(22,GPIO.HIGH)
             GPIO.output(23,GPIO.HIGH)
             time.sleep(2)
+            GPIO.output(17,GPIO.LOW)
+            GPIO.output(18,GPIO.LOW)
+            GPIO.output(22,GPIO.LOW)
             GPIO.output(23,GPIO.LOW)
     test_count += 1
 
