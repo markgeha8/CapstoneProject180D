@@ -13,7 +13,7 @@ serv.settimeout(10)
 
 maxStudents = 84
 maxTime = 1000
-ipArr = np.empty(maxStudents,dtype=str)
+ipArr = np.empty(maxStudents,dtype="S15")
 done = False
 
 #Gets IP address of server so others can connect (should be known by everyone beforehand)
@@ -31,7 +31,7 @@ def parseIP(data):
     return parsed
 
 def updateIP(pos,ipAddress):
-    print(ipAddress)
+    
     ipArr[pos-1] = ipAddress
     return
 
