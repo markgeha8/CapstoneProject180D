@@ -46,7 +46,6 @@ def establishClientConnections():
     while True:
         try:
             data, _ = serv.recvfrom(4096)
-            print(data)
         except socket.timeout:
             print("Timeout from establishing connection with a Client")
             continue
@@ -65,7 +64,6 @@ def establishClientConnections():
                 ipArr = np.empty(maxStudents,dtype=str)
             
             else:
-                print(data)
                 [pos,ipAddress] = parseIP(data)
                 position = int(pos)
                 updateIP(position,ipAddress)
@@ -81,11 +79,11 @@ def propagateDisplayMessages():
         for add in range (0,len(ipArr)):
             if(ipArr[add-1] != ''):
                 ipAddress = ipArr[add]
+                print(ipAddress)
                 try: 
                     mess = "runLED"
                     message = mess.encode()
                     sendMess(message,ipAddress)
-                    print(ipAddress)
                 except socket.timeout:
                     ipArr[add] = ''
                     print("Timeout from IP address " + ipAddress)
