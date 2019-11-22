@@ -78,7 +78,7 @@ def establishClientConnections():
         except socket.timeout:
             print("Timeout from establishing connection with a Client")
             continue
-        if not data: break
+        if not data: continue
         data = data.decode()
         print("Data provided is: ")
         print(data)
@@ -86,7 +86,7 @@ def establishClientConnections():
 
         if(data == "Done"):
             done = True
-            break
+            continue
         
         if(data == "RESET"):
             ipArr = np.empty(maxStudents,dtype=str)
