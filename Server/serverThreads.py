@@ -74,6 +74,7 @@ def establishClientConnections():
         try:
             data, _ = serv.recvfrom(4096)
         except socket.timeout:
+            print("Timeout from establishing connection with a Client")
             continue
         if not data: break
         data = data.decode()
@@ -108,6 +109,7 @@ def propagateDisplayMessages():
                     sendMess("runLED",ipAddress)
                 except socket.timeout:
                     ipArr[add] = ''
+                    print("Timeout from IP address " + ipAddress)
                     continue
                     
                 waitTime = 0
