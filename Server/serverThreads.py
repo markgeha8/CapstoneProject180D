@@ -6,6 +6,7 @@ import socket
 import socket.timeout as TimeoutException
 import fcntl
 import struct
+import threading
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 maxStudents = 84
@@ -65,42 +66,67 @@ def sendMess(message,ipAddress):
     return
 
 #Thread 1
-while True:
+def establishClientConnections():
     while True:
-        data, addr = serv.recvfrom(4096)
-        if not data: break
-        data = data.decode()
-        print("Data provided is: ")
-        print(data)
-        print('\n')
+        while True:
+            data, addr = serv.recvfrom(4096)
+            if not data: break
+            data = data.decode()
+            print("Data provided is: ")
+            print(data)
+            print('\n')
 
-        if(data == "Done"):
-            done = True
-            break
-        
-        if(data == "RESET"):
-            ipArr = np.empty(maxStudents,dtype=str)
-        
-        else:
-            [pos,ipAddress] = parseIP(data)
-            position = int(pos)
-            updateIP(position,ipAddress)
+            if(data == "Done"):
+                done = True
+                break
+            
+            if(data == "RESET"):
+                ipArr = np.empty(maxStudents,dtype=str)
+            
+            else:
+                [pos,ipAddress] = parseIP(data)
+                position = int(pos)
+                updateIP(position,ipAddress)
 
-            mess = "Done"
-            message = mess.encode()
-            sendMess(message,ipAddress)
+                mess = "Done"
+                message = mess.encode()
+                sendMess(message,ipAddress)
             
 
 #Thread 2
-while True:
-    for add in range (0,len(ipArr)):
-        if(ipArr[add] != ''):
-            ipAddress = ipArr[add]
-            sendMess("runLED",ipAddress)
-            waitTime = 0
-            while(~done):
-                if(waitTime >= maxTime):
-                    ipArr[add] = ''
-                    done = True
-                waitTime = waitTime+1
-            done = False
+def propagateDisplayMessages():
+    while True:
+        for add in range (0,len(ipArr)):
+            if(ipArr[add] != ''):
+                ipAddress = ipArr[add]
+                sendMess("runLED",ipAddress)
+                waitTime = 0
+                while(~done):
+                    if(waitTime >= maxTime):
+                        ipArr[add] = ''
+                        done = True
+                    waitTime = waitTime+1
+                done = False
+
+# Main function
+if __name__ == "__main__":
+    ip = get_ip_address('wlan0')
+    print(ip)
+    serv.bind((ip, 8080))
+
+    # creating thread 
+    t1 = threading.Thread(target=establishClientConnections, args=()) 
+    t2 = threading.Thread(target=propagateDisplayMessages, args=()) 
+  
+    # starting thread 1 
+    t1.start() 
+    # starting thread 2 
+    t2.start()
+
+    # wait until thread 1 is completely executed 
+    t1.join() 
+    # wait until thread 2 is completely executed 
+    t2.join() 
+  
+    # both threads completely executed 
+    print("Done!")
