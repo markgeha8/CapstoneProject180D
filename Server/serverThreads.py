@@ -71,29 +71,31 @@ def establishClientConnections():
     global ipArr
 
     while True:
-        while True:
+        try:
             data, _ = serv.recvfrom(4096)
-            if not data: break
-            data = data.decode()
-            print("Data provided is: ")
-            print(data)
-            print('\n')
+        except socket.timeout:
+            continue
+        if not data: break
+        data = data.decode()
+        print("Data provided is: ")
+        print(data)
+        print('\n')
 
-            if(data == "Done"):
-                done = True
-                break
-            
-            if(data == "RESET"):
-                ipArr = np.empty(maxStudents,dtype=str)
-            
-            else:
-                [pos,ipAddress] = parseIP(data)
-                position = int(pos)
-                updateIP(position,ipAddress)
+        if(data == "Done"):
+            done = True
+            break
+        
+        if(data == "RESET"):
+            ipArr = np.empty(maxStudents,dtype=str)
+        
+        else:
+            [pos,ipAddress] = parseIP(data)
+            position = int(pos)
+            updateIP(position,ipAddress)
 
-                mess = "Done"
-                message = mess.encode()
-                sendMess(message,ipAddress)
+            mess = "Done"
+            message = mess.encode()
+            sendMess(message,ipAddress)
             
 
 #Thread 2
@@ -104,7 +106,7 @@ def propagateDisplayMessages():
                 ipAddress = ipArr[add]
                 try: 
                     sendMess("runLED",ipAddress)
-                except TimeoutException:
+                except socket.timeout:
                     ipArr[add] = ''
                     continue
                     
