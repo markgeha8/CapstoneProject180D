@@ -27,26 +27,15 @@ def get_ip_address(ifname):
 def parseIP(data):
     iparray = np.empty((1,16),dtype=str)
     posBool = True
-    ipBool = True
     pos = ""
     ip = ""
-    i = 0
-    while posBool:
+    for i in range (0,len(data)):
         if(data[i] == ','):
             posBool = False
-            i = i+1
-            break
-        pos = pos + data[i]
-        i = i+1
-                
-    while ipBool:
-        if(i >= len(data)):
-            ipBool = False
-            break
-        ip = ip + data[i]
-        i = i+1
-
-    i = 0
+        if(posBool):
+            pos = pos + data[i]  
+        else:
+            ip = ip + data[i]
 
     #Add the IP address to the array of IP addresses that will later be referenced
     for j in range (0, len(ip)):
