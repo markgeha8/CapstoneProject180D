@@ -94,7 +94,7 @@ def establishClientConnections():
             position = int(pos)
             updateIP(position,ipAddress)
 
-            mess = "Done"
+            mess = pos
             message = mess.encode()
             sendMess(message,ipAddress)
             
@@ -103,7 +103,7 @@ def establishClientConnections():
 def propagateDisplayMessages():
     while True:
         for add in range (0,len(ipArr)):
-            if(ipArr[add] != ''):
+            if(ipArr[add-1] != ''):
                 ipAddress = ipArr[add]
                 try: 
                     sendMess("runLED",ipAddress)
