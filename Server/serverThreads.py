@@ -9,10 +9,10 @@ import struct
 import threading
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
+serv.settimeout(30)
+
 maxStudents = 84
 maxTime = 1000
-ipArr = np.empty(maxStudents,dtype=str)
-done = False
 
 #Gets IP address of server so others can connect (should be known by everyone beforehand)
 def get_ip_address(ifname):
@@ -67,9 +67,12 @@ def sendMess(message,ipAddress):
 
 #Thread 1
 def establishClientConnections():
+    global done
+    global ipArr
+
     while True:
         while True:
-            data, addr = serv.recvfrom(4096)
+            data, _ = serv.recvfrom(4096)
             if not data: break
             data = data.decode()
             print("Data provided is: ")
@@ -99,18 +102,27 @@ def propagateDisplayMessages():
         for add in range (0,len(ipArr)):
             if(ipArr[add] != ''):
                 ipAddress = ipArr[add]
-                sendMess("runLED",ipAddress)
+                try: 
+                    sendMess("runLED",ipAddress)
+                except TimeoutException:
+                    ipArr[add] = ''
+                    continue
+                    
                 waitTime = 0
+
                 while(~done):
                     if(waitTime >= maxTime):
                         ipArr[add] = ''
-                        done = True
+                        break
                     waitTime = waitTime+1
                 done = False
 
 # Main function
 if __name__ == "__main__":
-    ip = get_ip_address('wlan0')
+    ipArr = np.empty(maxStudents,dtype=str)
+    done = False
+
+    ip = get_ip_address('wlan0') #'172.20.10.5'
     print(ip)
     serv.bind((ip, 8080))
 
