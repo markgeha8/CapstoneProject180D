@@ -16,7 +16,7 @@ maxTime = 1000
 ipArr = np.empty(maxStudents,dtype=object)
 done = False
 
-#Gets IP address of server so others can connect (should be known by everyone beforehand)
+#Gets IP address of server so others can connect (server's should be known by everyone beforehand)
 def get_ip_address(ifname):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         return socket.inet_ntoa(fcntl.ioctl(
@@ -25,28 +25,29 @@ def get_ip_address(ifname):
             struct.pack('256s'.encode(), ifname[:15].encode())
         )[20:24])
 
-#Parse the position and IP address String
+#Parse the position and IP address String. Returns a list.
 def parseIP(data):    
     parsed = data.split(',')
     return parsed
 
+#Updates the IP array with the correct position
 def updateIP(pos,ipAddress):
-    
     ipArr[pos-1] = ipAddress
     return
 
+#Sends message to the Client in byte form
 def sendMess(message,ipAddress):
     serv.sendto(message,(ipAddress,8080))
     return
 
-#Thread 1
+#Thread 1: Focuses on connecting Clients and adding their IP addresses to the overall IP array
 def establishClientConnections():
     global done
     global ipArr
 
     while True:
         try:
-            data, _ = serv.recvfrom(4096)
+            data, _ = serv.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         except socket.timeout:
             print("Timeout from establishing connection with a Client")
             continue
@@ -56,15 +57,15 @@ def establishClientConnections():
         print(data)
         print('\n')
 
-        if(data == "runDone"):
+        if(data == "runDone"): #See if it is confirmation by the Client
             done = True
             continue
         
         else:
-            if(data == "RESET"):
-                ipArr = np.empty(maxStudents,dtype=str)
+            if(data == "RESET"): #See if the whole IP array must be RESET because of a mistake
+                ipArr = np.empty(maxStudents,dtype=object)
             
-            else:
+            else: #If all is good, parse the information, update the array, and confirm with that IP address
                 [pos,ipAddress] = parseIP(data)
                 position = int(pos)
                 updateIP(position,ipAddress)
@@ -74,18 +75,19 @@ def establishClientConnections():
                 sendMess(message,ipAddress)
             
 
-#Thread 2
+#Thread 2: Focuses on sending messages to the Clients while everything is still happening
 def propagateDisplayMessages():
     global done
     global ipArr
+
     while True:
-        for add in range (0,len(ipArr)):
-            if(ipArr[add] != None):
+        for add in range (0,len(ipArr)): #Move throughout the IP address loop
+            if(ipArr[add] != None): #"None" will define all the locations that are not connected
                 ipAddress = ipArr[add]
                 try: 
-                    mess = "runLED"
+                    mess = "runLED" #Sends them the code to start their LED run
                     message = mess.encode()
-                    sendMess(message,ipAddress)
+                    sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
                 except socket.timeout:
                     ipArr[add] = None
                     print("Timeout from IP address " + ipAddress)
@@ -94,7 +96,7 @@ def propagateDisplayMessages():
                 waitTime = 0
 
                 while(not done):
-                    if(waitTime >= maxTime):
+                    if(waitTime >= maxTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                         ipArr[add] = None
                         break
                     waitTime = waitTime+1
