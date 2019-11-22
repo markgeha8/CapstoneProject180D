@@ -3,13 +3,13 @@
 
 import numpy as np
 import socket
-import socket.timeout as TimeoutException
+from socket import AF_INET, SOCK_DGRAM
 import fcntl
 import struct
 import threading
-serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+serv = socket.socket(AF_INET, SOCK_DGRAM)
 
-serv.settimeout(30)
+serv.settimeout(10)
 
 maxStudents = 84
 maxTime = 1000
