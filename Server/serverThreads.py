@@ -30,7 +30,7 @@ def parseIP(data):
     iparray = np.empty((1,16),dtype=str)
     posBool = True
     pos = ""
-    ip = ""
+    ip_temp = ""
     for i in range (0,len(data)):
         if(data[i] == ','):
             posBool = False
@@ -38,11 +38,11 @@ def parseIP(data):
         if(posBool):
             pos = pos + data[i]  
         else:
-            ip = ip + data[i]
+            ip_temp = ip_temp + data[i]
 
     #Add the IP address to the array of IP addresses that will later be referenced
-    for j in range (0, len(ip)):
-        iparray[0,j] = ip[j]
+    for j in range (0, len(ip_temp)):
+        iparray[0,j] = ip_temp[j]
 
     ipTemp = ""
     for temp in range (0,len(iparray[0])):
