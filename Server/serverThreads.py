@@ -46,6 +46,8 @@ def parseIP(data):
         ip = ip + data[i]
         i = i+1
 
+    i = 0
+
     #Add the IP address to the array of IP addresses that will later be referenced
     for j in range (0, len(ip)):
         iparray[0,j] = ip[j]
