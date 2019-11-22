@@ -76,6 +76,8 @@ def establishClientConnections():
 
 #Thread 2
 def propagateDisplayMessages():
+    global done
+    global ipArr
     while True:
         for add in range (0,len(ipArr)):
             if(ipArr[add] != None):
@@ -92,7 +94,7 @@ def propagateDisplayMessages():
                     
                 waitTime = 0
 
-                while(~done):
+                while(not done):
                     if(waitTime >= maxTime):
                         ipArr[add] = None
                         break
