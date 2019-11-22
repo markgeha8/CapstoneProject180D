@@ -85,6 +85,7 @@ def establishClientConnections():
                 ipArr = np.empty(maxStudents,dtype=str)
             
             else:
+                print(data)
                 [pos,ipAddress] = parseIP(data)
                 position = int(pos)
                 updateIP(position,ipAddress)
