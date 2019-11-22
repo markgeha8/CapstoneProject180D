@@ -77,7 +77,7 @@ def establishClientConnections():
 def propagateDisplayMessages():
     while True:
         for add in range (0,len(ipArr)):
-            if(ipArr[add-1] != ''):
+            if(ipArr[add] != ''):
                 ipAddress = ipArr[add]
                 print(ipAddress)
                 try: 
