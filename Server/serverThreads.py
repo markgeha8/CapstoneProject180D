@@ -78,7 +78,7 @@ def establishClientConnections():
 def propagateDisplayMessages():
     while True:
         for add in range (0,len(ipArr)):
-            if(ipArr[add] != ''):
+            if(ipArr[add] != None):
                 ipAddress = ipArr[add]
                 print(ipArr)
                 try: 
@@ -86,7 +86,7 @@ def propagateDisplayMessages():
                     message = mess.encode()
                     sendMess(message,ipAddress)
                 except socket.timeout:
-                    ipArr[add] = ''
+                    ipArr[add] = None
                     print("Timeout from IP address " + ipAddress)
                     continue
                     
@@ -94,7 +94,7 @@ def propagateDisplayMessages():
 
                 while(~done):
                     if(waitTime >= maxTime):
-                        ipArr[add] = ''
+                        ipArr[add] = None
                         break
                     waitTime = waitTime+1
                 done = False
