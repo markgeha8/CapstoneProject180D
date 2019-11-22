@@ -26,33 +26,12 @@ def get_ip_address(ifname):
         )[20:24])
 
 #Parse the position and IP address String
-def parseIP(data):
-    #iparray = np.empty((1,16),dtype=str)
-    pos = ""
-    ip_temp = ""
-    [pos,ipTemp] = data.split(',')
-    #for i in range (0,len(data)):
-    #    if(data[i] == ','):
-    #        posBool = False
-    #        continue
-    #    if(posBool):
-    #        pos = pos + data[i]  
-    #    else:
-    #        ip_temp = ip_temp + data[i]
-
-    #Add the IP address to the array of IP addresses that will later be referenced
-    #for j in range (0, len(ip_temp)):
-    #    iparray[0,j] = ip_temp[j]
-
-    #ipTemp = ""
-    #for temp in range (0,len(iparray[0])):
-    #    ipTemp = ipTemp + iparray[0,temp]
-
-    parsed = [pos,ipTemp]
+def parseIP(data):    
+    parsed = data.split(',')
     return parsed
 
 def updateIP(pos,ipAddress):
-    ipArr[pos] = ipAddress
+    ipArr[pos-1] = ipAddress
     return
 
 def sendMess(message,ipAddress):
@@ -67,6 +46,7 @@ def establishClientConnections():
     while True:
         try:
             data, _ = serv.recvfrom(4096)
+            print(data)
         except socket.timeout:
             print("Timeout from establishing connection with a Client")
             continue
