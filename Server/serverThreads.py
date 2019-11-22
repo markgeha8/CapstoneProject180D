@@ -13,6 +13,8 @@ serv.settimeout(10)
 
 maxStudents = 84
 maxTime = 1000
+ipArr = np.empty(maxStudents,dtype=str)
+done = False
 
 #Gets IP address of server so others can connect (should be known by everyone beforehand)
 def get_ip_address(ifname):
@@ -117,9 +119,6 @@ def propagateDisplayMessages():
 
 # Main function
 if __name__ == "__main__":
-    ipArr = np.empty(maxStudents,dtype=str)
-    done = False
-
     ip = get_ip_address('wlan0') #'172.20.10.5'
     print(ip)
     serv.bind((ip, 8080))
