@@ -13,7 +13,7 @@ serv.settimeout(10)
 
 maxStudents = 84
 maxTime = 1000
-ipArr = np.empty(maxStudents,dtype="<S15")
+ipArr = np.empty(maxStudents,dtype=object)
 done = False
 
 #Gets IP address of server so others can connect (should be known by everyone beforehand)
