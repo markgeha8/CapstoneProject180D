@@ -79,7 +79,7 @@ def propagateDisplayMessages():
         for add in range (0,len(ipArr)):
             if(ipArr[add] != ''):
                 ipAddress = ipArr[add]
-                print(ipAddress)
+                print(ipArr)
                 try: 
                     mess = "runLED"
                     message = mess.encode()
