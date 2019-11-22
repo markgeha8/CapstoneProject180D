@@ -76,7 +76,7 @@ def establishClientConnections():
         print(data)
         print('\n')
 
-        if(data == "Done"):
+        if(data == "runDone"):
             done = True
             continue
         
