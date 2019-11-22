@@ -49,7 +49,6 @@ while(not init_bool):
             break
 
 LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
-print("Exited Loop")
 
 #check that we have initialized the system
 
@@ -64,7 +63,7 @@ if(testLED == "testLED"):
     tested = "testDone"
     client.sendto(tested.encode(),('172.20.10.5',8080))
 
-
+print(tested)
 
 #Testing script for LED_displays
 GPIO.setmode(GPIO.BCM)
@@ -78,6 +77,7 @@ GPIO.setup(23, GPIO.OUT)
 
 
 while(init_bool & test_count<5 ):
+    print("Point2")
     from_server = client.recvfrom(4096)
     data = (from_server[0]).decode()  #Temporary fix for Tuple issue
     ##this data variable would actually be converted to an int
