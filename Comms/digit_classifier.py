@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 
+#hello
 #######   training part    ############### 
 samples = np.loadtxt('generalsamples.data',np.float32)
 responses = np.loadtxt('generalresponses.data',np.float32)
