@@ -106,7 +106,9 @@ def propagateDisplayMessages():
             if(ipArr[add-1] != ''):
                 ipAddress = ipArr[add]
                 try: 
-                    sendMess("runLED",ipAddress)
+                    mess = "runLED"
+                    message = mess.encode()
+                    sendMess(message,ipAddress)
                 except socket.timeout:
                     ipArr[add] = ''
                     print("Timeout from IP address " + ipAddress)
