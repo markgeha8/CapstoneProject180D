@@ -28,6 +28,7 @@ def get_ip_address(ifname):
 #Parse the position and IP address String
 def parseIP(data):    
     parsed = data.split(',')
+    print(parsed)
     return parsed
 
 def updateIP(pos,ipAddress):
