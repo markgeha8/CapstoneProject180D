@@ -80,17 +80,18 @@ def establishClientConnections():
             done = True
             continue
         
-        if(data == "RESET"):
-            ipArr = np.empty(maxStudents,dtype=str)
-        
         else:
-            [pos,ipAddress] = parseIP(data)
-            position = int(pos)
-            updateIP(position,ipAddress)
+            if(data == "RESET"):
+                ipArr = np.empty(maxStudents,dtype=str)
+            
+            else:
+                [pos,ipAddress] = parseIP(data)
+                position = int(pos)
+                updateIP(position,ipAddress)
 
-            mess = pos
-            message = mess.encode()
-            sendMess(message,ipAddress)
+                mess = pos
+                message = mess.encode()
+                sendMess(message,ipAddress)
             
 
 #Thread 2
