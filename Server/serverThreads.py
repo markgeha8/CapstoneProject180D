@@ -32,6 +32,7 @@ def parseIP(data):
     for i in range (0,len(data)):
         if(data[i] == ','):
             posBool = False
+            continue
         if(posBool):
             pos = pos + data[i]  
         else:
