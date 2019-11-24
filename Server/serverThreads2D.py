@@ -2,7 +2,6 @@
 #https://www.geeksforgeeks.org/socket-programming-python/
 
 import numpy as np
-from pylab import *
 from scipy.ndimage import measurements
 import socket
 from socket import AF_INET, SOCK_DGRAM
