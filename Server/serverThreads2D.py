@@ -18,7 +18,6 @@ maxRows = 20
 maxCols = 20
 maxTime = 1000
 ipArr = np.empty([maxRows,maxCols],dtype=object)
-numberOfClusters = 0
 done = False
 
 ipArrBin = np.zeros([maxRows,maxCols],dtype=int)
@@ -47,6 +46,7 @@ def sendMess(message,ipAddress):
     serv.sendto(message,(ipAddress,8080))
     return
 
+#Create array of simple binary 0s and 1s to determine locations of where the IP addresses are
 def createBinaryArray(ipArr):
     for r in range (0,maxRows):
         for c in range (0,maxCols):
@@ -56,6 +56,7 @@ def createBinaryArray(ipArr):
                 ipArrBin[r,c] == 1
     return ipArrBin
 
+#Use built in functions in "measurements" library to determine clusters. These clusters will be cycled through
 def clusterData():
     ipArrBin = createBinaryArray(ipArr)
     clustered, numberOfClusters = measurements.label(ipArrBin)
@@ -65,7 +66,6 @@ def clusterData():
 def establishClientConnections():
     global done
     global ipArr
-    global numberOfClusters
 
     while True:
         try:
@@ -102,11 +102,10 @@ def establishClientConnections():
 def propagateDisplayMessages():
     global done
     global ipArr
-    global numberOfClusters
 
     while True:
         [clusteredData,numberOfClusters] = clusterData()
-        for clustNum in range (0,numberOfClusters):
+        for clustNum in range (1,numberOfClusters): #Move throughout clusters of students
             for posR in range (0,maxRows): #Move throughout the IP address loop
                 for posC in range (0,maxCols):
                     if(ipArr[posR,posC] != None): #"None" will define all the locations that are not connected
