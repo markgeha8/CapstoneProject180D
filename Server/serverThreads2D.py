@@ -78,7 +78,7 @@ def establishClientConnections():
         print(data)
         print('\n')
 
-        if(data == "runDone"): #See if it is confirmation by the Client
+        if(data == "iterDone"): #See if it is confirmation by the Client
             done = True
             continue
         
@@ -104,14 +104,18 @@ def propagateDisplayMessages():
 
     while True:
         [clusteredData,numberOfClusters] = clusterData()
+        area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
         for clustNum in range (1,numberOfClusters): #Move throughout clusters of students
+            amountInClust = area[clustNum]
+            numWithinClust = 0
             for posR in range (0,maxRows): #Move throughout the IP address loop
                 for posC in range (0,maxCols):
-                    if(ipArr[posR,posC] != None): #"None" will define all the locations that are not connected
-                        if(not(clusteredData[posR,posC] == clustNum)):
+                    if(not(ipArr[posR,posC] == None)): #"None" will define all the locations that are not connected
+                        if(clusteredData[posR,posC] == clustNum):
+                            numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
                             try: 
-                                mess = "runLED" #Sends them the code to start their LED run
+                                mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
                                 message = mess.encode()
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
                             except socket.timeout:
