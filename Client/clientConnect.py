@@ -5,6 +5,10 @@ import time
 import random
 import RPi.GPIO as GPIO
 
+#Parse the position and IP address String. Returns a list.
+def parseData(data):
+    parsed = data.split(',')
+    return parsed
 
 #Read in IP
 def get_ip_address(ifname):
