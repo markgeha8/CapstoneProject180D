@@ -19,13 +19,14 @@ ip = get_ip_address('wlan0')
 #Test print of IP address
 print(ip)
 
-#Read in position(pos)
-#Use code from Charlotte
+#SEND INITIAL PROMPT TO TOKEN AND READ BACK IN THE ROW/COLUMN (CURRENTLY AN UNKNOWN IP ADDRESS BUT WILL KNOW ONCE WE GET HARDWARE)
+#SHOULD BE SEPARATE DEFINED FUNCTION THAT CAN RUN INITIALLY THROUGH MAIN FUNCTION AND THEN HAVE A RECURSIVE THREAD THAT CONSTANTLY
+#WAITS FOR PROMPTING FROM THE SERVER
 
 #This is a filler for now
-pos = random.randint(1,10)
+pos = random.randint(1,10) #TURN INTO ROW AND COLUMN BETWEEN 1 AND 20
 pos_string = str(pos)
-init_msg = pos_string + "," + ip
+init_msg = pos_string + "," + ip #MAKE POS_STRING = "POSR,POSC" SO THAT INIT_MSG = "POSR,POSC,IPADDRESS"
 init_bool = False
 
 
@@ -41,7 +42,7 @@ while(not init_bool):
         data = (from_server[0]).decode()  #Temporary fix for Tuple issue
         if(data == "RESET"):
             print(data)
-        if(data == pos_string):
+        if(data == pos_string): #CHANGE POS_STRING TO ROW,COL AND SERVER WILL SEND THAT BACK
             init_bool = True
             print("server matches client")
         else:
@@ -59,7 +60,7 @@ data = (from_server[0]).decode()  #Temporary fix for Tuple issue
 #this data variable would actually be converted to an int
 testLED = data
 print(testLED)
-if(testLED == "testLED"):
+if(testLED == "testLED"): #NO LONGER A PART OF THE CODE SO THE WHOLE "TEST" SECTION CAN BE REMOVED
     tested = "testDone"
     client.sendto(tested.encode(),('172.20.10.5',8080))
 
@@ -76,7 +77,7 @@ GPIO.setup(22, GPIO.OUT)
 GPIO.setup(23, GPIO.OUT)
 
 
-while(init_bool & test_count<5 ):
+while(init_bool & test_count<5 ): #NOT SURE WHAT THIS PART IS BUT SHOULD PROBABLE BE REMOVED/READ OVER
     print("Point2")
     from_server = client.recvfrom(4096)
     data = (from_server[0]).decode()  #Temporary fix for Tuple issue
