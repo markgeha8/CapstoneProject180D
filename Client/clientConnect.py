@@ -19,6 +19,8 @@ def get_ip_address(ifname):
         struct.pack('256s'.encode(), ifname[:15].encode())
     )[20:24])
 
+
+
 ip = get_ip_address('wlan0')
 #Test print of IP address
 print(ip)
@@ -27,10 +29,13 @@ print(ip)
 #SHOULD BE SEPARATE DEFINED FUNCTION THAT CAN RUN INITIALLY THROUGH MAIN FUNCTION AND THEN HAVE A RECURSIVE THREAD THAT CONSTANTLY
 #WAITS FOR PROMPTING FROM THE SERVER
 
+#Button interupt - to get token( row col - data)
+
 #This is a filler for now
-pos = random.randint(1,10) #TURN INTO ROW AND COLUMN BETWEEN 1 AND 20
-pos_string = str(pos)
-init_msg = pos_string + "," + ip #MAKE POS_STRING = "POSR,POSC" SO THAT INIT_MSG = "POSR,POSC,IPADDRESS"
+#From Comms - string with row, column
+test_coms = "5,5"
+[posRow,posCol] = parseData(test_coms)
+init_msg = test_coms + "," + ip
 init_bool = False
 
 
@@ -46,7 +51,8 @@ while(not init_bool):
         data = (from_server[0]).decode()  #Temporary fix for Tuple issue
         if(data == "RESET"):
             print(data)
-        if(data == pos_string): #CHANGE POS_STRING TO ROW,COL AND SERVER WILL SEND THAT BACK
+        [Row, Col] = parseData(data)
+        if(Row == posRow & Col == posCol):
             init_bool = True
             print("server matches client")
         else:
@@ -54,21 +60,6 @@ while(not init_bool):
             break
 
 LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
-
-#check that we have initialized the system
-
-test_count = 0
-
-from_server = client.recvfrom(4096)
-data = (from_server[0]).decode()  #Temporary fix for Tuple issue
-#this data variable would actually be converted to an int
-testLED = data
-print(testLED)
-if(testLED == "testLED"): #NO LONGER A PART OF THE CODE SO THE WHOLE "TEST" SECTION CAN BE REMOVED
-    tested = "testDone"
-    client.sendto(tested.encode(),('172.20.10.5',8080))
-
-print(tested)
 
 #Testing script for LED_displays
 GPIO.setmode(GPIO.BCM)
@@ -80,16 +71,20 @@ GPIO.setup(18, GPIO.OUT)
 GPIO.setup(22, GPIO.OUT)
 GPIO.setup(23, GPIO.OUT)
 
+ran = "iterDone"
 
-while(init_bool & test_count<5 ): #NOT SURE WHAT THIS PART IS BUT SHOULD PROBABLE BE REMOVED/READ OVER
-    print("Point2")
+while(init_bool & test_count<5 ):
     from_server = client.recvfrom(4096)
     data = (from_server[0]).decode()  #Temporary fix for Tuple issue
-    ##this data variable would actually be converted to an int
-    runLED = data
-    print(runLED)
+
+
+    #have token check -  send new token info to server
+
+
+    #receive  ClusterNum, and AmountInClus, numWithinClust
+    [ClustNum, AmIC, NumWC] = parseData(data)
+
     if(testLED == "runLED"):
-        ran = "runDone"
         client.sendto(ran.encode(),('172.20.10.5',8080))
         print("running LED: " + str(LED_displays[test_count]))
         if(test_count == 1):
@@ -115,6 +110,7 @@ while(init_bool & test_count<5 ): #NOT SURE WHAT THIS PART IS BUT SHOULD PROBABL
             GPIO.output(22,GPIO.LOW)
             GPIO.output(23,GPIO.LOW)
     test_count += 1
+    client.sendto(ran.encode(),('172.20.10.5',8080))
 
 
 
