@@ -42,7 +42,7 @@ def receiveClientIP():
         print(ipAddress)
         print('\n')
 
-        coordinates = str(row) + str(col)
+        coordinates = str(row) + ',' + str(col)
         coordinates = coordinates.encode()
         token.sendto(coordinates,(ipAddress,8080))
 
