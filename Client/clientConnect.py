@@ -84,22 +84,24 @@ while(init_bool & test_count<5 ):
     #receive  ClusterNum, and AmountInClus, numWithinClust
     [ClustNum, AmIC, NumWC] = parseData(data)
 
+    
+
+
     if(testLED == "runLED"):
-        client.sendto(ran.encode(),('172.20.10.5',8080))
-        print("running LED: " + str(LED_displays[test_count]))
-        if(test_count == 1):
+        print("running LED: " + str(LED_displays[NumWC]))
+        if(NumWC== 1):
             GPIO.output(17,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(17,GPIO.LOW)
-        if(test_count == 2):
+        if(NumWC == 2):
             GPIO.output(18,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(18,GPIO.LOW)
-        if(test_count == 3):
+        if(NumWC == 3):
             GPIO.output(22,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(22,GPIO.LOW)
-        if(test_count == 4):
+        if(NumWC == 4):
             GPIO.output(17,GPIO.HIGH)
             GPIO.output(18,GPIO.HIGH)
             GPIO.output(22,GPIO.HIGH)
