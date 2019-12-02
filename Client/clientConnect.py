@@ -77,17 +77,12 @@ while(init_bool & test_count<5 ):
     from_server = client.recvfrom(4096)
     data = (from_server[0]).decode()  #Temporary fix for Tuple issue
 
-
     #have token check -  send new token info to server
-
 
     #receive  ClusterNum, and AmountInClus, numWithinClust
     [ClustNum, AmIC, NumWC] = parseData(data)
 
-    
-
-
-    if(testLED == "runLED"):
+    if(test_count<5):
         print("running LED: " + str(LED_displays[NumWC])+ " out of " + str(AmIC) + " LEDs.")
         if(NumWC== 1):
             GPIO.output(17,GPIO.HIGH)
