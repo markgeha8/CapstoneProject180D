@@ -88,7 +88,7 @@ while(init_bool & test_count<5 ):
 
 
     if(testLED == "runLED"):
-        print("running LED: " + str(LED_displays[NumWC]))
+        print("running LED: " + str(LED_displays[NumWC])+ " out of " + str(AmIC) + " LEDs.")
         if(NumWC== 1):
             GPIO.output(17,GPIO.HIGH)
             time.sleep(2)
