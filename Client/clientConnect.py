@@ -88,14 +88,19 @@ while(init_bool & test_count<5 ):
             GPIO.output(17,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(17,GPIO.LOW)
+            
+            
         if(NumWC == 2):
             GPIO.output(18,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(18,GPIO.LOW)
+            
         if(NumWC == 3):
             GPIO.output(22,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(22,GPIO.LOW)
+            
+            
         if(NumWC == 4):
             GPIO.output(17,GPIO.HIGH)
             GPIO.output(18,GPIO.HIGH)
