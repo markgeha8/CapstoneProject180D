@@ -72,6 +72,7 @@ GPIO.setup(22, GPIO.OUT)
 GPIO.setup(23, GPIO.OUT)
 
 ran = "iterDone"
+test_count = 5
 
 while(init_bool & test_count<5 ):
     from_server = client.recvfrom(4096)
@@ -88,18 +89,18 @@ while(init_bool & test_count<5 ):
             GPIO.output(17,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(17,GPIO.LOW)
-            
+            print("mode 1: turn on left LED.")
             
         if(NumWC == 2):
             GPIO.output(18,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(18,GPIO.LOW)
-            
+            print("mode 2: turn on right LED.")
         if(NumWC == 3):
             GPIO.output(22,GPIO.HIGH)
             time.sleep(2)
             GPIO.output(22,GPIO.LOW)
-            
+            print("mode 3: turn on up LED.")
             
         if(NumWC == 4):
             GPIO.output(17,GPIO.HIGH)
@@ -111,6 +112,7 @@ while(init_bool & test_count<5 ):
             GPIO.output(18,GPIO.LOW)
             GPIO.output(22,GPIO.LOW)
             GPIO.output(23,GPIO.LOW)
+            print("mode 4: turn on down LED.")
     test_count += 1
     client.sendto(ran.encode(),('172.20.10.5',8080))
 
