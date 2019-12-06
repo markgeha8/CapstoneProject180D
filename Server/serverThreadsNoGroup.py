@@ -17,7 +17,7 @@ serv.settimeout(10) #10 second delay per connection request
 maxStudents = 84
 maxRows = 20
 maxCols = 20
-deltaTime = 2000
+deltaTime = 2.0
 ipArr = np.empty([maxRows,maxCols],dtype=object)
 done = False
 
@@ -126,9 +126,10 @@ def propagateDisplayMessages():
                                 print("Socket Timeout from IP address " + ipAddress)
                                 continue
 
+                            
+                            startTime = time.time()
                             while(not done):
-                                startTime = time.time()
-                                while(time.time()-startTime < deltaTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
+                                if(time.time()-startTime > deltaTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                                     ipArr[posR,posC] = None
                                     print("Time Timeout from IP address " + ipAddress)
                                     break
