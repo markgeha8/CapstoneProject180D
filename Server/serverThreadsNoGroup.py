@@ -136,6 +136,7 @@ def propagateDisplayMessages():
                             if(done):
                                 print(ipArr[posR,posC])
                             done = False
+                            print("____________")
 
 
 # Main function
