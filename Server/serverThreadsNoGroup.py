@@ -116,6 +116,7 @@ def propagateDisplayMessages():
                         if(True):
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
+                            print("Inside true")
                             try: 
                                 mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
                                 print(mess)
