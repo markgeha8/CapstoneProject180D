@@ -2,8 +2,8 @@
 #https://www.geeksforgeeks.org/socket-programming-python/
 
 import numpy as np
-import scipy
-from scipy.ndimage import measurements
+#import scipy
+#from scipy.ndimage import measurements
 import socket
 from socket import AF_INET, SOCK_DGRAM
 import fcntl
@@ -47,20 +47,20 @@ def sendMess(message,ipAddress):
     return
 
 #Create array of simple binary 0s and 1s to determine locations of where the IP addresses are
-def createBinaryArray(ipArr):
-    for r in range (0,maxRows):
-        for c in range (0,maxCols):
-            if(ipArr[r,c] == None):
-                ipArrBin[r,c] == 0
-            else:
-                ipArrBin[r,c] == 1
-    return ipArrBin
+#def createBinaryArray(ipArr):
+#    for r in range (0,maxRows):
+#        for c in range (0,maxCols):
+#            if(ipArr[r,c] == None):
+#                ipArrBin[r,c] == 0
+#            else:
+#                ipArrBin[r,c] == 1
+#    return ipArrBin
 
 #Use built in functions in "measurements" library to determine clusters. These clusters will be cycled through
-def clusterData():
-    ipArrBin = createBinaryArray(ipArr)
-    clustered, numberOfClusters = measurements.label(ipArrBin)
-    return [clustered,numberOfClusters]
+#def clusterData():
+#    ipArrBin = createBinaryArray(ipArr)
+#    clustered, numberOfClusters = measurements.label(ipArrBin)
+#    return [clustered,numberOfClusters]
 
 #Thread 1: Focuses on connecting Clients and adding their IP addresses to the overall IP array
 def establishClientConnections():
@@ -104,15 +104,16 @@ def propagateDisplayMessages():
     global ipArr
 
     while True:
-        [clusteredData,numberOfClusters] = clusterData()
-        area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
+        numberOfClusters = 1
+        #[clusteredData,numberOfClusters] = clusterData()
+        #area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
         for clustNum in range (1,numberOfClusters): #Move throughout clusters of students
-            amountInClust = area[clustNum]
+            amountInClust = 3
             numWithinClust = 0
             for posR in range (0,maxRows): #Move throughout the IP address loop
                 for posC in range (0,maxCols):
                     if(not(ipArr[posR,posC] == None)): #"None" will define all the locations that are not connected
-                        if(clusteredData[posR,posC] == clustNum):
+                        if(True):
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
                             try: 
