@@ -114,7 +114,7 @@ def DisplayLoop():
                 if(NumWC == 4):
                     print("pattern 4")
             test_count += 1
-            client.sendto(ran.encode(),('172.20.10.5',8080))
+            client.sendto(ran.encode(),('172.20.10.11',8080))
 
         test_count = 0
 
