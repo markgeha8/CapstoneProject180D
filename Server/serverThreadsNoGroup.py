@@ -125,11 +125,9 @@ def propagateDisplayMessages():
                                 ipArr[posR,posC] = None
                                 print("Socket Timeout from IP address " + ipAddress)
                                 continue
-                                
-                            waitTime = 0
 
                             while(not done):
-                                startTime = time.start()
+                                startTime = time.time()
                                 while(time.time()-startTime < deltaTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                                     ipArr[posR,posC] = None
                                     print("Time Timeout from IP address " + ipAddress)
