@@ -122,7 +122,7 @@ def propagateDisplayMessages():
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
                             except socket.timeout:
                                 ipArr[posR,posC] = None
-                                print("Timeout from IP address " + ipAddress)
+                                print("Socket Timeout from IP address " + ipAddress)
                                 continue
                                 
                             waitTime = 0
@@ -130,7 +130,7 @@ def propagateDisplayMessages():
                             while(not done):
                                 if(waitTime >= maxTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                                     ipArr[posR,posC] = None
-                                    print("Timeout from IP address " + ipAddress)
+                                    print("Time Timeout from IP address " + ipAddress)
                                     break
                                 waitTime = waitTime+1
                             done = False
