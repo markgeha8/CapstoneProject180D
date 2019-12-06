@@ -16,7 +16,7 @@ serv.settimeout(10) #10 second delay per connection request
 maxStudents = 84
 maxRows = 20
 maxCols = 20
-maxTime = 1000
+maxTime = 1000000
 ipArr = np.empty([maxRows,maxCols],dtype=object)
 done = False
 
