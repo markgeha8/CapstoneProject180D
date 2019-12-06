@@ -96,24 +96,24 @@ def DisplayLoop():
 
             if(test_count<5):
                 print("running LED: " + str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
-                if(NumWC== 1):
+                if(int(NumWC)== 1):
                     #GPIO.output(17,GPIO.HIGH)
                     #time.sleep(2)
                     #GPIO.output(17,GPIO.LOW)
                     print("pattern 1")
 
-                if(NumWC == 2):
+                if(int(NumWC) == 2):
                     #GPIO.output(18,GPIO.HIGH)
                     #time.sleep(2)
                     #GPIO.output(18,GPIO.LOW)
                     print("pattern 2")
 
-                if(NumWC == 3):
+                if(int(NumWC) == 3):
                     #GPIO.output(22,GPIO.HIGH)
                     #time.sleep(2)
                     #GPIO.output(22,GPIO.LOW)
                     print("pattern 3")
-                if(NumWC == 4):
+                if(int(NumWC) == 4):
                     print("pattern 4")
                     print("hi")
                 test_num += 1
