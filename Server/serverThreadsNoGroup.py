@@ -80,6 +80,7 @@ def establishClientConnections():
         print('\n')
 
         if(data == "iterDone"): #See if it is confirmation by the Client
+            print("Done 1")
             done = True
             continue
         
@@ -133,6 +134,8 @@ def propagateDisplayMessages():
                                     print("Time Timeout from IP address " + ipAddress)
                                     break
                                 waitTime = waitTime+1
+                            if(done):
+                                print("Done 2")
                             done = False
 
 # Main function
