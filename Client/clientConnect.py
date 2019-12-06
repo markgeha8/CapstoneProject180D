@@ -49,7 +49,7 @@ def establishServerConnections():
 
 
         while(not init_bool):
-            client.sendto(init_msg.encode(),('172.20.10.11',8080))
+            client.sendto(init_msg.encode(),('172.20.10.3',8080))
             while(not init_bool):
                 from_server = client.recvfrom(4096)
                 data = (from_server[0]).decode()  #Temporary fix for Tuple issue
@@ -117,7 +117,7 @@ def DisplayLoop():
                     print("hi")
                 test_num += 1
             test_count += 1
-            client.sendto(ran.encode(),('172.20.10.11',8080))
+            client.sendto(ran.encode(),('172.20.10.3',8080))
 
         test_count = 0
 
