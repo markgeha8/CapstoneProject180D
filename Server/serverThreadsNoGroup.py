@@ -16,7 +16,7 @@ serv.settimeout(10) #10 second delay per connection request
 maxStudents = 84
 maxRows = 20
 maxCols = 20
-maxTime = 1000
+maxTime = 3000000
 ipArr = np.empty([maxRows,maxCols],dtype=object)
 done = False
 
@@ -104,7 +104,7 @@ def propagateDisplayMessages():
     global ipArr
 
     while True:
-        numberOfClusters = 1
+        numberOfClusters = 2
         #[clusteredData,numberOfClusters] = clusterData()
         #area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
         for clustNum in range (1,numberOfClusters): #Move throughout clusters of students
@@ -116,13 +116,13 @@ def propagateDisplayMessages():
                         if(True):
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
+                            mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
+                            message = mess.encode()
                             try: 
-                                mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
-                                message = mess.encode()
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
                             except socket.timeout:
                                 ipArr[posR,posC] = None
-                                print("Timeout from IP address " + ipAddress)
+                                print("Socket Timeout from IP address " + ipAddress)
                                 continue
                                 
                             waitTime = 0
@@ -130,6 +130,7 @@ def propagateDisplayMessages():
                             while(not done):
                                 if(waitTime >= maxTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                                     ipArr[posR,posC] = None
+                                    print("Time Timeout from IP address " + ipAddress)
                                     break
                                 waitTime = waitTime+1
                             done = False
