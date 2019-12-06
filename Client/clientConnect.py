@@ -7,6 +7,7 @@ import random
 import threading
 
 init_bool = False
+test_count = 1
 
 
 
@@ -46,10 +47,6 @@ def establishServerConnections():
         init_msg = test_coms + "," + ip
 
 
-        client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-        #enter server IP address - must be known beforehand
-        client.bind((ip, 8080))
 
         while(not init_bool):
             client.sendto(init_msg.encode(),('172.20.10.5',8080))
@@ -70,6 +67,7 @@ LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
 
 
 def DisplayLoop():
+    global test_count
 
     while True:
         #Testing script for LED_displays
@@ -126,7 +124,10 @@ def DisplayLoop():
 if __name__ == "__main__":
     ip = get_ip_address('wlan0') #'172.20.10.5'
     print(ip)
-    serv.bind((ip, 8080))
+    client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    #enter server IP address - must be known beforehand
+    client.bind((ip, 8080))
 
     # creating thread
     t1 = threading.Thread(target=establishServerConnections, args=())
