@@ -41,7 +41,7 @@ def establishServerConnections():
 
         #This is a filler for now
         #From Comms - string with row, column
-        test_coms = "5,5"
+        test_coms = str(random.randint(1,20)) + ',' + str(random.randint(1,20))
         [posRow,posCol] = parseData(test_coms)
         init_msg = test_coms + "," + ip
 
@@ -81,17 +81,19 @@ def DisplayLoop():
 
         ran = "iterDone"
 
-        while(init_bool and test_count<5 ):
-            from_server = client.recvfrom(4096)
-            data = (from_server[0]).decode()  #Temporary fix for Tuple issue
-            print("data")
-            #have token check -  send new token info to server
+        from_server = client.recvfrom(4096)
+        data = (from_server[0]).decode()  #Temporary fix for Tuple issue
+        print("data")
+        #have token check -  send new token info to server
 
-            #receive  ClusterNum, and AmountInClus, numWithinClust
-            [ClustNum, AmIC, NumWC] = parseData(data)
+        #receive  ClusterNum, and AmountInClus, numWithinClust
+        [ClustNum, AmIC, NumWC] = parseData(data)
+
+        while((init_bool) and (test_count < 5)):
+
 
             if(test_count<5):
-                print("running LED: " + str(LED_displays[NumWC])+ " out of " + str(AmIC) + " LEDs.")
+                print("running LED: " + str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
                 if(NumWC== 1):
                     #GPIO.output(17,GPIO.HIGH)
                     #time.sleep(2)
@@ -109,12 +111,12 @@ def DisplayLoop():
                     #time.sleep(2)
                     #GPIO.output(22,GPIO.LOW)
                     print("pattern 3")
-
-
                 if(NumWC == 4):
                     print("pattern 4")
             test_count += 1
-        client.sendto(ran.encode(),('172.20.10.5',8080))
+            client.sendto(ran.encode(),('172.20.10.5',8080))
+
+        test_count = 0
 
 
 
