@@ -8,6 +8,7 @@ import threading
 
 init_bool = False
 test_count = 1
+test_num = 0
 
 
 
@@ -67,6 +68,7 @@ LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
 
 def DisplayLoop():
     global test_count
+    global test_num
 
     while True:
         #Testing script for LED_displays
@@ -113,10 +115,12 @@ def DisplayLoop():
                     print("pattern 3")
                 if(NumWC == 4):
                     print("pattern 4")
+                test_num += 1
             test_count += 1
             client.sendto(ran.encode(),('172.20.10.11',8080))
 
         test_count = 0
+
 
 
 
