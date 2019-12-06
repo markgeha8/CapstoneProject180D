@@ -112,6 +112,7 @@ def propagateDisplayMessages():
             numWithinClust = 0
             for posR in range (0,maxRows): #Move throughout the IP address loop
                 for posC in range (0,maxCols):
+                    print(ipArr[posR,posC])
                     if(not(ipArr[posR,posC] == None)): #"None" will define all the locations that are not connected
                         if(True):
                             numWithinClust = numWithinClust + 1
