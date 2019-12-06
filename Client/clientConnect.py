@@ -92,10 +92,10 @@ def DisplayLoop():
         [ClustNum, AmIC, NumWC] = parseData(data)
         print(NumWC)
 
-        while((init_bool) and (test_count < 1)):
+        while((init_bool) and (test_count < 2)):
 
 
-            if(test_count<1):
+            if(test_count<2):
                 print("running LED: " + str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
                 if(int(NumWC)== 1):
                     #GPIO.output(17,GPIO.HIGH)
