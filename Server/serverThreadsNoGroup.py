@@ -78,6 +78,7 @@ def establishClientConnections():
 
         if(data == "iterDone"): #See if it is confirmation by the Client
             done = True
+            data = ''
             continue
         
         else:
@@ -95,7 +96,6 @@ def establishClientConnections():
                 sendMess(message,ipAddress)
         
         data = ''
-            
 
 #Thread 2: Focuses on sending messages to the Clients while everything is still happening
 def propagateDisplayMessages():
@@ -116,7 +116,7 @@ def propagateDisplayMessages():
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
                             mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
-                            print(mess)
+                            print(numWithinClust)
                             message = mess.encode()
                             try: 
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
@@ -136,6 +136,7 @@ def propagateDisplayMessages():
                             if(done):
                                 print(ipArr[posR,posC])
                             done = False
+
 
 # Main function
 if __name__ == "__main__":
