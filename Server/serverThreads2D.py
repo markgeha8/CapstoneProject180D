@@ -5,6 +5,7 @@ import numpy as np
 import scipy
 from scipy.ndimage import measurements
 import socket
+import time
 from socket import AF_INET, SOCK_DGRAM
 import fcntl
 import struct
@@ -16,7 +17,7 @@ serv.settimeout(10) #10 second delay per connection request
 maxStudents = 84
 maxRows = 20
 maxCols = 20
-maxTime = 1000
+deltaTime = 0.5
 ipArr = np.empty([maxRows,maxCols],dtype=object)
 done = False
 
@@ -78,6 +79,7 @@ def establishClientConnections():
 
         if(data == "iterDone"): #See if it is confirmation by the Client
             done = True
+            data = ''
             continue
         
         else:
@@ -93,17 +95,19 @@ def establishClientConnections():
                 mess = posR + ',' + posC
                 message = mess.encode()
                 sendMess(message,ipAddress)
-            
 
+        data = ''
+        
 #Thread 2: Focuses on sending messages to the Clients while everything is still happening
 def propagateDisplayMessages():
     global done
     global ipArr
+    iter = 0
 
     while True:
         [clusteredData,numberOfClusters] = clusterData()
         area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
-        for clustNum in range (1,numberOfClusters): #Move throughout clusters of students
+        for clustNum in range (1,numberOfClusters+1): #Move throughout clusters of students
             amountInClust = area[clustNum]
             numWithinClust = 0
             for posR in range (0,maxRows): #Move throughout the IP address loop
@@ -112,24 +116,28 @@ def propagateDisplayMessages():
                         if(clusteredData[posR,posC] == clustNum):
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
+                            mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
+                            message = mess.encode()
                             try: 
-                                mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
-                                message = mess.encode()
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
                             except socket.timeout:
                                 ipArr[posR,posC] = None
                                 print("Timeout from IP address " + ipAddress)
                                 continue
                                 
-                            waitTime = 0
-
+                            startTime = time.time()
                             while(not done):
-                                if(waitTime >= maxTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
+                                if(time.time()-startTime > deltaTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                                     ipArr[posR,posC] = None
+                                    print("Time Timeout from IP address " + ipAddress)
                                     break
-                                waitTime = waitTime+1
-                            if(done):
+                            
+                            if(iter == 5):
                                 print(ipArr[posR,posC])
+                                print(numWithinClust)
+                                print("____________")
+                                iter = 0
+                            iter = iter + 1
                             done = False
 
 # Main function
