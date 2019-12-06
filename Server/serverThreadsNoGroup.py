@@ -132,6 +132,7 @@ def propagateDisplayMessages():
                             while(not done):
                                 if(waitTime >= maxTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                                     ipArr[posR,posC] = None
+                                    print("Timeout from IP address " + ipAddress)
                                     break
                                 waitTime = waitTime+1
                             done = False
