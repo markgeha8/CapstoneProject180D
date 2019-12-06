@@ -5,6 +5,7 @@ import numpy as np
 #import scipy
 #from scipy.ndimage import measurements
 import socket
+import time
 from socket import AF_INET, SOCK_DGRAM
 import fcntl
 import struct
@@ -16,7 +17,7 @@ serv.settimeout(10) #10 second delay per connection request
 maxStudents = 84
 maxRows = 20
 maxCols = 20
-maxTime = 3000000
+deltaTime = 2000
 ipArr = np.empty([maxRows,maxCols],dtype=object)
 done = False
 
@@ -128,11 +129,11 @@ def propagateDisplayMessages():
                             waitTime = 0
 
                             while(not done):
-                                if(waitTime >= maxTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
+                                startTime = time.start()
+                                while(time.time()-startTime < deltaTime): #If there is no response for longer than maxTime iterations, it will be removed (failsafe)
                                     ipArr[posR,posC] = None
                                     print("Time Timeout from IP address " + ipAddress)
                                     break
-                                waitTime = waitTime+1
                             if(done):
                                 print(ipArr[posR,posC])
                             done = False
