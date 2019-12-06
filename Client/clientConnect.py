@@ -32,7 +32,6 @@ def establishServerConnections():
 
         ip = get_ip_address('wlan0')
         #Test print of IP address
-        print(ip)
 
         #SEND INITIAL PROMPT TO TOKEN AND READ BACK IN THE ROW/COLUMN (CURRENTLY AN UNKNOWN IP ADDRESS BUT WILL KNOW ONCE WE GET HARDWARE)
         #SHOULD BE SEPARATE DEFINED FUNCTION THAT CAN RUN INITIALLY THROUGH MAIN FUNCTION AND THEN HAVE A RECURSIVE THREAD THAT CONSTANTLY
@@ -82,10 +81,10 @@ def DisplayLoop():
 
         ran = "iterDone"
 
-        while(init_bool & test_count<5 ):
+        while(init_bool and test_count<5 ):
             from_server = client.recvfrom(4096)
             data = (from_server[0]).decode()  #Temporary fix for Tuple issue
-
+            print("data")
             #have token check -  send new token info to server
 
             #receive  ClusterNum, and AmountInClus, numWithinClust
@@ -115,7 +114,7 @@ def DisplayLoop():
                 if(NumWC == 4):
                     print("pattern 4")
             test_count += 1
-            client.sendto(ran.encode(),('172.20.10.5',8080))
+        client.sendto(ran.encode(),('172.20.10.5',8080))
 
 
 
