@@ -5,6 +5,10 @@ import time
 import random
 import RPi.GPIO as GPIO
 
+init_bool = False
+
+
+
 #Parse the position and IP address String. Returns a list.
 def parseData(data):
     parsed = data.split(',')
@@ -20,7 +24,10 @@ def get_ip_address(ifname):
     )[20:24])
 
 def establishServerConnections():
+    global init_bool
+
     while True:
+
         ip = get_ip_address('wlan0')
         #Test print of IP address
         print(ip)
@@ -36,7 +43,6 @@ def establishServerConnections():
         test_coms = "5,5"
         [posRow,posCol] = parseData(test_coms)
         init_msg = test_coms + "," + ip
-        init_bool = False
 
 
         client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
