@@ -75,9 +75,6 @@ def establishClientConnections():
             continue
         if not data: continue
         data = data.decode()
-        print("Data provided is: ")
-        print(data)
-        print('\n')
 
         if(data == "iterDone"): #See if it is confirmation by the Client
             done = True
@@ -131,6 +128,8 @@ def propagateDisplayMessages():
                                     ipArr[posR,posC] = None
                                     break
                                 waitTime = waitTime+1
+                            if(done):
+                                print(ipArr[posR,posC])
                             done = False
 
 # Main function
