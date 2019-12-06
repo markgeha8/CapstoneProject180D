@@ -102,10 +102,10 @@ def establishClientConnections():
 def propagateDisplayMessages():
     global done
     global ipArr
+    iter = 0
 
     while True:
         numberOfClusters = 1
-        iter = 0
         #[clusteredData,numberOfClusters] = clusterData()
         #area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
         for clustNum in range (1,numberOfClusters+1): #Move throughout clusters of students
