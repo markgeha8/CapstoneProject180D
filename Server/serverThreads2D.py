@@ -2,7 +2,6 @@
 #https://www.geeksforgeeks.org/socket-programming-python/
 
 import numpy as np
-import scipy
 from scipy.ndimage import measurements
 import socket
 import time
