@@ -78,6 +78,7 @@ def establishClientConnections():
 
         if(data == "iterDone"): #See if it is confirmation by the Client
             done = True
+            data = ''
             continue
         
         else:
@@ -95,7 +96,6 @@ def establishClientConnections():
                 sendMess(message,ipAddress)
         
         data = ''
-            
 
 #Thread 2: Focuses on sending messages to the Clients while everything is still happening
 def propagateDisplayMessages():
