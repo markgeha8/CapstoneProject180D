@@ -85,7 +85,7 @@ def DisplayLoop():
 
         from_server = client.recvfrom(4096)
         data = (from_server[0]).decode()  #Temporary fix for Tuple issue
-        print("data")
+        print(data)
         #have token check -  send new token info to server
 
         #receive  ClusterNum, and AmountInClus, numWithinClust
