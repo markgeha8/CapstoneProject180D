@@ -75,9 +75,6 @@ def establishClientConnections():
             continue
         if not data: continue
         data = data.decode()
-        print("Data provided is: ")
-        print(data)
-        print('\n')
 
         if(data == "iterDone"): #See if it is confirmation by the Client
             done = True
@@ -104,10 +101,10 @@ def propagateDisplayMessages():
     global ipArr
 
     while True:
-        numberOfClusters = 2
+        numberOfClusters = 1
         #[clusteredData,numberOfClusters] = clusterData()
         #area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
-        for clustNum in range (1,numberOfClusters): #Move throughout clusters of students
+        for clustNum in range (1,numberOfClusters+1): #Move throughout clusters of students
             amountInClust = 3
             numWithinClust = 0
             for posR in range (0,maxRows): #Move throughout the IP address loop
@@ -133,6 +130,8 @@ def propagateDisplayMessages():
                                     print("Time Timeout from IP address " + ipAddress)
                                     break
                                 waitTime = waitTime+1
+                            if(done):
+                                print(ipArr[posR,posC])
                             done = False
 
 # Main function
