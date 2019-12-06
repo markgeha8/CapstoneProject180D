@@ -93,6 +93,8 @@ def establishClientConnections():
                 mess = posR + ',' + posC
                 message = mess.encode()
                 sendMess(message,ipAddress)
+        
+        data = ''
             
 
 #Thread 2: Focuses on sending messages to the Clients while everything is still happening
