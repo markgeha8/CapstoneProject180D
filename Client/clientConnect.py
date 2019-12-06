@@ -1,7 +1,7 @@
 import socket
 import fcntl
 import struct
-import time
+#import time
 import random
 #import RPi.GPIO as GPIO
 import threading
