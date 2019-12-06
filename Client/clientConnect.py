@@ -3,7 +3,8 @@ import fcntl
 import struct
 import time
 import random
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
+import threading
 
 init_bool = False
 
@@ -72,14 +73,14 @@ def DisplayLoop():
 
     while True:
         #Testing script for LED_displays
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
+        #GPIO.setmode(GPIO.BCM)
+        #GPIO.setwarnings(False)
 
         #pin numbers can change as needed
-        GPIO.setup(17, GPIO.OUT)
-        GPIO.setup(18, GPIO.OUT)
-        GPIO.setup(22, GPIO.OUT)
-        GPIO.setup(23, GPIO.OUT)
+        #GPIO.setup(17, GPIO.OUT)
+        #GPIO.setup(18, GPIO.OUT)
+        #GPIO.setup(22, GPIO.OUT)
+        #GPIO.setup(23, GPIO.OUT)
 
         ran = "iterDone"
 
@@ -95,32 +96,26 @@ def DisplayLoop():
             if(test_count<5):
                 print("running LED: " + str(LED_displays[NumWC])+ " out of " + str(AmIC) + " LEDs.")
                 if(NumWC== 1):
-                    GPIO.output(17,GPIO.HIGH)
-                    time.sleep(2)
-                    GPIO.output(17,GPIO.LOW)
-
+                    #GPIO.output(17,GPIO.HIGH)
+                    #time.sleep(2)
+                    #GPIO.output(17,GPIO.LOW)
+                    print("pattern 1")
 
                 if(NumWC == 2):
-                    GPIO.output(18,GPIO.HIGH)
-                    time.sleep(2)
-                    GPIO.output(18,GPIO.LOW)
+                    #GPIO.output(18,GPIO.HIGH)
+                    #time.sleep(2)
+                    #GPIO.output(18,GPIO.LOW)
+                    print("pattern 2")
 
                 if(NumWC == 3):
-                    GPIO.output(22,GPIO.HIGH)
-                    time.sleep(2)
-                    GPIO.output(22,GPIO.LOW)
+                    #GPIO.output(22,GPIO.HIGH)
+                    #time.sleep(2)
+                    #GPIO.output(22,GPIO.LOW)
+                    print("pattern 3")
 
 
                 if(NumWC == 4):
-                    GPIO.output(17,GPIO.HIGH)
-                    GPIO.output(18,GPIO.HIGH)
-                    GPIO.output(22,GPIO.HIGH)
-                    GPIO.output(23,GPIO.HIGH)
-                    time.sleep(2)
-                    GPIO.output(17,GPIO.LOW)
-                    GPIO.output(18,GPIO.LOW)
-                    GPIO.output(22,GPIO.LOW)
-                    GPIO.output(23,GPIO.LOW)
+                    print("pattern 4")
             test_count += 1
             client.sendto(ran.encode(),('172.20.10.5',8080))
 
