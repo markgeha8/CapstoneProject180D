@@ -56,7 +56,7 @@ def establishServerConnections():
                 if(data == "RESET"):
                     print(data)
                 [Row, Col] = parseData(data)
-                if(Row == posRow & Col == posCol):
+                if((Row == posRow) and (Col == posCol)):
                     init_bool = True
                     print("server matches client")
                 else:
