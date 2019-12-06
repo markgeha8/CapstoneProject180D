@@ -120,7 +120,6 @@ def DisplayLoop():
                 test_num += 1
             test_count += 1
             client.sendto(ran.encode(),('172.20.10.11',8080))
-        time.sleep(1)
 
         test_count = 0
 
