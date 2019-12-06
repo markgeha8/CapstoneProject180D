@@ -134,7 +134,7 @@ def propagateDisplayMessages():
                                     print("Time Timeout from IP address " + ipAddress)
                                     break
                             
-                            if(iter == 4):
+                            if(iter == 5):
                                 print(ipArr[posR,posC])
                                 print(numWithinClust)
                                 print("____________")
