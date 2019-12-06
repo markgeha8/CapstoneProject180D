@@ -105,6 +105,7 @@ def propagateDisplayMessages():
 
     while True:
         numberOfClusters = 1
+        iter = 0
         #[clusteredData,numberOfClusters] = clusterData()
         #area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
         for clustNum in range (1,numberOfClusters+1): #Move throughout clusters of students
@@ -117,7 +118,6 @@ def propagateDisplayMessages():
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
                             mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
-                            print(numWithinClust)
                             message = mess.encode()
                             try: 
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
@@ -133,10 +133,14 @@ def propagateDisplayMessages():
                                     ipArr[posR,posC] = None
                                     print("Time Timeout from IP address " + ipAddress)
                                     break
-                            if(done):
+                            
+                            if(done and iter == 4):
                                 print(ipArr[posR,posC])
+                                print(numWithinClust)
+                                print("____________")
+                                iter = 0
+                            iter = iter + 1
                             done = False
-                            print("____________")
 
 
 # Main function
