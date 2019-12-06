@@ -1,7 +1,7 @@
 import socket
 import fcntl
 import struct
-#import time
+import time
 import random
 #import RPi.GPIO as GPIO
 import threading
@@ -94,7 +94,7 @@ def DisplayLoop():
         while((init_bool) and (test_count < 5)):
 
 
-            if(test_count<5):
+            if(test_count<3):
                 print("running LED: " + str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
                 if(int(NumWC)== 1):
                     #GPIO.output(17,GPIO.HIGH)
@@ -119,6 +119,7 @@ def DisplayLoop():
                 test_num += 1
             test_count += 1
             client.sendto(ran.encode(),('172.20.10.11',8080))
+            time.sleep(3)
 
         test_count = 0
 
