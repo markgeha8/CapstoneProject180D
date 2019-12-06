@@ -104,6 +104,7 @@ def propagateDisplayMessages():
     global ipArr
 
     while True:
+        print("test")
         numberOfClusters = 1
         #[clusteredData,numberOfClusters] = clusterData()
         #area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
