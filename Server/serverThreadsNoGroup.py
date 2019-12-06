@@ -118,6 +118,7 @@ def propagateDisplayMessages():
                             ipAddress = ipArr[posR,posC]
                             try: 
                                 mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
+                                print(mess)
                                 message = mess.encode()
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
                             except socket.timeout:
