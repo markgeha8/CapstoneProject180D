@@ -82,18 +82,21 @@ def establishClientConnections():
             continue
         
         else:
-            if(data == "RESET"): #See if the whole IP array must be RESET because of a mistake
+            if(data == "ResetAll"): #See if the whole IP array must be RESET because of a mistake
                 ipArr = np.empty([maxRows,maxCols],dtype=object)
             
             else: #If all is good, parse the information, update the array, and confirm with that IP address
                 [posR,posC,ipAddress] = parseIP(data)
-                posRow = int(posR)
-                posCol = int(posC)
-                updateIP(posRow,posCol,ipAddress)
+                if(ipAddress == "Remove"):
+                    ipArr[posR,posC] = None
+                else:
+                    posRow = int(posR)
+                    posCol = int(posC)
+                    updateIP(posRow,posCol,ipAddress)
 
-                mess = posR + ',' + posC
-                message = mess.encode()
-                sendMess(message,ipAddress)
+                    mess = posR + ',' + posC
+                    message = mess.encode()
+                    sendMess(message,ipAddress)
 
         data = ''
         
