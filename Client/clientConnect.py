@@ -66,7 +66,11 @@ def establishServerConnections():
         while(not init_bool):
             client.sendto(init_msg.encode(),('172.20.10.3',8080))
             while(not init_bool):
-                from_server = client.recvfrom(4096)
+                try:
+                    from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+                except socket.timeout:
+                    print("Timeout from establishing connection with a Client")
+                    continue
                 data = (from_server[0]).decode()  #Temporary fix for Tuple issue
                 if(data == "RESET"):
                     print(data)
