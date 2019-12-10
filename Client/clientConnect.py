@@ -64,10 +64,7 @@ def establishServerConnections():
         init_msg = test_coms + "," + ip
 
         input("Press Enter to connect...")
-
-        if(keyPress):
-            connectToToken()
-            keyPress = True
+        connectToToken()
 
         while(not init_bool):
             client.sendto(init_msg.encode(),('172.20.10.3',8080))
