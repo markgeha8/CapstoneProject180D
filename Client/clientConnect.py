@@ -29,7 +29,7 @@ def get_ip_address(ifname):
         struct.pack('256s'.encode(), ifname[:15].encode())
     )[20:24])
 
-def connectToToken():
+def connectToToken(self):
     global posRow, posCol
     global ip
 
