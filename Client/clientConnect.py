@@ -3,12 +3,14 @@ import fcntl
 import struct
 import time
 import random
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import threading
 
 init_bool = False
 test_count = 1
 test_num = 0
+posRow = 0
+posCol = 0
 
 
 
@@ -26,19 +28,21 @@ def get_ip_address(ifname):
         struct.pack('256s'.encode(), ifname[:15].encode())
     )[20:24])
 
+def connectToToken(ip):
+    global posRow, posCol
+    client.sendto(ip.encode(),('172.20.10.3',8080))
+    from_server = client.recvfrom(4096)
+    [posRow,posCol] = (from_server[0]).decode()
+
 def establishServerConnections():
     global init_bool
+    global posRow, posCol
+    
+    ip = get_ip_address('wlan0')
+    GPIO.add_event_detect(13, GPIO.FALLING, callback=connectToToken(ip), bouncetime=300)
 
     while True:
-
-        ip = get_ip_address('wlan0')
         #Test print of IP address
-
-        #SEND INITIAL PROMPT TO TOKEN AND READ BACK IN THE ROW/COLUMN (CURRENTLY AN UNKNOWN IP ADDRESS BUT WILL KNOW ONCE WE GET HARDWARE)
-        #SHOULD BE SEPARATE DEFINED FUNCTION THAT CAN RUN INITIALLY THROUGH MAIN FUNCTION AND THEN HAVE A RECURSIVE THREAD THAT CONSTANTLY
-        #WAITS FOR PROMPTING FROM THE SERVER
-
-        #Button interupt - to get token( row col - data)
 
         #This is a filler for now
         #From Comms - string with row, column
