@@ -92,7 +92,11 @@ def DisplayLoop():
         #GPIO.setup(23, GPIO.OUT)
 
         ran = "iterDone"
-
+        try:
+            from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+        except socket.timeout:
+            print("Timeout from establishing connection with a Client")
+            continue
         from_server = client.recvfrom(4096)
         data = (from_server[0]).decode()  #Temporary fix for Tuple issue
         #have token check -  send new token info to server
