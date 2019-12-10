@@ -43,8 +43,9 @@ def connectToToken(ip):
 def establishServerConnections():
     global init_bool
     global posRow, posCol
+    global ip
 
-    ip = get_ip_address('wlan0')
+    #ip = get_ip_address('wlan0')
     GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken(ip), bouncetime=300)
 
     while True:
@@ -141,6 +142,7 @@ def DisplayLoop():
 
 # Main function
 if __name__ == "__main__":
+    global ip
     ip = get_ip_address('wlan0') #'172.20.10.5'
     print(ip)
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
