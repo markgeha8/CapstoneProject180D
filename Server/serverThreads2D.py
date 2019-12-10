@@ -118,13 +118,11 @@ def propagateDisplayMessages():
             for posR in range (0,maxRows): #Move throughout the IP address loop
                 for posC in range (0,maxCols):
                     if(not(ipArr[posR,posC] == None)): #"None" will define all the locations that are not connected
-                        print("Not none")
                         if(clusteredData[posR,posC] == clustNum):
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
                             mess = str(clustNum) + ',' + str(amountInClust) + ',' + str(numWithinClust) #Sends them the code to start their LED run
                             message = mess.encode()
-                            print(mess)
                             try: 
                                 sendMess(message,ipAddress) #If they are not connected, this will be problematic and will cause the IP to be removed
                             except socket.timeout:
