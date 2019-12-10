@@ -59,6 +59,7 @@ def createBinaryArray(ipArr):
 #Use built in functions in "measurements" library to determine clusters. These clusters will be cycled through
 def clusterData():
     ipArrBin = createBinaryArray(ipArr)
+    print(ipArrBin)
     clustered, numberOfClusters = measurements.label(ipArrBin)
     return [clustered,numberOfClusters]
 
