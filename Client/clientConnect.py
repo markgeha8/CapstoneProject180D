@@ -37,7 +37,7 @@ def connectToToken(ip):
 def establishServerConnections():
     global init_bool
     global posRow, posCol
-    
+
     ip = get_ip_address('wlan0')
     GPIO.add_event_detect(13, GPIO.FALLING, callback=connectToToken(ip), bouncetime=300)
 

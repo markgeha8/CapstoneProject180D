@@ -123,7 +123,7 @@ def changingDisplay():
     GPIO.setmode(GPIO.BOARD)
     chan_list_in = [6,13,26]
     chan_list_out = [4,5,12,16,17,18,22,23,24,25,27]
-    GPIO.setup(chan_list_in,GPIO.IN)
+    GPIO.setup(6,GPIO.IN)
     GPIO.setup(chan_list_out,GPIO.OUT)
     GPIO.add_event_detect(6, GPIO.BOTH, callback=changeLetter, bouncetime = 300)
     GPIO.add_event_detect(13, GPIO.FALLING, callback=increasePos, bouncetime=300)
