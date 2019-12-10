@@ -109,10 +109,7 @@ def propagateDisplayMessages():
     while True:
         [clusteredData,numberOfClusters] = clusterData()
         area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
-        print(numberOfClusters)
         for clustNum in range (1,numberOfClusters+1): #Move throughout clusters of students
-            print(numberOfClusters)
-            print(clustNum)
             amountInClust = area[clustNum]
             numWithinClust = 0
             for posR in range (0,maxRows): #Move throughout the IP address loop
