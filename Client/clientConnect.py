@@ -35,10 +35,10 @@ def connectToToken(ip):
     print("Got here")
     try:
         from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+        [posRow,posCol] = (from_server).decode()
     except socket.timeout:
         print("Timeout from establishing connection with a Client")
     print("Waiting")
-    [posRow,posCol] = (from_server).decode()
 
 def establishServerConnections():
     global init_bool
