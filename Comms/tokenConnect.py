@@ -41,24 +41,14 @@ def get_ip_address(ifname):
         )[20:24])
 
 def increasePos(self):
-<<<<<<< HEAD
     if(position[pos] == 20):
         position[pos] = 1
-=======
-    if(position[pos] == 21):
-        position[pos] = 0
->>>>>>> code
     else:
         position[pos] = position[pos] + 1
 
 def decreasePos(self):
-<<<<<<< HEAD
     if(position[pos] == 1):
         position[pos] = 20
-=======
-    if(position[pos] == 0):
-        position[pos] = 21
->>>>>>> code
     else:
         position[pos] = position[pos] - 1
 
