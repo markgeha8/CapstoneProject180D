@@ -29,7 +29,7 @@ def get_ip_address(ifname):
         struct.pack('256s'.encode(), ifname[:15].encode())
     )[20:24])
 
-def connectToToken(self):
+def connectToToken():
     global posRow, posCol
     global ip
 
@@ -43,26 +43,31 @@ def connectToToken(self):
         print("Timeout from establishing connection with a Client")
     print("Waiting")
 
+
+
 def establishServerConnections():
     global init_bool
     global posRow, posCol
+    keyPress = False
 
-    ip = get_ip_address('wlan0')
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(13,GPIO.IN)
-    GPIO.setwarnings(False)
-    GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken, bouncetime=300)
+    #GPIO.setmode(GPIO.BOARD)
+    #GPIO.setup(13,GPIO.IN)
+    #GPIO.setwarnings(False)
+    #GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken, bouncetime=300)
 
     while True:
         #Test print of IP address
-
-        #This is a filler for now
-        #From Comms - string with row, column
+        ip = get_ip_address('wlan0')
+        
         test_coms = str(random.randint(1,20)) + ',' + str(random.randint(1,20))
         [posRow,posCol] = parseData(test_coms)
         init_msg = test_coms + "," + ip
 
+        input("Press Enter to connect...")
 
+        if(keyPress):
+            connectToToken()
+            keyPress = True
 
         while(not init_bool):
             client.sendto(init_msg.encode(),('172.20.10.3',8080))
