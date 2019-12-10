@@ -31,7 +31,7 @@ def get_ip_address(ifname):
 
 def connectToToken(ip):
     global posRow, posCol
-    global ip
+    #global ip
 
     client.sendto(ip.encode(),('172.20.10.3',8080))
     print("Got here")
