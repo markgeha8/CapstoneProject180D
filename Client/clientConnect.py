@@ -40,7 +40,7 @@ def connectToToken():
     try:
         from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         data = (from_server).decode()
-        [posRow,posCol] = data.split(',')
+        [posRow,posCol] = parseData(data)
         connect = False
     except socket.timeout:
         print("Timeout from establishing connection with a Token")
@@ -70,6 +70,7 @@ def establishServerConnections():
             input("Press Enter to connect...")
             connectToToken()
 
+        print("Row: ", posRow, " Col: ", posCol)
         print("Connecting...")
 
         while(not init_bool):
