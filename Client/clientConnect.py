@@ -64,8 +64,7 @@ def establishServerConnections():
         init_msg = test_coms + "," + ip
 
         print("Press Enter to connect...")
-        def wait():
-            m.getch()
+        cv2.waitKey(0)
         connectToToken()
 
         while(not init_bool):
