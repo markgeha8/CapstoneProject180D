@@ -79,7 +79,7 @@ def blinkSegment(segment, character):
 
     led = [A, B, C, D, E, F, G]
 
-    GPIO.out(segment, 0)
+    GPIO.output(segment, 0)
 
     for i in range (0, NUM_SEGS+1):
         tmp = (character >> i) & mask
