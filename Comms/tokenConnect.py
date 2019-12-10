@@ -91,7 +91,7 @@ def blinkSegment(segment, character):
             time.sleep(timeDelay)
             GPIO.output(led[i], 0)
 
-    GPIO.out(segment, 1)
+    GPIO.output(segment, 1)
 
 
 def characterToDisplay(character):
