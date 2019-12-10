@@ -39,8 +39,8 @@ def connectToToken():
 
     client.sendto(ip.encode(),('172.20.10.3',8080))
     try:
-        from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
-        data = (from_server).decode()
+        from_token, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+        data = (from_token).decode()
         [posRow,posCol] = parseData(data)
         connect = False
     except socket.timeout:
