@@ -36,7 +36,7 @@ def connectToToken():
     global ip
     global connect
 
-    client.sendto(ip.encode(),('192.168.1.25',8080))
+    client.sendto(ip.encode(),('172.20.10.3',8080))
     try:
         from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         [posRow,posCol] = (from_server).decode()
@@ -72,7 +72,7 @@ def establishServerConnections():
         print("Connecting...")
 
         while(not init_bool):
-            client.sendto(init_msg.encode(),('192.168.1.25',8080))
+            client.sendto(init_msg.encode(),('172.20.10.3',8080))
             while(not init_bool):
                 try:
                     from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
@@ -148,7 +148,7 @@ def DisplayLoop():
                     print("hi")
                 test_num += 1
             test_count += 1
-            client.sendto(ran.encode(),('192.168.1.25',8080))
+            client.sendto(ran.encode(),('172.20.10.3',8080))
 
         test_count = 0
 
