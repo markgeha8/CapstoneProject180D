@@ -26,7 +26,7 @@ LED = 32
 
 # Globals
 token = socket.socket(AF_INET, SOCK_DGRAM)
-position = np.zeros(2,dtype = int)
+position = np.ones(2,dtype = int)
 letter = 'r'
 pos = 0
 
