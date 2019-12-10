@@ -12,6 +12,7 @@ test_num = 0
 
 
 
+
 #Parse the position and IP address String. Returns a list.
 def parseData(data):
     parsed = data.split(',')
@@ -49,7 +50,7 @@ def establishServerConnections():
 
 
         while(not init_bool):
-            client.sendto(init_msg.encode(),('172.20.10.3',8080))
+            client.sendto(init_msg.encode(),('172.20.10.11',8080))
             while(not init_bool):
                 from_server = client.recvfrom(4096)
                 data = (from_server[0]).decode()  #Temporary fix for Tuple issue
@@ -85,10 +86,12 @@ def DisplayLoop():
 
         from_server = client.recvfrom(4096)
         data = (from_server[0]).decode()  #Temporary fix for Tuple issue
+        print(data)
         #have token check -  send new token info to server
 
         #receive  ClusterNum, and AmountInClus, numWithinClust
         [ClustNum, AmIC, NumWC] = parseData(data)
+        print(NumWC)
 
         while((init_bool) and (test_count < 2)):
 
@@ -117,7 +120,7 @@ def DisplayLoop():
                     print("hi")
                 test_num += 1
             test_count += 1
-            client.sendto(ran.encode(),('172.20.10.3',8080))
+            client.sendto(ran.encode(),('172.20.10.11',8080))
 
         test_count = 0
 
@@ -127,7 +130,7 @@ def DisplayLoop():
 
 # Main function
 if __name__ == "__main__":
-    ip = get_ip_address('wlan0') #'172.20.10.5'
+    ip = get_ip_address('wlan0') 
     print(ip)
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
