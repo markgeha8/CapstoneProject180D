@@ -42,7 +42,7 @@ def connectToToken():
         [posRow,posCol] = (from_server).decode()
         connect = False
     except socket.timeout:
-        print("Timeout from establishing connection with a Client")
+        print("Timeout from establishing connection with a Token")
     print("Waiting")
 
 
@@ -77,7 +77,7 @@ def establishServerConnections():
                 try:
                     from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
                 except socket.timeout:
-                    print("Timeout from establishing connection with a Client")
+                    print("Timeout from establishing connection with a Server")
                     continue
                 data = (from_server[0]).decode()  #Temporary fix for Tuple issue
                 if(data == "RESET"):
@@ -110,12 +110,11 @@ def DisplayLoop():
 
         ran = "iterDone"
         try:
-            from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+            from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         except socket.timeout:
-            print("Timeout from establishing connection with a Client")
+            print("Timeout from establishing connection with a Server")
             continue
-        from_server = client.recvfrom(4096)
-        data = (from_server[0]).decode()  #Temporary fix for Tuple issue
+        data = (from_server).decode()  #Temporary fix for Tuple issue
         #have token check -  send new token info to server
 
         #receive  ClusterNum, and AmountInClus, numWithinClust
