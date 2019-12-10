@@ -45,7 +45,6 @@ def connectToToken():
         connect = False
     except socket.timeout:
         print("Timeout from establishing connection with a Token")
-    print("Waiting")
 
 
 
