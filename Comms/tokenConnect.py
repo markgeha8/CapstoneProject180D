@@ -41,14 +41,24 @@ def get_ip_address(ifname):
         )[20:24])
 
 def increasePos(self):
+<<<<<<< HEAD
     if(position[pos] == 20):
         position[pos] = 1
+=======
+    if(position[pos] == 21):
+        position[pos] = 0
+>>>>>>> code
     else:
         position[pos] = position[pos] + 1
 
 def decreasePos(self):
+<<<<<<< HEAD
     if(position[pos] == 1):
         position[pos] = 20
+=======
+    if(position[pos] == 0):
+        position[pos] = 21
+>>>>>>> code
     else:
         position[pos] = position[pos] - 1
 
@@ -145,11 +155,15 @@ def receiveClientIP():
         print(ipAddress)
         print('\n')
 
-        row = position[pos]
-        col = position[pos]
+        row = position[0]
+        col = position[1]
         coordinates = str(row) + ',' + str(col)
         coordinates = coordinates.encode()
         token.sendto(coordinates,(ipAddress,8080))
+
+        GPIO.output(LED, 1)
+        time.sleep(2)
+        GPIO.output(LED, 0)
 
 # Main function
 if __name__ == "__main__":
