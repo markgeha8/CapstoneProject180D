@@ -132,7 +132,7 @@ def DisplayLoop():
 
 
                 if(test_count<2):
-                    print("running LED: " + "Cluster Number: ", str(ClustNum), str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
+                    print("running LED: " + "Cluster Number: ", str(ClustNum), + ', ' str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
                     if(int(NumWC)== 1):
                         #GPIO.output(17,GPIO.HIGH)
                         #time.sleep(2)
