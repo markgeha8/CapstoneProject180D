@@ -39,7 +39,7 @@ def establishServerConnections():
     global posRow, posCol
 
     ip = get_ip_address('wlan0')
-    GPIO.add_event_detect(13, GPIO.FALLING, callback=connectToToken(ip), bouncetime=300)
+    GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken(ip), bouncetime=300)
 
     while True:
         #Test print of IP address
