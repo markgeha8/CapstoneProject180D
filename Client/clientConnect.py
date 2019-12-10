@@ -16,6 +16,9 @@ posCol = 0
 connect = True
 connected = False
 
+ipToken = '172.20.10.3'
+ipServer = '172.20.10.20'
+
 
 
 #Parse the position and IP address String. Returns a list.
@@ -36,8 +39,9 @@ def connectToToken():
     global posRow, posCol
     global ip
     global connect
+    global ipToken
 
-    client.sendto(ip.encode(),('172.20.10.3',8080))
+    client.sendto(ip.encode(),(ipToken,8080))
     try:
         from_token, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         data = (from_token).decode()
@@ -53,6 +57,7 @@ def establishServerConnections():
     global posRow, posCol
     global connect
     global connected
+    global ipServer
 
     #GPIO.setmode(GPIO.BOARD)
     #GPIO.setup(13,GPIO.IN)
@@ -75,7 +80,7 @@ def establishServerConnections():
         print("Connecting...")
 
         while(not init_bool):
-            client.sendto(init_msg.encode(),('172.20.10.20',8080))
+            client.sendto(init_msg.encode(),(ipServer,8080))
             while(not init_bool):
                 try:
                     from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
@@ -152,7 +157,7 @@ def DisplayLoop():
                     print("hi")
                 test_num += 1
             test_count += 1
-            client.sendto(ran.encode(),('172.20.10.3',8080))
+            client.sendto(ran.encode(),(ipServer,8080))
 
         test_count = 0
 
