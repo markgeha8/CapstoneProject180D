@@ -6,6 +6,7 @@ import time
 import random
 import RPi.GPIO as GPIO
 import threading
+import msvcrt as m
 
 init_bool = False
 test_count = 1
@@ -48,7 +49,6 @@ def connectToToken():
 def establishServerConnections():
     global init_bool
     global posRow, posCol
-    keyPress = False
 
     #GPIO.setmode(GPIO.BOARD)
     #GPIO.setup(13,GPIO.IN)
@@ -63,7 +63,9 @@ def establishServerConnections():
         [posRow,posCol] = parseData(test_coms)
         init_msg = test_coms + "," + ip
 
-        input("Press Enter to connect...")
+        print("Press Enter to connect...")
+        def wait():
+            m.getch()
         connectToToken()
 
         while(not init_bool):
