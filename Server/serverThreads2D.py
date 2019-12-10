@@ -110,11 +110,14 @@ def propagateDisplayMessages():
         [clusteredData,numberOfClusters] = clusterData()
         area = measurements.sum(ipArrBin, clusteredData, index=np.arange(clusteredData.max() + 1))
         for clustNum in range (1,numberOfClusters+1): #Move throughout clusters of students
+            print(numberOfClusters)
+            print(clustNum)
             amountInClust = area[clustNum]
             numWithinClust = 0
             for posR in range (0,maxRows): #Move throughout the IP address loop
                 for posC in range (0,maxCols):
                     if(not(ipArr[posR,posC] == None)): #"None" will define all the locations that are not connected
+                        print("Not none")
                         if(clusteredData[posR,posC] == clustNum):
                             numWithinClust = numWithinClust + 1
                             ipAddress = ipArr[posR,posC]
