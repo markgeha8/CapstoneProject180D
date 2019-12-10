@@ -1,4 +1,5 @@
 import socket
+from socket import AF_INET, SOCK_DGRAM
 import fcntl
 import struct
 import time
@@ -32,7 +33,11 @@ def connectToToken(ip):
     global posRow, posCol
     client.sendto(ip.encode(),('172.20.10.3',8080))
     print("Got here")
-    from_server = client.recvfrom(4096)
+    try:
+        data, _ = serv.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+    except socket.timeout:
+        print("Timeout from establishing connection with a Client")
+        continue
     print("Waiting")
     [posRow,posCol] = (from_server[0]).decode()
 
@@ -136,6 +141,7 @@ if __name__ == "__main__":
     ip = get_ip_address('wlan0') #'172.20.10.5'
     print(ip)
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    client.settimeout(10)
 
     #enter server IP address - must be known beforehand
     client.bind((ip, 8080))
