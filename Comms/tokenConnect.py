@@ -40,20 +40,21 @@ def get_ip_address(ifname):
             struct.pack('256s'.encode(), ifname[:15].encode())
         )[20:24])
 
-def increasePos():
+def increasePos(self):
     if(position[pos] == 21):
         position[pos] = 0
     else:
         position[pos] = position[pos] + 1
 
-def decreasePos():
+def decreasePos(self):
     if(position[pos] == 0):
         position[pos] = 21
     else:
         position[pos] = position[pos] - 1
 
-def changeLetter():
+def changeLetter(self):
     global pos
+    global letter
 
     if(letter == 'r'):
         letter = 'c'
@@ -61,15 +62,6 @@ def changeLetter():
     else:
         letter = 'r'
         pos = 0
-
-def displayNumber(integer):
-    print(integer)
-
-def displayLetter(letter):
-    if(letter == 'r'):
-        print('r')
-    else:
-        print('c')
 
 def blinkSegment(segment, character):
     global A, B, C, D, E, F, G, NUM_SEGS
@@ -103,6 +95,7 @@ def characterToDisplay(character):
         return 0x00
 
 def integerToDisplay(integer):
+    print(integer)
     switcher = {
         0: 0x3F,
         1: 0x06,
@@ -132,8 +125,8 @@ def changingDisplay():
 
     while True:
         blinkSegment(S1, characterToDisplay(letter))
-        blinkSegment(S2, integerToDisplay(position[pos]%10))
-        blinkSegment(S2, integerToDisplay(position[pos]/10))
+        blinkSegment(S2, integerToDisplay(int(position[pos]/10)))
+        blinkSegment(S3, integerToDisplay(position[pos]%10))
 
         
 def receiveClientIP():
