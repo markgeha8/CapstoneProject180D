@@ -34,12 +34,11 @@ def connectToToken(ip):
     client.sendto(ip.encode(),('172.20.10.3',8080))
     print("Got here")
     try:
-        data, _ = serv.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+        from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
     except socket.timeout:
         print("Timeout from establishing connection with a Client")
-        continue
     print("Waiting")
-    [posRow,posCol] = (from_server[0]).decode()
+    [posRow,posCol] = (from_server).decode()
 
 def establishServerConnections():
     global init_bool
