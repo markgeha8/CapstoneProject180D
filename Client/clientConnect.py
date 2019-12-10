@@ -66,18 +66,16 @@ def establishServerConnections():
         #Test print of IP address
         ip = get_ip_address('wlan0')
         
-        test_coms = str(random.randint(1,20)) + ',' + str(random.randint(1,20))
-        [posRow,posCol] = parseData(test_coms)
-        init_msg = test_coms + "," + ip
-
         while(connect):
             input("Press Enter to connect...")
             connectToToken()
 
-        print("Row: ", posRow, " Col: ", posCol)
-        print("Connecting...")
+        test_coms = posRow + ',' + posCol
+        init_msg = test_coms + "," + ip
 
         while(not init_bool):
+            print("Row: ", posRow, " Col: ", posCol)
+            print("Connecting...")
             client.sendto(init_msg.encode(),(ipServer,8080))
             while(not init_bool):
                 try:
@@ -89,13 +87,13 @@ def establishServerConnections():
                 if(data == "RESET"):
                     print(data)
                 [Row, Col] = parseData(data)
-                #if((Row == posRow) and (Col == posCol)):
-                init_bool = True
-                print("server matches client")
-                connected = True
-                #else:
-                #    print("server doesn't match client")
-                #    break
+                if((Row == posRow) and (Col == posCol)):
+                    init_bool = True
+                    print("server matches client")
+                    connected = True
+                else:
+                    print("server doesn't match client")
+                    break
 
 LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
 
@@ -105,60 +103,61 @@ def DisplayLoop():
     global test_num
     global connected
 
-    while connected:
-        #Testing script for LED_displays
-        #GPIO.setmode(GPIO.BCM)
-        #GPIO.setwarnings(False)
+    while True:
+        while connected:
+            #Testing script for LED_displays
+            #GPIO.setmode(GPIO.BCM)
+            #GPIO.setwarnings(False)
 
-        #pin numbers can change as needed
-        #GPIO.setup(17, GPIO.OUT)
-        #GPIO.setup(18, GPIO.OUT)
-        #GPIO.setup(22, GPIO.OUT)
-        #GPIO.setup(23, GPIO.OUT)
+            #pin numbers can change as needed
+            #GPIO.setup(17, GPIO.OUT)
+            #GPIO.setup(18, GPIO.OUT)
+            #GPIO.setup(22, GPIO.OUT)
+            #GPIO.setup(23, GPIO.OUT)
 
-        ran = "iterDone"
-        try:
-            from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
-        except socket.timeout:
-            print("Timeout from establishing connection with a Server")
-            continue
-        data = (from_server).decode()  #Temporary fix for Tuple issue
-        #have token check -  send new token info to server
+            ran = "iterDone"
+            try:
+                from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+            except socket.timeout:
+                print("Timeout from establishing connection with a Server")
+                continue
+            data = (from_server).decode()  #Temporary fix for Tuple issue
+            #have token check -  send new token info to server
 
-        #receive  ClusterNum, and AmountInClus, numWithinClust
-        [ClustNum, AmIC, NumWC] = parseData(data)
-        print(NumWC)
+            #receive  ClusterNum, and AmountInClus, numWithinClust
+            [ClustNum, AmIC, NumWC] = parseData(data)
+            print(NumWC)
 
-        while((init_bool) and (test_count < 2)):
+            while((init_bool) and (test_count < 2)):
 
 
-            if(test_count<2):
-                print("running LED: " + str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
-                if(int(NumWC)== 1):
-                    #GPIO.output(17,GPIO.HIGH)
-                    #time.sleep(2)
-                    #GPIO.output(17,GPIO.LOW)
-                    print("pattern 1")
+                if(test_count<2):
+                    print("running LED: " + str(LED_displays[int(NumWC)])+ " out of " + str(AmIC) + " LEDs.")
+                    if(int(NumWC)== 1):
+                        #GPIO.output(17,GPIO.HIGH)
+                        #time.sleep(2)
+                        #GPIO.output(17,GPIO.LOW)
+                        print("pattern 1")
 
-                if(int(NumWC) == 2):
-                    #GPIO.output(18,GPIO.HIGH)
-                    #time.sleep(2)
-                    #GPIO.output(18,GPIO.LOW)
-                    print("pattern 2")
+                    if(int(NumWC) == 2):
+                        #GPIO.output(18,GPIO.HIGH)
+                        #time.sleep(2)
+                        #GPIO.output(18,GPIO.LOW)
+                        print("pattern 2")
 
-                if(int(NumWC) == 3):
-                    #GPIO.output(22,GPIO.HIGH)
-                    #time.sleep(2)
-                    #GPIO.output(22,GPIO.LOW)
-                    print("pattern 3")
-                if(int(NumWC) == 4):
-                    print("pattern 4")
-                    print("hi")
-                test_num += 1
-            test_count += 1
-            client.sendto(ran.encode(),(ipServer,8080))
+                    if(int(NumWC) == 3):
+                        #GPIO.output(22,GPIO.HIGH)
+                        #time.sleep(2)
+                        #GPIO.output(22,GPIO.LOW)
+                        print("pattern 3")
+                    if(int(NumWC) == 4):
+                        print("pattern 4")
+                        print("hi")
+                    test_num += 1
+                test_count += 1
+                client.sendto(ran.encode(),(ipServer,8080))
 
-        test_count = 0
+            test_count = 0
 
 
 
