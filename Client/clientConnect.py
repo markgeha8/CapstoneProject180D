@@ -30,10 +30,10 @@ def get_ip_address(ifname):
 
 def connectToToken(ip):
     global posRow, posCol
-    print("Got here")
     client.sendto(ip.encode(),('172.20.10.3',8080))
-    print("Waiting")
+    print("Got here")
     from_server = client.recvfrom(4096)
+    print("Waiting")
     [posRow,posCol] = (from_server[0]).decode()
 
 def establishServerConnections():
