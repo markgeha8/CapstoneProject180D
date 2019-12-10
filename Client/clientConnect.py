@@ -36,9 +36,7 @@ def connectToToken():
     global ip
     global connect
 
-    print(ip)
     client.sendto(ip.encode(),('172.20.10.3',8080))
-    print("Got here")
     try:
         from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         [posRow,posCol] = (from_server).decode()
@@ -70,6 +68,8 @@ def establishServerConnections():
         while(connect):
             input("Press Enter to connect...")
             connectToToken()
+
+        print("Connecting...")
 
         while(not init_bool):
             client.sendto(init_msg.encode(),('172.20.10.3',8080))
