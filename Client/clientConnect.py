@@ -21,6 +21,7 @@ ipServer = '172.20.10.20'
 
 
 
+
 #Parse the position and IP address String. Returns a list.
 def parseData(data):
     parsed = data.split(',')
@@ -80,7 +81,11 @@ def establishServerConnections():
         print("Connecting...")
 
         while(not init_bool):
+<<<<<<< HEAD
+            client.sendto(init_msg.encode(),('172.20.10.11',8080))
+=======
             client.sendto(init_msg.encode(),(ipServer,8080))
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
             while(not init_bool):
                 try:
                     from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
@@ -119,16 +124,24 @@ def DisplayLoop():
         #GPIO.setup(23, GPIO.OUT)
 
         ran = "iterDone"
+<<<<<<< HEAD
+
+        from_server = client.recvfrom(4096)
+        data = (from_server[0]).decode()  #Temporary fix for Tuple issue
+        print(data)
+=======
         try:
             from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         except socket.timeout:
             print("Timeout from establishing connection with a Server")
             continue
         data = (from_server).decode()  #Temporary fix for Tuple issue
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
         #have token check -  send new token info to server
 
         #receive  ClusterNum, and AmountInClus, numWithinClust
         [ClustNum, AmIC, NumWC] = parseData(data)
+        print(NumWC)
 
         while((init_bool) and (test_count < 2)):
 
@@ -157,7 +170,11 @@ def DisplayLoop():
                     print("hi")
                 test_num += 1
             test_count += 1
+<<<<<<< HEAD
+            client.sendto(ran.encode(),('172.20.10.11',8080))
+=======
             client.sendto(ran.encode(),(ipServer,8080))
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
 
         test_count = 0
 
@@ -167,8 +184,12 @@ def DisplayLoop():
 
 # Main function
 if __name__ == "__main__":
+<<<<<<< HEAD
+    ip = get_ip_address('wlan0') 
+=======
     global ip
     ip = get_ip_address('wlan0') #'172.20.10.5'
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
     print(ip)
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     client.settimeout(10)
