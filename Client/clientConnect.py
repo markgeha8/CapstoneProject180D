@@ -17,7 +17,7 @@ connect = True
 connected = False
 
 ipToken = '172.20.10.11'
-ipServer = '172.20.10.20'
+ipServer = '172.20.10.5'
 
 #Parse the position and IP address String. Returns a list.
 def parseData(data):
