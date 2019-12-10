@@ -63,8 +63,7 @@ def establishServerConnections():
         [posRow,posCol] = parseData(test_coms)
         init_msg = test_coms + "," + ip
 
-        print("Press Enter to connect...")
-        cv2.waitKey(0)
+        input("Press Enter to connect...")
         connectToToken()
 
         while(not init_bool):
