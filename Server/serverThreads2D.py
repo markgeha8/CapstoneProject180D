@@ -48,10 +48,10 @@ def sendMess(message,ipAddress):
 
 #Create array of simple binary 0s and 1s to determine locations of where the IP addresses are
 def createBinaryArray(ipArr):
-    print(ipArr)
     for r in range (0,maxRows):
         for c in range (0,maxCols):
             if(ipArr[r,c] == None):
+                print(ipArr[r,c])
                 ipArrBin[r,c] == 0
             else:
                 ipArrBin[r,c] == 1
