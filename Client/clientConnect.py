@@ -29,7 +29,7 @@ def get_ip_address(ifname):
         struct.pack('256s'.encode(), ifname[:15].encode())
     )[20:24])
 
-def connectToToken():
+def connectToToken(ip):
     global posRow, posCol
     global ip
 
@@ -50,7 +50,7 @@ def establishServerConnections():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(13,GPIO.IN)
     GPIO.setwarnings(False)
-    GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken, bouncetime=300)
+    GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken(ip), bouncetime=300)
 
     while True:
         #Test print of IP address
