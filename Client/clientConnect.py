@@ -14,6 +14,7 @@ test_num = 0
 posRow = 0
 posCol = 0
 connect = True
+connected = False
 
 
 
@@ -52,6 +53,7 @@ def establishServerConnections():
     global init_bool
     global posRow, posCol
     global connect
+    global connected
 
     #GPIO.setmode(GPIO.BOARD)
     #GPIO.setup(13,GPIO.IN)
@@ -88,6 +90,7 @@ def establishServerConnections():
                 if((Row == posRow) and (Col == posCol)):
                     init_bool = True
                     print("server matches client")
+                    connected = True
                 else:
                     print("server doesn't match client")
                     break
@@ -98,8 +101,9 @@ LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
 def DisplayLoop():
     global test_count
     global test_num
+    global connected
 
-    while True:
+    while connected:
         #Testing script for LED_displays
         #GPIO.setmode(GPIO.BCM)
         #GPIO.setwarnings(False)
