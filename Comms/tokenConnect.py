@@ -84,12 +84,12 @@ def blinkSegment(segment, character):
     for i in range (0, NUM_SEGS+1):
         tmp = (character >> i) & mask
         if(tmp == 0x01):
-            GPIO.out(led[i], 1)
+            GPIO.output(led[i], 1)
             time.sleep(timeDelay)
-            GPIO.out(led[i], 0)
+            GPIO.output(led[i], 0)
         else:
             time.sleep(timeDelay)
-            GPIO.out(led[i], 0)
+            GPIO.output(led[i], 0)
 
     GPIO.out(segment, 1)
 
