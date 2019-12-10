@@ -9,20 +9,20 @@ import time
 
 # Constants
 NUM_SEGS = 7
-A = 0
-B = 1
-C = 2
-D = 3
-E = 4
-F = 5
-G = 6
-S1 = 4
-S2 = 5
-S3 = 16
-BN1 = 13
-BN2 = 26
-SW = 6
-LED = 12
+A = 11
+B = 12
+C = 13
+D = 15
+E = 16
+F = 18
+G = 22
+S1 = 7
+S2 = 29
+S3 = 36
+BN1 = 33
+BN2 = 37
+SW = 31
+LED = 32
 
 # Globals
 token = socket.socket(AF_INET, SOCK_DGRAM)
