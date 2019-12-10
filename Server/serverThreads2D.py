@@ -48,6 +48,7 @@ def sendMess(message,ipAddress):
 
 #Create array of simple binary 0s and 1s to determine locations of where the IP addresses are
 def createBinaryArray(ipArr):
+    print(ipArr)
     for r in range (0,maxRows):
         for c in range (0,maxCols):
             if(ipArr[r,c] == None):
@@ -59,7 +60,6 @@ def createBinaryArray(ipArr):
 #Use built in functions in "measurements" library to determine clusters. These clusters will be cycled through
 def clusterData():
     ipArrBin = createBinaryArray(ipArr)
-    print(ipArrBin)
     clustered, numberOfClusters = measurements.label(ipArrBin)
     return [clustered,numberOfClusters]
 
