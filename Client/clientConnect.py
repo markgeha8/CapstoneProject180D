@@ -6,7 +6,6 @@ import time
 import random
 import RPi.GPIO as GPIO
 import threading
-import msvcrt as m
 import cv2
 
 init_bool = False
