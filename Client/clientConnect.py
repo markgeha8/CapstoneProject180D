@@ -75,7 +75,7 @@ def establishServerConnections():
         print("Connecting...")
 
         while(not init_bool):
-            client.sendto(init_msg.encode(),('172.20.10.3',8080))
+            client.sendto(init_msg.encode(),('172.20.10.20',8080))
             while(not init_bool):
                 try:
                     from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
