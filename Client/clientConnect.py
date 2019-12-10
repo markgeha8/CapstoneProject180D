@@ -49,6 +49,7 @@ def establishServerConnections():
     ip = get_ip_address('wlan0')
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(13,GPIO.IN)
+    GPIO.setwarnings(False)
     GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken, bouncetime=300)
 
     while True:
