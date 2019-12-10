@@ -1,11 +1,34 @@
 import socket
+import numpy as np
 from socket import AF_INET, SOCK_DGRAM
 import fcntl
 import struct
 import threading
 import RPi.GPIO as GPIO
+import time
 
+# Constants
+NUM_SEGS = 7
+A = 11
+B = 12
+C = 13
+D = 15
+E = 16
+F = 18
+G = 22
+S1 = 7
+S2 = 29
+S3 = 36
+BN1 = 33
+BN2 = 37
+SW = 31
+LED = 32
+
+# Globals
 token = socket.socket(AF_INET, SOCK_DGRAM)
+position = np.zeros(2,dtype = int)
+letter = 'r'
+pos = 0
 
 token.settimeout(10) #10 second delay per connection request
 
@@ -17,18 +40,98 @@ def get_ip_address(ifname):
             struct.pack('256s'.encode(), ifname[:15].encode())
         )[20:24])
 
+def increasePos(self):
+    if(position[pos] == 21):
+        position[pos] = 0
+    else:
+        position[pos] = position[pos] + 1
+
+def decreasePos(self):
+    if(position[pos] == 0):
+        position[pos] = 21
+    else:
+        position[pos] = position[pos] - 1
+
+def changeLetter(self):
+    global pos
+    global letter
+
+    if(letter == 'r'):
+        letter = 'c'
+        pos = 1
+    else:
+        letter = 'r'
+        pos = 0
+
+def blinkSegment(segment, character):
+    global A, B, C, D, E, F, G, NUM_SEGS
+    timeDelay = 0.0001
+
+    mask = 0x01
+
+    led = [A, B, C, D, E, F, G]
+
+    GPIO.output(segment, 0)
+
+    for i in range (0, NUM_SEGS):
+        tmp = (character >> i) & mask
+        if(tmp == 0x01):
+            GPIO.output(led[i], 1)
+            time.sleep(timeDelay)
+            GPIO.output(led[i], 0)
+        else:
+            time.sleep(timeDelay)
+            GPIO.output(led[i], 0)
+
+    GPIO.output(segment, 1)
+
+
+def characterToDisplay(character):
+    if (character == 'r'):
+        return 0x50
+    elif (character == 'c'):
+        return 0x58
+    else:
+        return 0x00
+
+def integerToDisplay(integer):
+    print(integer)
+    switcher = {
+        0: 0x3F,
+        1: 0x06,
+        2: 0x5B,
+        3: 0x4F,
+        4: 0x66,
+        5: 0x6D,
+        6: 0x7D,
+        7: 0x07,
+        8: 0x7F,
+        9: 0x6F,
+    }
+    return switcher.get(integer, 0x00)
+
 def changingDisplay():
-    global row
-    global col
+    global pos
+    global letter
+    GPIO.setmode(GPIO.BOARD)
+    chan_list_in = [31,33,37]
+    chan_list_out = [7,11,12,13,15,16,18,22,29,32,36]
+    GPIO.setwarnings(False)
+    GPIO.setup(chan_list_in,GPIO.IN)
+    GPIO.setup(chan_list_out,GPIO.OUT)
+    GPIO.add_event_detect(31, GPIO.BOTH, callback=changeLetter, bouncetime = 300)
+    GPIO.add_event_detect(33, GPIO.FALLING, callback=increasePos, bouncetime=300)
+    GPIO.add_event_detect(37, GPIO.FALLING, callback=decreasePos, bouncetime=300)
 
     while True:
-        #Insert code on taking input from buttons to increase/decrease value and cycle between r and c
-        row = 1
-        col = 2
+        blinkSegment(S1, characterToDisplay(letter))
+        blinkSegment(S2, integerToDisplay(int(position[pos]/10)))
+        blinkSegment(S3, integerToDisplay(position[pos]%10))
 
+        
 def receiveClientIP():
-    global row
-    global col
+    global pos
+    global letter
 
     while True:
         try:
@@ -42,6 +145,8 @@ def receiveClientIP():
         print(ipAddress)
         print('\n')
 
+        row = position[pos]
+        col = position[pos]
         coordinates = str(row) + ',' + str(col)
         coordinates = coordinates.encode()
         token.sendto(coordinates,(ipAddress,8080))
