@@ -13,6 +13,7 @@ test_count = 1
 test_num = 0
 posRow = 0
 posCol = 0
+connect = True
 
 
 
@@ -33,6 +34,7 @@ def get_ip_address(ifname):
 def connectToToken():
     global posRow, posCol
     global ip
+    global connect
 
     print(ip)
     client.sendto(ip.encode(),('172.20.10.3',8080))
@@ -40,6 +42,7 @@ def connectToToken():
     try:
         from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
         [posRow,posCol] = (from_server).decode()
+        connect = False
     except socket.timeout:
         print("Timeout from establishing connection with a Client")
     print("Waiting")
@@ -49,6 +52,7 @@ def connectToToken():
 def establishServerConnections():
     global init_bool
     global posRow, posCol
+    global connect
 
     #GPIO.setmode(GPIO.BOARD)
     #GPIO.setup(13,GPIO.IN)
@@ -63,8 +67,9 @@ def establishServerConnections():
         [posRow,posCol] = parseData(test_coms)
         init_msg = test_coms + "," + ip
 
-        input("Press Enter to connect...")
-        connectToToken()
+        while(connect):
+            input("Press Enter to connect...")
+            connectToToken()
 
         while(not init_bool):
             client.sendto(init_msg.encode(),('172.20.10.3',8080))
