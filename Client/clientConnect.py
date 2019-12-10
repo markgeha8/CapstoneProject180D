@@ -89,13 +89,13 @@ def establishServerConnections():
                 if(data == "RESET"):
                     print(data)
                 [Row, Col] = parseData(data)
-                if((Row == posRow) and (Col == posCol)):
-                    init_bool = True
-                    print("server matches client")
-                    connected = True
-                else:
-                    print("server doesn't match client")
-                    break
+                #if((Row == posRow) and (Col == posCol)):
+                init_bool = True
+                print("server matches client")
+                connected = True
+                #else:
+                #    print("server doesn't match client")
+                #    break
 
 LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
 

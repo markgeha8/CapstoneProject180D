@@ -95,7 +95,6 @@ def characterToDisplay(character):
         return 0x00
 
 def integerToDisplay(integer):
-    print(integer)
     switcher = {
         0: 0x3F,
         1: 0x06,
