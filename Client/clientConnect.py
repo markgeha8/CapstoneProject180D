@@ -1,14 +1,23 @@
 import socket
+from socket import AF_INET, SOCK_DGRAM
 import fcntl
 import struct
 import time
 import random
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import threading
+import cv2
 
 init_bool = False
 test_count = 1
 test_num = 0
+posRow = 0
+posCol = 0
+connect = True
+connected = False
+
+ipToken = '172.20.10.3'
+ipServer = '172.20.10.20'
 
 
 
@@ -27,32 +36,62 @@ def get_ip_address(ifname):
         struct.pack('256s'.encode(), ifname[:15].encode())
     )[20:24])
 
+def connectToToken():
+    global posRow, posCol
+    global ip
+    global connect
+    global ipToken
+
+    client.sendto(ip.encode(),(ipToken,8080))
+    try:
+        from_token, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+        data = (from_token).decode()
+        [posRow,posCol] = parseData(data)
+        connect = False
+    except socket.timeout:
+        print("Timeout from establishing connection with a Token")
+
+
+
 def establishServerConnections():
     global init_bool
+    global posRow, posCol
+    global connect
+    global connected
+    global ipServer
+
+    #GPIO.setmode(GPIO.BOARD)
+    #GPIO.setup(13,GPIO.IN)
+    #GPIO.setwarnings(False)
+    #GPIO.add_event_detect(13, GPIO.RISING, callback=connectToToken, bouncetime=300)
 
     while True:
-
-        ip = get_ip_address('wlan0')
         #Test print of IP address
-
-        #SEND INITIAL PROMPT TO TOKEN AND READ BACK IN THE ROW/COLUMN (CURRENTLY AN UNKNOWN IP ADDRESS BUT WILL KNOW ONCE WE GET HARDWARE)
-        #SHOULD BE SEPARATE DEFINED FUNCTION THAT CAN RUN INITIALLY THROUGH MAIN FUNCTION AND THEN HAVE A RECURSIVE THREAD THAT CONSTANTLY
-        #WAITS FOR PROMPTING FROM THE SERVER
-
-        #Button interupt - to get token( row col - data)
-
-        #This is a filler for now
-        #From Comms - string with row, column
+        ip = get_ip_address('wlan0')
+        
         test_coms = str(random.randint(1,20)) + ',' + str(random.randint(1,20))
         [posRow,posCol] = parseData(test_coms)
         init_msg = test_coms + "," + ip
 
+        while(connect):
+            input("Press Enter to connect...")
+            connectToToken()
 
+        print("Row: ", posRow, " Col: ", posCol)
+        print("Connecting...")
 
         while(not init_bool):
+<<<<<<< HEAD
             client.sendto(init_msg.encode(),('172.20.10.11',8080))
+=======
+            client.sendto(init_msg.encode(),(ipServer,8080))
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
             while(not init_bool):
-                from_server = client.recvfrom(4096)
+                try:
+                    from_server = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+                except socket.timeout:
+                    print("Timeout from establishing connection with a Server")
+                    continue
                 data = (from_server[0]).decode()  #Temporary fix for Tuple issue
                 if(data == "RESET"):
                     print(data)
@@ -60,6 +99,7 @@ def establishServerConnections():
                 if((Row == posRow) and (Col == posCol)):
                     init_bool = True
                     print("server matches client")
+                    connected = True
                 else:
                     print("server doesn't match client")
                     break
@@ -70,8 +110,9 @@ LED_displays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
 def DisplayLoop():
     global test_count
     global test_num
+    global connected
 
-    while True:
+    while connected:
         #Testing script for LED_displays
         #GPIO.setmode(GPIO.BCM)
         #GPIO.setwarnings(False)
@@ -83,10 +124,19 @@ def DisplayLoop():
         #GPIO.setup(23, GPIO.OUT)
 
         ran = "iterDone"
+<<<<<<< HEAD
 
         from_server = client.recvfrom(4096)
         data = (from_server[0]).decode()  #Temporary fix for Tuple issue
         print(data)
+=======
+        try:
+            from_server, _ = client.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+        except socket.timeout:
+            print("Timeout from establishing connection with a Server")
+            continue
+        data = (from_server).decode()  #Temporary fix for Tuple issue
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
         #have token check -  send new token info to server
 
         #receive  ClusterNum, and AmountInClus, numWithinClust
@@ -120,7 +170,11 @@ def DisplayLoop():
                     print("hi")
                 test_num += 1
             test_count += 1
+<<<<<<< HEAD
             client.sendto(ran.encode(),('172.20.10.11',8080))
+=======
+            client.sendto(ran.encode(),(ipServer,8080))
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
 
         test_count = 0
 
@@ -130,9 +184,15 @@ def DisplayLoop():
 
 # Main function
 if __name__ == "__main__":
+<<<<<<< HEAD
     ip = get_ip_address('wlan0') 
+=======
+    global ip
+    ip = get_ip_address('wlan0') #'172.20.10.5'
+>>>>>>> ff647eb5c848837b85c326392f07e7a71f1cd083
     print(ip)
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    client.settimeout(10)
 
     #enter server IP address - must be known beforehand
     client.bind((ip, 8080))
