@@ -90,8 +90,8 @@ def establishClientConnections():
                 if(ipAddress == "Remove"):
                     ipArr[posR,posC] = None
                 else:
-                    posRow = int(posR+1)
-                    posCol = int(posC+1)
+                    posRow = int(posR)+1
+                    posCol = int(posC)+1
                     updateIP(posRow,posCol,ipAddress)
 
                     mess = posR + ',' + posC
