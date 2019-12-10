@@ -51,10 +51,9 @@ def createBinaryArray(ipArr):
     for r in range (0,maxRows):
         for c in range (0,maxCols):
             if(ipArr[r,c] == None):
-                ipArrBin[r,c] == 0
+                ipArrBin[r,c] = 0
             else:
-                print(ipArr[r,c])
-                ipArrBin[r,c] == 1
+                ipArrBin[r,c] = 1
     return ipArrBin
 
 #Use built in functions in "measurements" library to determine clusters. These clusters will be cycled through
