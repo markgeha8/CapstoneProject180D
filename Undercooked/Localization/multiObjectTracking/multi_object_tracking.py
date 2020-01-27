@@ -1,5 +1,5 @@
 #Base code found on https://www.pyimagesearch.com/2018/08/06/tracking-multiple-objects-with-opencv/
-#Updated for our own game use.
+#Updated for our own game usage.
 
 # USAGE
 # python multi_object_tracking.py --video videos/soccer_01.mp4 --tracker csrt
