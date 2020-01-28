@@ -44,7 +44,7 @@ if not args.get("video", False):
 else:
 	vs = cv2.VideoCapture(args["video"])
 
-
+print("To start selecting objects, please press s.")
 init = True
 # loop over frames from the video stream
 while True:
@@ -74,48 +74,49 @@ while True:
 	key = cv2.waitKey(1) & 0xFF
 
 
-	if(init): #Set all four main locations at the beginning
-		print("Please select the cutting board.")
-		box = cv2.selectROI("Frame", frame, fromCenter=False,
-			showCrosshair=True)
+	if key == ord("s"):
+		if(init): #Set all four main locations at the beginning
+			print("Please select the cutting board.")
+			box = cv2.selectROI("Frame", frame, fromCenter=False,
+				showCrosshair=True)
 
-		# create a new object tracker for the bounding box and add it
-		# to our multi-object tracker
-		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-		trackers.add(tracker, frame, box)
-		print("Cutting board is set.")
+			# create a new object tracker for the bounding box and add it
+			# to our multi-object tracker
+			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+			trackers.add(tracker, frame, box)
+			print("Cutting board is set.")
 
-		print("Please select the stove top.")
-		box = cv2.selectROI("Frame", frame, fromCenter=False,
-			showCrosshair=True)
+			print("Please select the stove top.")
+			box = cv2.selectROI("Frame", frame, fromCenter=False,
+				showCrosshair=True)
 
-		# create a new object tracker for the bounding box and add it
-		# to our multi-object tracker
-		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-		trackers.add(tracker, frame, box)
-		print("Stove is set.")
+			# create a new object tracker for the bounding box and add it
+			# to our multi-object tracker
+			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+			trackers.add(tracker, frame, box)
+			print("Stove is set.")
 
-		print("Please select the turn-it-in counter.")
-		box = cv2.selectROI("Frame", frame, fromCenter=False,
-			showCrosshair=True)
+			print("Please select the turn-it-in counter.")
+			box = cv2.selectROI("Frame", frame, fromCenter=False,
+				showCrosshair=True)
 
-		# create a new object tracker for the bounding box and add it
-		# to our multi-object tracker
-		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-		trackers.add(tracker, frame, box)
-		print("Turn-it-in Counter is set.")
+			# create a new object tracker for the bounding box and add it
+			# to our multi-object tracker
+			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+			trackers.add(tracker, frame, box)
+			print("Turn-it-in Counter is set.")
 
-		print("Please select the player.")
-		box = cv2.selectROI("Frame", frame, fromCenter=False,
-			showCrosshair=True)
+			print("Please select the player.")
+			box = cv2.selectROI("Frame", frame, fromCenter=False,
+				showCrosshair=True)
 
-		# create a new object tracker for the bounding box and add it
-		# to our multi-object tracker
-		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-		trackers.add(tracker, frame, box)
-		print("Player is set.")
+			# create a new object tracker for the bounding box and add it
+			# to our multi-object tracker
+			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+			trackers.add(tracker, frame, box)
+			print("Player is set.")
 
-	init = False
+		init = False
 
 	if key == ord("r"):
 		init = True
