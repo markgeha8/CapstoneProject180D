@@ -10,6 +10,7 @@ cook = False
 cook_num = 0
 start = 0
 md = False
+start = time.time()
 
 
 while truth == True:
@@ -17,7 +18,6 @@ while truth == True:
     ACCy = IMU.readACCy()*.244/1000
     ACCz = IMU.readACCz()*.244/1000
     print("X = "+str(ACCx)+"G     "+"Y = "+str(ACCy)+"G     "+"Z = "+str(ACCz)+"G     ")
-    start = time.time()
     print("Time is: " +str(time.time() - start))
 
 
