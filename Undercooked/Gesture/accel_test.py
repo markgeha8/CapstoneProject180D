@@ -11,6 +11,4 @@ while truth == True:
     if (Accx>2):
         print("motion detected")
         truth = False
-    else
-        pass
     time.sleep(0.03)
