@@ -37,7 +37,7 @@ while truth == True:
         start = time.time()
 
     #Cutting - must cut 10 motions to be done
-    if (cut == True) and (time.time()-start < 7):
+    if (cut == True) and (time.time()-start < 6):
         if ACCy>5:
             cut_num = cut_num+1
             print("cutting motion detected" + str(cut_num) + "/10")
@@ -53,11 +53,11 @@ while truth == True:
 
 
     #Cooking - must cook 10 motions to be done
-    if (cook == True) and (time.time()-start < 7):
-        if ACCx>5:
+    if (cook == True) and (time.time()-start < 6):
+        if ACCx>4:
             cook_num = cook_num+1
             print("cooking motion detected" + str(cook_num) + "/10")
-        if cook_num == 10:
+        if cook_num == 20:
             print("ingredient cooked")
             start = time.time()
             cut_num = 0
