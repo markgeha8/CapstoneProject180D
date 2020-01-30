@@ -7,7 +7,7 @@ truth = True
 cut = False
 cut_num = 0
 cook = False
-cook num = 0
+cook_num = 0
 start = 0
 md = False
 
@@ -38,6 +38,6 @@ while truth == True:
             truth = False
             start = time.time()
 
-    
+
 
     time.sleep(0.03)
