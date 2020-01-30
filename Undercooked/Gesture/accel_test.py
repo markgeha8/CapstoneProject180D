@@ -64,7 +64,7 @@ while truth == True:
             md = False
 
     #Reset Timer if takes too long
-    if((cook==True) or (cut = True)) and (time.time()-start > 7):
+    if((cook==True) or (cut == True)) and (time.time()-start > 7):
         start = time.time()
 
 
