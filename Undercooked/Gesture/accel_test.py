@@ -8,7 +8,5 @@ while truth == True:
     ACCy = IMU.readACCy()*.244/1000
     ACCz = IMU.readACCz()*.244/1000
     print("X = "+ACCx+"G     "+"Y = "+ACCy+"G     "+"Z = "+ACCz+"G     ")
-    if ACCx>2 or ACCy>2 or ACCz >2
-        print("motion detected")
-        truth = False
+    
     time.sleep(0.03)
