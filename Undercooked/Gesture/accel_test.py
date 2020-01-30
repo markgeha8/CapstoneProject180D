@@ -11,12 +11,13 @@ cook_num = 0
 start = 0
 md = False
 
+
 while truth == True:
     ACCx = IMU.readACCx()*.244/1000
     ACCy = IMU.readACCy()*.244/1000
     ACCz = IMU.readACCz()*.244/1000
     print("X = "+str(ACCx)+"G     "+"Y = "+str(ACCy)+"G     "+"Z = "+str(ACCz)+"G     ")
-    print(time.time())
+    print("Time is: " +str(time.time() - start))
 
     #initial detection
     if (ACCx>3) or (ACCy>3) and (md==False):
