@@ -6,11 +6,14 @@ truth = True
 
 cut = False
 cut_num = 0
+near_block = False
 cook = False
 cook_num = 0
+near_stove = False
 start = 0
 md = False
 start = time.time()
+
 
 
 while truth == True:
@@ -29,11 +32,11 @@ while truth == True:
         if ACCx>5 and md == False:
             print("cooking motion detected")
             cook_num = cook_num+1
-            cut = True
+            cook = True
         md = True
         start = time.time()
 
-    #Cutting - must cut 5 motions to be done
+    #Cutting - must cut 10 motions to be done
     if (cut == True) and (time.time()-start < 7):
         if ACCy>5:
             cut_num = cut_num+1
@@ -48,7 +51,7 @@ while truth == True:
             cook = False
             md = False
 
-    #Cooking - must cook 5 motions to be done
+    #Cooking - must cook 10 motions to be done
     if (cook == True) and (time.time()-start < 7):
         if ACCx>5:
             cook_num = cook_num+1
