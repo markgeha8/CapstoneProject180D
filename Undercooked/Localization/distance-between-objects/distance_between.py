@@ -1,4 +1,5 @@
-#Code found at https://www.pyimagesearch.com/2016/04/04/measuring-distance-between-objects-in-an-image-with-opencv/
+#Base code found on https://www.pyimagesearch.com/2016/04/04/measuring-distance-between-objects-in-an-image-with-opencv/
+#Updated for our own game usage.
 
 # USAGE
 # python distance_between.py --image images/example_01.png --width 0.955
