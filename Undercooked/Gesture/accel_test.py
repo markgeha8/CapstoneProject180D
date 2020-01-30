@@ -43,13 +43,14 @@ while truth == True:
             print("cutting motion detected" + str(cut_num) + "/10")
         if cut_num == 10:
             print("ingredient cut")
-            truth = False
             start = time.time()
             cut_num = 0
             cut = False
             cook_num = 0
             cook = False
             md = False
+            truth = False
+
 
     #Cooking - must cook 10 motions to be done
     if (cook == True) and (time.time()-start < 7):
@@ -58,17 +59,20 @@ while truth == True:
             print("cooking motion detected" + str(cook_num) + "/10")
         if cook_num == 10:
             print("ingredient cooked")
-            truth = False
             start = time.time()
             cut_num = 0
             cut = False
             cook_num = 0
             cook = False
             md = False
+            truth = False
+
 
     #Reset Timer if takes too long
     if((cook==True) or (cut == True)) and (time.time()-start > 7):
         start = time.time()
+        print("took too long")
+        truth = false
 
 
 
