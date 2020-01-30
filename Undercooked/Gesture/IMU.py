@@ -71,65 +71,73 @@ def writeGRY(register,value):
 
 
 def readACCx():
-    acc_l = bus.read_byte_data(ACC_ADDRESS, OUT_X_L_XL)
-    acc_h = bus.read_byte_data(ACC_ADDRESS, OUT_X_H_XL)
+        acc_l = bus.read_byte_data(ACC_ADDRESS, OUT_X_L_XL)
+        acc_h = bus.read_byte_data(ACC_ADDRESS, OUT_X_H_XL)
 	acc_combined = (acc_l | acc_h <<8)
+
 	return acc_combined  if acc_combined < 32768 else acc_combined - 65536
 
 
 def readACCy():
-    acc_l = bus.read_byte_data(ACC_ADDRESS, OUT_Y_L_XL)
-    acc_h = bus.read_byte_data(ACC_ADDRESS, OUT_Y_H_XL)
+        acc_l = bus.read_byte_data(ACC_ADDRESS, OUT_Y_L_XL)
+        acc_h = bus.read_byte_data(ACC_ADDRESS, OUT_Y_H_XL)
 	acc_combined = (acc_l | acc_h <<8)
+
 	return acc_combined  if acc_combined < 32768 else acc_combined - 65536
 
 
 def readACCz():
-    acc_l = bus.read_byte_data(ACC_ADDRESS, OUT_Z_L_XL)
-    acc_h = bus.read_byte_data(ACC_ADDRESS, OUT_Z_H_XL)
+        acc_l = bus.read_byte_data(ACC_ADDRESS, OUT_Z_L_XL)
+        acc_h = bus.read_byte_data(ACC_ADDRESS, OUT_Z_H_XL)
 	acc_combined = (acc_l | acc_h <<8)
+
 	return acc_combined  if acc_combined < 32768 else acc_combined - 65536
 
 
 def readMAGx():
-	mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_X_L_M)
-	mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_X_H_M)
-	mag_combined = (mag_l | mag_h <<8)
-	return mag_combined  if mag_combined < 32768 else mag_combined - 65536
+		mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_X_L_M)
+		mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_X_H_M)
+		mag_combined = (mag_l | mag_h <<8)
+		return mag_combined  if mag_combined < 32768 else mag_combined - 65536
 
 
 def readMAGy():
-    mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_Y_L_M)
-    mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_Y_H_M)
-    mag_combined = (mag_l | mag_h <<8)
-    return mag_combined  if mag_combined < 32768 else mag_combined - 65536
+        mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_Y_L_M)
+        mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_Y_H_M)
+        mag_combined = (mag_l | mag_h <<8)
+
+        return mag_combined  if mag_combined < 32768 else mag_combined - 65536
 
 
 def readMAGz():
-    mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_Z_L_M)
-    mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_Z_H_M)
-    mag_combined = (mag_l | mag_h <<8)
-    return mag_combined  if mag_combined < 32768 else mag_combined - 65536
+        mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_Z_L_M)
+        mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_Z_H_M)
+        mag_combined = (mag_l | mag_h <<8)
+
+        return mag_combined  if mag_combined < 32768 else mag_combined - 65536
 
 
 def readGYRx():
-    gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_X_L_G)
-    gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_X_H_G)
-    gyr_combined = (gyr_l | gyr_h <<8)
-    return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
+        gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_X_L_G)
+        gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_X_H_G)
+        gyr_combined = (gyr_l | gyr_h <<8)
+
+        return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
 
 
 def readGYRy():
-    gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_Y_L_G)
-    gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_Y_H_G)
-    gyr_combined = (gyr_l | gyr_h <<8)
-    return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
+        gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_Y_L_G)
+        gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_Y_H_G)
+        gyr_combined = (gyr_l | gyr_h <<8)
+
+        return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
 
 def readGYRz():
-    gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_Z_L_G)
-    gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_Z_H_G)
-    gyr_combined = (gyr_l | gyr_h <<8)
-    return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
+        gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_Z_L_G)
+        gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_Z_H_G)
+        gyr_combined = (gyr_l | gyr_h <<8)
+
+        return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
 
 
 
@@ -170,6 +178,7 @@ def readACCx():
     else:
         acc_l = bus.read_byte_data(LSM9DS1_ACC_ADDRESS, LSM9DS1_OUT_X_L_XL)
         acc_h = bus.read_byte_data(LSM9DS1_ACC_ADDRESS, LSM9DS1_OUT_X_H_XL)
+
     acc_combined = (acc_l | acc_h <<8)
     return acc_combined  if acc_combined < 32768 else acc_combined - 65536
 
@@ -181,6 +190,7 @@ def readACCy():
     else:
         acc_l = bus.read_byte_data(LSM9DS1_ACC_ADDRESS, LSM9DS1_OUT_Y_L_XL)
         acc_h = bus.read_byte_data(LSM9DS1_ACC_ADDRESS, LSM9DS1_OUT_Y_H_XL)
+
     acc_combined = (acc_l | acc_h <<8)
     return acc_combined  if acc_combined < 32768 else acc_combined - 65536
 
@@ -192,6 +202,7 @@ def readACCz():
     else:
         acc_l = bus.read_byte_data(LSM9DS1_ACC_ADDRESS, LSM9DS1_OUT_Z_L_XL)
         acc_h = bus.read_byte_data(LSM9DS1_ACC_ADDRESS, LSM9DS1_OUT_Z_H_XL)
+
     acc_combined = (acc_l | acc_h <<8)
     return acc_combined  if acc_combined < 32768 else acc_combined - 65536
 
@@ -203,6 +214,7 @@ def readMAGx():
     else:
         mag_l = bus.read_byte_data(LSM9DS1_MAG_ADDRESS, LSM9DS1_OUT_X_L_M)
         mag_h = bus.read_byte_data(LSM9DS1_MAG_ADDRESS, LSM9DS1_OUT_X_H_M)
+
     mag_combined = (mag_l | mag_h <<8)
     return mag_combined  if mag_combined < 32768 else mag_combined - 65536
 
@@ -214,6 +226,7 @@ def readMAGy():
     else:
         mag_l = bus.read_byte_data(LSM9DS1_MAG_ADDRESS, LSM9DS1_OUT_Y_L_M)
         mag_h = bus.read_byte_data(LSM9DS1_MAG_ADDRESS, LSM9DS1_OUT_Y_H_M)
+
     mag_combined = (mag_l | mag_h <<8)
     return mag_combined  if mag_combined < 32768 else mag_combined - 65536
 
@@ -225,6 +238,7 @@ def readMAGz():
     else:
         mag_l = bus.read_byte_data(LSM9DS1_MAG_ADDRESS, LSM9DS1_OUT_Z_L_M)
         mag_h = bus.read_byte_data(LSM9DS1_MAG_ADDRESS, LSM9DS1_OUT_Z_H_M)
+
     mag_combined = (mag_l | mag_h <<8)
     return mag_combined  if mag_combined < 32768 else mag_combined - 65536
 
@@ -237,6 +251,7 @@ def readGYRx():
     else:
         gyr_l = bus.read_byte_data(LSM9DS1_GYR_ADDRESS, LSM9DS1_OUT_X_L_G)
         gyr_h = bus.read_byte_data(LSM9DS1_GYR_ADDRESS, LSM9DS1_OUT_X_H_G)
+
     gyr_combined = (gyr_l | gyr_h <<8)
     return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
 
@@ -248,6 +263,7 @@ def readGYRy():
     else:
         gyr_l = bus.read_byte_data(LSM9DS1_GYR_ADDRESS, LSM9DS1_OUT_Y_L_G)
         gyr_h = bus.read_byte_data(LSM9DS1_GYR_ADDRESS, LSM9DS1_OUT_Y_H_G)
+
     gyr_combined = (gyr_l | gyr_h <<8)
     return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
 
@@ -258,6 +274,7 @@ def readGYRz():
     else:
         gyr_l = bus.read_byte_data(LSM9DS1_GYR_ADDRESS, LSM9DS1_OUT_Z_L_G)
         gyr_h = bus.read_byte_data(LSM9DS1_GYR_ADDRESS, LSM9DS1_OUT_Z_H_G)
+
     gyr_combined = (gyr_l | gyr_h <<8)
     return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
 
@@ -265,7 +282,9 @@ def readGYRz():
 
 
 def initIMU():
+
     if (LSM9DS0):   #For BerryIMUv1
+
         #initialise the accelerometer
         writeACC(LSM9DS0_CTRL_REG1_XM, 0b01100111)  #z,y,x axis enabled, continuos update,  100Hz data rate
         writeACC(LSM9DS0_CTRL_REG2_XM, 0b00011000)  #+/- 8G full scale
