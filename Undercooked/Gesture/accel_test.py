@@ -22,18 +22,18 @@ while truth == True:
 
 
     #initial detection
-    if (ACCx>3) or (ACCy>3) and (md==False):
-        if ACCy>3:
+    if ((ACCx>3) or (ACCy>3)) and (md==False) and (cut==False) and (cook==False):
+        if ACCy>3 and md == False:
             print("cutting motion detected")
             cut = True
-        if ACCx>3:
+        if ACCx>3 and md == False:
             print("cooking motion detected")
             cut = True
         md = True
         start = time.time()
 
     #Cutting - must cut 5 motions to be done
-    if (cut == True) and (time.time()-start > 7):
+    if (cut == True) and (time.time()-start < 7):
         if ACCy>3:
             cut_num = cut_num+1
             print("cutting motion detected" + str(cut_num) + "/10")
@@ -41,6 +41,12 @@ while truth == True:
             print("ingredient cut")
             truth = False
             start = time.time()
+            cut_num = 0
+            cut = False
+            cook_num = 0
+            cook = False
+            md = False
+
 
 
 
