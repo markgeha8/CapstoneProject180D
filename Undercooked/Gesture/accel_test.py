@@ -11,13 +11,11 @@ while truth == True:
 
 
 	#Read the accelerometer,gyroscope and magnetometer values
-	ACCx = IMU.readACCx()* .244/1000
-	ACCy = IMU.readACCy()* .244/1000
-	ACCz = IMU.readACCz()* .244/1000
-
-    print("X = " + ACCx + "G     "+ "Y = " + ACCy + "G     " + "Z = " + ACCz + "G     ")
-
-    if(ACCx > 2 | ACCy > 2 | ACCz >2)
+	ACCx = IMU.readACCx()*.244/1000
+	ACCy = IMU.readACCy()*.244/1000
+	ACCz = IMU.readACCz()*.244/1000
+    print("X = "+ACCx+"G     "+"Y = "+ACCy+"G     "+"Z = "+ACCz+"G     ")
+    if(ACCx>2|ACCy>2|ACCz >2)
         print("motion detected")
         truth = False
 
