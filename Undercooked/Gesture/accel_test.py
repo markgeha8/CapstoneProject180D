@@ -33,7 +33,7 @@ while truth == True:
         if ACCy>3:
             print("cutting motion detected")
             cut_num = cut_num+1
-        if cut_num == 10
+        if cut_num == 10:
             print("ingredient cut")
             truth = False
             start = time.time()
