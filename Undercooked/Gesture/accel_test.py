@@ -15,9 +15,7 @@ while truth == True:
 	ACCy = IMU.readACCy()* .244/1000
 	ACCz = IMU.readACCz()* .244/1000
 
-    print("X = " + ACCx + "G     ")
-    print("Y = " + ACCy + "G     ")
-    print("Z = " + ACCz + "G     ")
+    print("X = " + ACCx + "G     "+ "Y = " + ACCy + "G     " + "Z = " + ACCz + "G     ")
 
     if(ACCx > 2 | ACCy > 2 | ACCz >2)
         print("motion detected")
