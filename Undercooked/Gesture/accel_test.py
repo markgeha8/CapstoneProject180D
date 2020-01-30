@@ -17,7 +17,9 @@ while truth == True:
     ACCy = IMU.readACCy()*.244/1000
     ACCz = IMU.readACCz()*.244/1000
     print("X = "+str(ACCx)+"G     "+"Y = "+str(ACCy)+"G     "+"Z = "+str(ACCz)+"G     ")
+    start = time.time()
     print("Time is: " +str(time.time() - start))
+
 
     #initial detection
     if (ACCx>3) or (ACCy>3) and (md==False):
