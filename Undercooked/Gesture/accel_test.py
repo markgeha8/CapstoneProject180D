@@ -20,14 +20,15 @@ while truth == True:
     print("X = "+str(ACCx)+"G     "+"Y = "+str(ACCy)+"G     "+"Z = "+str(ACCz)+"G     ")
     print("Time is: " +str(time.time() - start))
 
-
     #initial detection
     if ((ACCx>5) or (ACCy>5)) and (md==False) and (cut==False) and (cook==False):
         if ACCy>5 and md == False:
             print("cutting motion detected")
+            cut_num = cut_num+1
             cut = True
         if ACCx>5 and md == False:
             print("cooking motion detected")
+            cook_num = cook_num+1
             cut = True
         md = True
         start = time.time()
@@ -62,6 +63,9 @@ while truth == True:
             cook = False
             md = False
 
+    #Reset Timer if takes too long
+    if((cook==True) or (cut = True)) and (time.time()-start > 7):
+        start = time.time()
 
 
 
