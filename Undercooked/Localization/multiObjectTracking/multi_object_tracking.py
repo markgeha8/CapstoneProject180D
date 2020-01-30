@@ -17,6 +17,8 @@ ap.add_argument("-v", "--video", type=str,
 	help="path to input video file")
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
 	help="OpenCV object tracker type")
+ap.add_argument("-s", "--size", type=float, required=True,
+	help="size of the balls")
 args = vars(ap.parse_args())
 
 # initialize a dictionary that maps strings to their corresponding
@@ -30,6 +32,9 @@ OPENCV_OBJECT_TRACKERS = {
 	"medianflow": cv2.TrackerMedianFlow_create,
 	"mosse": cv2.TrackerMOSSE_create
 }
+
+ball_size = args["size"]
+print(ball_size)
 
 # initialize OpenCV's special multi-object tracker
 trackers = cv2.MultiTracker_create()
@@ -68,6 +73,8 @@ while True:
 	for box in boxes:
 		(x, y, w, h) = [int(v) for v in box]
 		cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+	#THIS IS WHERE I WILL BE IMPLEMENTING THE DISTANCE CODE
 
 	# show the output frame
 	cv2.imshow("Frame", frame)
