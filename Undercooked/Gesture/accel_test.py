@@ -5,18 +5,23 @@ import IMU
 IMU.detectIMU()     #Detect if BerryIMUv1 or BerryIMUv2 is connected.
 IMU.initIMU()       #Initialise the accelerometer, gyroscope and compass
 
+truth = True
 
-while True:
+while truth = True:
 
 
 	#Read the accelerometer,gyroscope and magnetometer values
-	ACCx = IMU.readACCx()
-	ACCy = IMU.readACCy()
-	ACCz = IMU.readACCz()
+	ACCx = IMU.readACCx()* .244/1000
+	ACCy = IMU.readACCy()* .244/1000
+	ACCz = IMU.readACCz()* .244/1000
 
-	print("##### X = %f G  #####" % ((ACCx * 0.244)/1000)),
-	print(" Y =   %fG  #####" % ((ACCy * 0.244)/1000)),
-	print(" Z =  %fG  #####" % ((ACCz * 0.244)/1000))
+    if(ACCx > 2 | ACCy > 2 | ACCz >2)
+        print("motion detected")
+        truth = False
+
+	print("##### X = %f G  #####" % (ACCx),
+	print(" Y =   %fG  #####" % (ACCy),
+	print(" Z =  %fG  #####" % (ACCz)
 
 
 
