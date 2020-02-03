@@ -10,6 +10,33 @@ import argparse
 import imutils
 import time
 import cv2
+import numpy as np
+import math
+
+x = [0,0,0,0]
+y = [0,0,0,0]
+w = [0,0,0,0]
+h = [0,0,0,0]
+min_distance = 4 #Inches
+playerDistances = [0.0,0.0,0.0]
+name = ["Cutting Board","Stove","Turn-it-in Counter"]
+pixel_size = 0
+isPlayerCloseEnough = [False, False, False]
+
+def measureDistances():
+	for i in range (3):
+		distance = math.sqrt((x[3]+w[3]/2 - (x[i]+w[i]/2))*(x[3]+w[3]/2 - (x[i]+w[i]/2)) + (y[3]+h[3]/2 - (y[i]+h[i]/2))*(y[3]+h[3]/2 - (y[i]+h[i]/2)))
+		playerDistances[i] = math.fabs(distance)*pixel_size
+
+def checkDistances():
+	measureDistances()
+	for i in range (3):
+		if(playerDistances[i] <= min_distance):
+			print("Player is close enough to ", name[i])
+			isPlayerCloseEnough[i] = True
+		else:
+			isPlayerCloseEnough[i] = False
+
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -34,7 +61,6 @@ OPENCV_OBJECT_TRACKERS = {
 }
 
 ball_size = args["size"]
-print(ball_size)
 
 # initialize OpenCV's special multi-object tracker
 trackers = cv2.MultiTracker_create()
@@ -69,12 +95,26 @@ while True:
 	# object that is being tracked
 	(success, boxes) = trackers.update(frame)
 
+	i = 0
 	# loop over the bounding boxes and draw then on the frame
 	for box in boxes:
-		(x, y, w, h) = [int(v) for v in box]
-		cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+		(xTemp, yTemp, wTemp, hTemp) = [int(v) for v in box]
+		x[i] = xTemp
+		y[i] = yTemp
+		w[i] = wTemp
+		h[i] = hTemp
+		cv2.rectangle(frame, (x[i], y[i]), (x[i] + w[i], y[i] + h[i]), (0, 255, 0), 2)
+		#w and h are the dimensions of the box (associate w/h with ball_size)
+		pixel_size_w = ball_size/w[i] 	#Creates the conversion for inches/pixels to find the total inches distance between objects
+		pixel_size_h = ball_size/h[i]
+		pixel_size = (pixel_size_h+pixel_size_w)/2
+		i = i+1
+
+	if not (init):
+		checkDistances()
 
 	#THIS IS WHERE I WILL BE IMPLEMENTING THE DISTANCE CODE
+	#TAKE MIDPOINTS OF EACH BOX (x + w/2, y + h/2) AND FIND DISTANCE BETWEEN THEM
 
 	# show the output frame
 	cv2.imshow("Frame", frame)
