@@ -57,7 +57,7 @@ OPENCV_OBJECT_TRACKERS = {
 	"mil": cv2.TrackerMIL_create,
 	"tld": cv2.TrackerTLD_create,
 	"medianflow": cv2.TrackerMedianFlow_create,
-	"mosse": cv2.TrackerMOSSE_create
+	#"mosse": cv2.TrackerMOSSE_create
 }
 
 ball_size = args["size"]
