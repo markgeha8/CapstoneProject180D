@@ -51,13 +51,11 @@ args = vars(ap.parse_args())
 # initialize a dictionary that maps strings to their corresponding
 # OpenCV object tracker implementations
 OPENCV_OBJECT_TRACKERS = {
-	#"csrt": cv2.TrackerCSRT_create,
 	"kcf": cv2.TrackerKCF_create,
 	"boosting": cv2.TrackerBoosting_create,
 	"mil": cv2.TrackerMIL_create,
 	"tld": cv2.TrackerTLD_create,
-	"medianflow": cv2.TrackerMedianFlow_create,
-	#"mosse": cv2.TrackerMOSSE_create
+	"medianflow": cv2.TrackerMedianFlow_create
 }
 
 ball_size = args["size"]
@@ -68,7 +66,7 @@ trackers = cv2.MultiTracker_create()
 # if a video path was not supplied, grab the reference to the web cam
 if not args.get("video", False):
 	print("[INFO] starting video stream...")
-	vs = VideoStream(src=0).start()
+	vs = cv2.VideoCapture(0)
 	time.sleep(1.0)
 
 # otherwise, grab a reference to the video file
