@@ -1,28 +1,60 @@
 import numpy as np
 import time
 import signal
+from enum import Enum
 
 # CuttingBoard, Stove, Station, Player, Plate, Points, Orders
 
+# Input: voice to create fish and know location
+# Input: gesture recognition to indicate that an ingredient has changed from raw to cooked state
 
-# Global Constants
-SUSHI = 1
-SALAD = 2
+# Globals
+clientIP = ""
+currentGesture = ""
+currentLocation = ""
+currentOrder = ""
+currentRecipe = list()
+
+# This makes enums return their name instead of number
+class AutoName(Enum):
+    def _generate_next_value_(name, start, count, last_values):
+        return name
+
+# Actions
+class Color(AutoName):
+    CHOP = auto()
+    COOK = auto()
+    TRASH = auto()
+    NONE = auto()
+
+# Menu Items
+class MenuItem(AutoName):
+    SUSHI = auto()
+    SALAD = auto()
+
+# Ingredients
+class Ingredient(AutoName):
+    RICE = auto()
+    FISH = auto()
+    SEAWEED = auto()
+    LETTUCE = auto()
+    TOMATO = auto()
+
+# Ingredient Status
+class IngredientStatus(AutoName):
+    RAW = auto()
+    COOKED = auto()
+    PLATED = auto()
+
+class ingredient():
+    def __init__(self, name, status):
+        self.name = name
+        self.status = status
 
 menu_to_recipe = {
-    SUSHI: ["Rice", "Fish", "Seaweed"],
-    SALAD: ["Lettuce", "Tomato"]
+    MenuItem.SUSHI: [Ingredient.RICE, Ingredient.FISH, Ingredient.SEAWEED],
+    MenuItem.SALAD: [Ingredient.LETTUCE, Ingredient.TOMATO]
 }
-
-index_to_name = {
-    SUSHI: "Sushi",
-    SALAD: "Salad"
-}
-
-# Global Variables
-currentOrder = list()
-currentOrderWord = ""
-
 
 class TimeoutException(Exception):   # Custom exception class
     pass
@@ -30,14 +62,60 @@ def timeout_handler(signum, frame):  # Custom signal handler
     raise TimeoutException
 
 def SetupGame():
-    global currentOrder = menu_to_recipe[SUSHI]
-    global currentOrderWord = index_to_name[SUSHI]
+    global currentOrder = MenuItem.SUSHI
+    global currentRecipe = menu_to_recipe[currentOrder]
 
 def RunGame():
+    ip = get_ip_address('wlan0') #'172.20.10.5'
+    print(ip)
+    serv.bind((ip, 8080))
+
+    # connect to the gesture rpi
+    establishClientConnection()
+
+    # create threads
+    t1 = threading.Thread(target=imageRecognition, args=()) 
+    t2 = threading.Thread(target=gestureProcessing, args=())
+    t3 = threading.Thread(target=gameLogic, args=())
+    t4 = threading.Thread(target=voiceRecognition, args=())
     
-    while(true):
+    # starting threads 
+    t1.start() 
+    t2.start()
+    t3.start()
+    t4.start()
+
+    # wait until threads are completely executed 
+    t1.join()
+    t2.join()
+    t3.join()
+    t4.join()
+    
+    # both threads completely executed 
+    print("Done!")
 
 
+def establishClientConnection():
+    global clientIP
+
+    while True:
+        try:
+            data, _ = serv.recvfrom(4096) #Sets up try/except block to ensure wait time isn't too long (cycles every 10 seconds)
+        except socket.timeout:
+            print("Timeout from establishing connection with a Client")
+            continue
+        if not data: continue
+        clientIP = data.decode()
+        return
+
+def gestureProcessing():
+
+
+def imageRecognition():
+    #TODO: Mark put your stuff here
+
+def voiceRecognition():
+    #TODO: Wendy put your stuff here
 
 if __name__ == "__main__":
     signal.alarm(120)
