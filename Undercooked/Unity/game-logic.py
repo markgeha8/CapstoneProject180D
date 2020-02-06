@@ -2,6 +2,7 @@ import numpy as np
 import time
 import signal
 from enum import Enum
+from game-enums import *
 
 # CuttingBoard, Stove, Station, Player, Plate, Points, Orders
 
@@ -14,37 +15,7 @@ currentGesture = ""
 currentLocation = ""
 currentOrder = ""
 currentRecipe = list()
-
-# This makes enums return their name instead of number
-class AutoName(Enum):
-    def _generate_next_value_(name, start, count, last_values):
-        return name
-
-# Actions
-class Color(AutoName):
-    CHOP = auto()
-    COOK = auto()
-    TRASH = auto()
-    NONE = auto()
-
-# Menu Items
-class MenuItem(AutoName):
-    SUSHI = auto()
-    SALAD = auto()
-
-# Ingredients
-class Ingredient(AutoName):
-    RICE = auto()
-    FISH = auto()
-    SEAWEED = auto()
-    LETTUCE = auto()
-    TOMATO = auto()
-
-# Ingredient Status
-class IngredientStatus(AutoName):
-    RAW = auto()
-    COOKED = auto()
-    PLATED = auto()
+points = ""
 
 class ingredient():
     def __init__(self, name, status):
