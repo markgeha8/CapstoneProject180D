@@ -5,11 +5,10 @@ class AutoName(Enum):
     def _generate_next_value_(name, start, count, last_values):
         return name
 
-# Actions
-class Gestures(AutoName):
+# Gestures
+class Gesture(AutoName):
     CHOP = auto()
     COOK = auto()
-    TRASH = auto()
     NONE = auto()
 
 # Menu Items
@@ -24,6 +23,7 @@ class Ingredient(AutoName):
     SEAWEED = auto()
     LETTUCE = auto()
     TOMATO = auto()
+    NONE = auto()
 
 # Ingredient Status
 class IngredientStatus(AutoName):
@@ -32,16 +32,17 @@ class IngredientStatus(AutoName):
     PLATED = auto()
 
 # Locations
-class Locations(AutoName):
+class Location(AutoName):
     CUTTINGBOARD = auto()
     STOVE = auto()
     TURNINSTATION = auto()
-    PLAYER = auto()
+    NONE = auto()
 
-# Actions
-class Actions(AutoName):
+# Voice Commands
+class VoiceCommand(AutoName):
     CHOP = auto()
     COOK = auto()
     PLATE = auto()
     TURNIN = auto()
     TRASH = auto()
+    NONE = auto()
