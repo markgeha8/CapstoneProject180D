@@ -67,6 +67,8 @@ print("[INFO] starting video stream...")
 vs = cv2.VideoCapture(0)
 
 currentFrame = 0
+
+init = True
 while(True):
     # Capture frame-by-frame
     ret, frame = vs.read()

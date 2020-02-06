@@ -1,4 +1,5 @@
-#Base code found on https://www.pyimagesearch.com/2018/08/06/tracking-multiple-objects-with-opencv/
+#Base code found on https://www.pyimagesearch.com/2018/08/06/tracking-multiple-objects-with-opencv/ 
+#and https://gist.github.com/keithweaver/5bd13f27e2cc4c4b32f9c618fe0a7ee5
 #Updated for our own game usage.
 
 # USAGE
@@ -40,8 +41,6 @@ def checkDistances():
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-v", "--video", type=str,
-	help="path to input video file")
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
 	help="OpenCV object tracker type")
 ap.add_argument("-s", "--size", type=float, required=True,
@@ -64,122 +63,115 @@ ball_size = args["size"]
 trackers = cv2.MultiTracker_create()
 
 # if a video path was not supplied, grab the reference to the web cam
-if not args.get("video", False):
-	print("[INFO] starting video stream...")
-	vs = VideoStream(src=0).start()
-	time.sleep(1.0)
+print("[INFO] starting video stream...")
 
-# otherwise, grab a reference to the video file
-else:
-	vs = cv2.VideoCapture(args["video"])
+vs = cv2.VideoCapture(0)
 
-print("To start selecting objects, please press s.")
+currentFrame = 0
+
 init = True
-# loop over frames from the video stream
-while True:
-	# grab the current frame, then handle if we are using a
-	# VideoStream or VideoCapture object
-	frame = vs.read()
-	frame = frame[1] if args.get("video", False) else frame
+while(True):
+    # Capture frame-by-frame
+    ret, frame = vs.read()
 
-	# check to see if we have reached the end of the stream
-	if frame is None:
-		break
+    # Handles the mirroring of the current frame
+    frame = cv2.flip(frame,1)
 
-	# resize the frame (so we can process it faster)
-	frame = imutils.resize(frame, width=600)
+    # Our operations on the frame come here
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    cv2.imshow('frame',gray)
+
+    # To stop duplicate images
+    currentFrame += 1
+
+    # check to see if we have reached the end of the stream
+    if frame is None:
+	    break
+
+    # resize the frame (so we can process it faster)
+    frame = imutils.resize(frame, width=600)
 
 	# grab the updated bounding box coordinates (if any) for each
 	# object that is being tracked
-	(success, boxes) = trackers.update(frame)
+    (success, boxes) = trackers.update(frame)
 
-	i = 0
-	# loop over the bounding boxes and draw then on the frame
-	for box in boxes:
-		(xTemp, yTemp, wTemp, hTemp) = [int(v) for v in box]
-		x[i] = xTemp
-		y[i] = yTemp
-		w[i] = wTemp
-		h[i] = hTemp
-		cv2.rectangle(frame, (x[i], y[i]), (x[i] + w[i], y[i] + h[i]), (0, 255, 0), 2)
-		#w and h are the dimensions of the box (associate w/h with ball_size)
-		pixel_size_w = ball_size/w[i] 	#Creates the conversion for inches/pixels to find the total inches distance between objects
-		pixel_size_h = ball_size/h[i]
-		pixel_size = (pixel_size_h+pixel_size_w)/2
-		i = i+1
+    i = 0
+    # loop over the bounding boxes and draw then on the frame
+    for box in boxes:
+	    (xTemp, yTemp, wTemp, hTemp) = [int(v) for v in box]
+	    x[i] = xTemp
+	    y[i] = yTemp
+	    w[i] = wTemp
+	    h[i] = hTemp
+	    cv2.rectangle(frame, (x[i], y[i]), (x[i] + w[i], y[i] + h[i]), (0, 255, 0), 2)
+	    #w and h are the dimensions of the box (associate w/h with ball_size)
+	    pixel_size_w = ball_size/w[i] 	#Creates the conversion for inches/pixels to find the total inches distance between objects
+	    pixel_size_h = ball_size/h[i]
+	    pixel_size = (pixel_size_h+pixel_size_w)/2
+	    i = i+1
 
-	if not (init):
-		checkDistances()
+    if not (init):
+	    checkDistances()
 
-	#THIS IS WHERE I WILL BE IMPLEMENTING THE DISTANCE CODE
-	#TAKE MIDPOINTS OF EACH BOX (x + w/2, y + h/2) AND FIND DISTANCE BETWEEN THEM
+    # show the output frame
+    cv2.imshow("Frame", frame)
+    key = cv2.waitKey(1) & 0xFF
 
-	# show the output frame
-	cv2.imshow("Frame", frame)
-	key = cv2.waitKey(1) & 0xFF
+    if key == ord("s"):
+    	if(init): #Set all four main locations at the beginning
+    		print("Please select the cutting board.")
+    		box = cv2.selectROI("Frame", frame, fromCenter=False,
+    			showCrosshair=True)
 
+    		# create a new object tracker for the bounding box and add it
+    		# to our multi-object tracker
+    		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+    		trackers.add(tracker, frame, box)
+    		print("Cutting board is set.")  
 
-	if key == ord("s"):
-		if(init): #Set all four main locations at the beginning
-			print("Please select the cutting board.")
-			box = cv2.selectROI("Frame", frame, fromCenter=False,
-				showCrosshair=True)
+    		print("Please select the stove top.")
+    		box = cv2.selectROI("Frame", frame, fromCenter=False,
+    			showCrosshair=True)
 
-			# create a new object tracker for the bounding box and add it
-			# to our multi-object tracker
-			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-			trackers.add(tracker, frame, box)
-			print("Cutting board is set.")
+    		# create a new object tracker for the bounding box and add it
+    		# to our multi-object tracker
+    		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+    		trackers.add(tracker, frame, box)
+    		print("Stove is set.")
 
-			print("Please select the stove top.")
-			box = cv2.selectROI("Frame", frame, fromCenter=False,
-				showCrosshair=True)
+    		print("Please select the turn-it-in counter.")
+    		box = cv2.selectROI("Frame", frame, fromCenter=False,
+    			showCrosshair=True)
 
-			# create a new object tracker for the bounding box and add it
-			# to our multi-object tracker
-			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-			trackers.add(tracker, frame, box)
-			print("Stove is set.")
+    		# create a new object tracker for the bounding box and add it
+    		# to our multi-object tracker
+    		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+    		trackers.add(tracker, frame, box)
+    		print("Turn-it-in Counter is set.")
 
-			print("Please select the turn-it-in counter.")
-			box = cv2.selectROI("Frame", frame, fromCenter=False,
-				showCrosshair=True)
+    		print("Please select the player.")
+    		box = cv2.selectROI("Frame", frame, fromCenter=False,
+    			showCrosshair=True)
 
-			# create a new object tracker for the bounding box and add it
-			# to our multi-object tracker
-			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-			trackers.add(tracker, frame, box)
-			print("Turn-it-in Counter is set.")
+    		# create a new object tracker for the bounding box and add it
+    		# to our multi-object tracker
+    		tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
+    		trackers.add(tracker, frame, box)
+    		print("Player is set.")
 
-			print("Please select the player.")
-			box = cv2.selectROI("Frame", frame, fromCenter=False,
-				showCrosshair=True)
+    	init = False
 
-			# create a new object tracker for the bounding box and add it
-			# to our multi-object tracker
-			tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
-			trackers.add(tracker, frame, box)
-			print("Player is set.")
+    if key == ord("r"):
+    	init = True
+    	trackers.clear()
+    	trackers = cv2.MultiTracker_create()
+    	print("Trackers reset.")
 
-		init = False
+    # if the `q` key was pressed, break from the loop
+    if key == ord("q"):
+    	break
 
-	if key == ord("r"):
-		init = True
-		trackers.clear()
-		trackers = cv2.MultiTracker_create()
-		print("Trackers reset.")
-
-	# if the `q` key was pressed, break from the loop
-	if key == ord("q"):
-		break
-
-# if we are using a webcam, release the pointer
-if not args.get("video", False):
-	vs.stop()
-
-# otherwise, release the file pointer
-else:
-	vs.release()
-
-# close all windows
+# When everything done, release the capture
+vs.release()
 cv2.destroyAllWindows()
