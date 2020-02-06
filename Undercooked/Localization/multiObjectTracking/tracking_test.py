@@ -40,8 +40,6 @@ def checkDistances():
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-v", "--video", type=str,
-	help="path to input video file")
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
 	help="OpenCV object tracker type")
 ap.add_argument("-s", "--size", type=float, required=True,
@@ -64,14 +62,9 @@ ball_size = args["size"]
 trackers = cv2.MultiTracker_create()
 
 # if a video path was not supplied, grab the reference to the web cam
-if not args.get("video", False):
-	print("[INFO] starting video stream...")
-	vs = VideoStream(src=0).start()
-	time.sleep(1.0)
-
-# otherwise, grab a reference to the video file
-else:
-	vs = cv2.VideoCapture(args["video"])
+print("[INFO] starting video stream...")
+vs = cv2.VideoCapture(0)
+currentFrame = 0
 
 print("To start selecting objects, please press s.")
 init = True
@@ -79,8 +72,9 @@ init = True
 while True:
 	# grab the current frame, then handle if we are using a
 	# VideoStream or VideoCapture object
-	frame = vs.read()
-	frame = frame[1] if args.get("video", False) else frame
+	ret, frame = vs.read()
+	frame = cv2.flip(frame,1)
+    cv2.imshow(frame)
 
 	# check to see if we have reached the end of the stream
 	if frame is None:
@@ -172,6 +166,8 @@ while True:
 	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
 		break
+
+    currentFrame = currentFrame + 1
 
 # if we are using a webcam, release the pointer
 if not args.get("video", False):
