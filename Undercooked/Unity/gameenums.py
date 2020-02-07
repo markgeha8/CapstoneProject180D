@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 # This makes enums return their name instead of number
 class AutoName(Enum):
@@ -39,10 +39,7 @@ class Location(AutoName):
 
 # Voice Commands
 class VoiceCommand(AutoName):
-    CHOP = auto()
-    COOK = auto()
     PLATE = auto()
     SUBMIT = auto()
     TRASH = auto()
     NONE = auto()
-    INVALID = auto()
