@@ -10,7 +10,6 @@ currentPlayerLocation = Location.NONE
 currentVoiceCommand = VoiceCommand.NONE
 currentVoiceIngredient = Ingredient.NONE
 currentOrder = ""
-currentRecipe = list()
 currentPlate = list()
 points = 0
 
@@ -19,15 +18,37 @@ class ingredient():
         self.name = name
         self.status = status
         self.progress = progress
+    def __eq__(self,other):
+        return ((self.name == other.name) and (self.status == other.status) and (self.progress == other.progress))
 
 menu_to_recipe = {
-    MenuItem.SUSHI: [Ingredient.RICE, Ingredient.FISH, Ingredient.SEAWEED],
-    MenuItem.SALAD: [Ingredient.LETTUCE, Ingredient.TOMATO]
+    MenuItem.SUSHI: {
+        ingredient(Ingredient.RICE, IngredientStatus.COOKED, 10), 
+        ingredient(Ingredient.FISH, IngredientStatus.COOKED, 10), 
+        ingredient(Ingredient.SEAWEED, IngredientStatus.COOKED, 10)
+    },
+    MenuItem.SALAD: {
+        ingredient(Ingredient.LETTUCE, IngredientStatus.COOKED, 10), 
+        ingredient(Ingredient.TOMATO, IngredientStatus.COOKED, 10)
+    }
 }
 
-location_to_current_item = {
+location_to_current_ingredient = {
     Location.CUTTINGBOARD: None,
     Location.STOVE: None,
+}
+
+ingredient_to_valid_location = {
+    RICE: Location.STOVE,
+    FISH: Location.CUTTINGBOARD,
+    SEAWEED: Location.NONE,
+    LETTUCE: Location.CUTTINGBOARD,
+    TOMATO: Location.CUTTINGBOARD,
+}
+
+action_to_valid_ingredient = {
+    VoiceCommand.CHOP: {Ingredient.FISH, Ingredient.LETTUCE, Ingredient.TOMATO},
+    VoiceCommand.COOK: {Ingredient.RICE}
 }
 
 class TimeoutException(Exception):   # Custom exception class
@@ -37,9 +58,10 @@ def timeout_handler(signum, frame):  # Custom signal handler
 
 def SetupGame():
     global currentOrder = MenuItem.SUSHI
-    global currentRecipe = menu_to_recipe[currentOrder]
 
 def RunGame():
+    SetupGame()
+
     ip = get_ip_address('wlan0') #'172.20.10.5'
     print(ip)
     serv.bind((ip, 8080))
@@ -71,31 +93,68 @@ def gameLogic():
     global currentVoiceCommand
     global currentVoiceIngredient
     global currentOrder
-    global currentRecipe
     global currentPlate
     global points
 
     while true:
-        
-        switch (currentVoiceCommand) {
-            case VoiceCommand.CHOP:
-                # Put the Ingredient onto the cutting board to be chopped
-                # Update location_to_current_item
-            case VoiceCommand.COOK:
-                # Put the Ingredient into the pot to be cooked
-                # Update location_to_current_item
-            case VoiceCommand.PLATE:
-                # Put the Ingredient that is in proximity onto the plate
-                # update currentPlate
-            case VoiceCommand.TURNIN:
-                # Check currentPlate for matching with currentOrder, make sure all Ingredients are cooked and present
-                # And that the currentLocation of player is TURNINSTATION
-                # and determine points to be awarded
-                # update new currentOrder and currentRecipe
-            case VoiceCommand.TRASH:
-                # Throw out everything on the current plate
-                currentPlate.clear()
-        }
+        if currentVoiceCommand == VoiceCommand.CHOP:
+            # Put the Ingredient onto the cutting board to be chopped if valid Ingredient
+            if (
+                currentVoiceIngredient in action_to_valid_ingredient[VoiceCommand.CHOP] 
+                and currentPlayerLocation == Location.CUTTINGBOARD
+            ):
+                location_to_current_ingredient[Location.CUTTINGBOARD] = ingredient(currentVoiceIngredient, IngredientStatus.RAW, 0)
+
+            # Invalid action
+            else:
+                #TODO(Charlotte): Action is invalid, play farting noise or something
+        else if currentVoiceCommand == VoiceCommand.COOK:
+            # Put the Ingredient into the pot to be cooked if valid Ingredient and the player is in proximity to the location
+            if (
+                currentVoiceIngredient in action_to_valid_ingredient[VoiceCommand.COOK] 
+                and currentPlayerLocation == Location.STOVE
+            ):
+                location_to_current_ingredient[Location.STOVE] = ingredient(currentVoiceIngredient, IngredientStatus.RAW, 0)
+
+            # Invalid action
+            else:
+                #TODO(Charlotte): Action is invalid, play farting noise or something
+        else if (currentVoiceCommand == VoiceCommand.PLATE):
+            # Check if the ingredient exists and is cooked before allowing it to be plated
+            if (
+                location_to_current_ingredient[ingredient_to_valid_location[currentVoiceIngredient]] != None 
+                and location_to_current_ingredient[ingredient_to_valid_location[currentVoiceIngredient]].status == IngredientStatus.COOKED
+            ):
+                # Add the cooked ingredient to the plate
+                currentPlate.add(location_to_current_ingredient[ingredient_to_valid_location[currentVoiceIngredient]])
+                # Remove the cooked ingredient from the location it existed before
+                location_to_current_ingredient[ingredient_to_valid_location[currentVoiceIngredient]] = None
+
+            # This is an ingredient that doesn't need to be cooked beforehand and can be directly plated
+            else if ingredient_to_valid_location[currentVoiceIngredient] == Location.NONE:
+                # Create the ingredient and add it to the plate
+                currentPlate.add(ingredient(currentVoiceIngredient, IngredientStatus.COOKED, 10))
+
+            # Invalid action
+            else:
+                #TODO(Charlotte): Action is invalid, play farting noise or something
+
+        else if currentVoiceCommand == VoiceCommand.SUBMIT:
+                # Check that the currentLocation of player is SUBMITSTATION
+                if currentPlayerLocation == Location.SUBMITSTATION:
+                    # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
+                    if currentPlate == menu_to_recipe[currentOrder]:
+                        points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
+                    else if currentPlate != menu_to_recipe[currentOrder]:
+                        points -= 2
+
+                    # clear the currentPlate and update new currentOrder
+                    currentPlate.clear()
+                    currentOrder = MenuItem.SUSHI #TODO(Charlotte): randomly choose a MenuItem
+
+        else if currentVoiceCommand == VoiceCommand.TRASH:
+            # Throw out everything on the current plate
+            currentPlate.clear()
 
         switch (currentGesture) {
             case Gesture.CHOP:
@@ -109,7 +168,7 @@ def gameLogic():
         }
 
 def gestureProcessing():
-    #TODO: Bennett, use the game-enums.py file to grab the gesture enum to send to me.
+    #TODO(Bennett): use the game-enums.py file to grab the gesture enum to send to me.
     global currentGesture
     
     while True:
@@ -123,15 +182,13 @@ def gestureProcessing():
         currentGesture = data.decode()
 
 def imageRecognition():
-    #TODO: Mark put your stuff here. Set the currentPlayerLocation global to something
+    #TODO(Mark): Set the currentPlayerLocation global to something
     global currentPlayerLocation
 
 def voiceRecognition():
-    #TODO: Wendy put your stuff here. Set the currentVoiceCommand global to something
-    # For CHOP, COOK, and PLATE this will be VoiceCommand + Ingredient
-    # For TURNIN, TRASH, and NONE this will just be VoiceCommand
-    global currentVoiceCommand
-    global currentVoiceIngredient
+    #TODO(Wendy): Set the currentVoiceCommand global to something
+    # For PLATE, SUBMIT, TRASH, and NONE this will just be VoiceCommand
+    global transcript
 
 if __name__ == "__main__":
     signal.alarm(120)

@@ -29,13 +29,12 @@ class Ingredient(AutoName):
 class IngredientStatus(AutoName):
     RAW = auto()
     COOKED = auto()
-    PLATED = auto()
 
 # Locations
 class Location(AutoName):
     CUTTINGBOARD = auto()
     STOVE = auto()
-    TURNINSTATION = auto()
+    SUBMITSTATION = auto()
     NONE = auto()
 
 # Voice Commands
@@ -43,6 +42,7 @@ class VoiceCommand(AutoName):
     CHOP = auto()
     COOK = auto()
     PLATE = auto()
-    TURNIN = auto()
+    SUBMIT = auto()
     TRASH = auto()
     NONE = auto()
+    INVALID = auto()
