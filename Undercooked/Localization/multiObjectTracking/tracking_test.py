@@ -1,5 +1,4 @@
-#Base code found on https://www.pyimagesearch.com/2018/08/06/tracking-multiple-objects-with-opencv/ 
-#and https://gist.github.com/keithweaver/5bd13f27e2cc4c4b32f9c618fe0a7ee5
+#Base code found on https://www.pyimagesearch.com/2018/08/06/tracking-multiple-objects-with-opencv/
 #Updated for our own game usage.
 
 # USAGE
