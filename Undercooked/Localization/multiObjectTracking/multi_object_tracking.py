@@ -1,5 +1,6 @@
 #Base code found on https://www.pyimagesearch.com/2018/08/06/tracking-multiple-objects-with-opencv/ 
 #and https://gist.github.com/keithweaver/5bd13f27e2cc4c4b32f9c618fe0a7ee5
+#and https://stackoverflow.com/questions/49663474/opencv-python-cv2-videocapture-can-only-find-2-of-3-cameras-windows-camera-app
 #Updated for our own game usage.
 
 # USAGE
