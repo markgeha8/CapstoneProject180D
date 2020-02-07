@@ -1,0 +1,2 @@
+Do not run the main code without getting the .json file from me.
+I get a security breach issue when uploading it to GitHub so I just removed and put it on my Desktop.
