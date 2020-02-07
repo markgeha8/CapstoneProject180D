@@ -67,7 +67,7 @@ def RunGame():
     SetupGame()
 
     global serv 
-    serv.bind(('172.20.10.12', 8080))
+    serv.bind(('172.20.10.6', 8080))
 
     # create threads
     t1 = threading.Thread(target=imageRecognition, args=()) 
@@ -191,7 +191,7 @@ def voiceRecognition():
     global transcript
 
 if __name__ == "__main__":
-    signal.alarm(120)
+    #signal.alarm(120)
     try:
         RunGame()
     except TimeoutException:

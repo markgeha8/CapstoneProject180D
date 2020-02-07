@@ -97,6 +97,15 @@ def updateLocation():
 	else:
 		currentPlayerLocation = Location.NONE
 
+	if(currentPlayerLocation == Location.CUTTINGBOARD):
+		print("Cutting Board")
+	elif(currentPlayerLocation == Location.STOVE):
+		print("Stove")
+	elif(currentPlayerLocation == Location.SUBMITSTATION):
+		print("Submit Station")
+	else:
+		print("None")
+
 def parseArgument():
 	global ball_size
 	global args
