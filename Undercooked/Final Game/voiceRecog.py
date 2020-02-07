@@ -13,18 +13,22 @@ import sys
 
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/qz/Desktop/key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "Undercooked-90c83dcc7c9c.json"
 
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 import pyaudio
 from six.moves import queue
+from gameenums import VoiceCommand, Ingredient
+import threading
 
 # Audio recording parameters
+global transcript
+currentVoice = VoiceCommand.NONE
+newVoice = False
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
-global transcript 
 
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
@@ -90,6 +94,11 @@ class MicrophoneStream(object):
 
             yield b''.join(data)
 
+def setVoice(trofa):
+    global newVoice
+
+    newVoice = trofa
+
 def listen_print_loop(responses, num):
     """Iterates through server responses and prints them.
 
@@ -105,6 +114,7 @@ def listen_print_loop(responses, num):
     the next result to overwrite it, until the response is a final one. For the
     final one, print a newline to preserve the finalized transcription.
     """
+
     num_chars_printed = 0
     for response in responses:
         if not response.results:
@@ -138,21 +148,45 @@ def listen_print_loop(responses, num):
             print()
 
         else:
-            print(transcript + overwrite_chars)
+            spokenWord = transcript + overwrite_chars
+            if(spokenWord == "plate" or spokenWord == " plate"):
+                tempVoice = VoiceCommand.PLATE
+            elif(spokenWord == "submit" or spokenWord == " submit"):
+                tempVoice = VoiceCommand.SUBMIT
+            elif(spokenWord == "trash" or spokenWord == " trash"):
+                tempVoice = VoiceCommand.TRASH
+            elif(spokenWord == "rice" or spokenWord == " rice"):
+                tempVoice = Ingredient.RICE
+            elif(spokenWord == "fish" or spokenWord == " fish"):
+                tempVoice = Ingredient.FISH
+            elif(spokenWord == "seaweed" or spokenWord == " seaweed"):
+                tempVoice = Ingredient.SEAWEED
+            elif(spokenWord == "lettuce" or spokenWord == " lettuce"):
+                tempVoice = Ingredient.LETTUCE
+            elif(spokenWord == "tomato" or spokenWord == " tomato"):
+                tempVoice = Ingredient.TOMATO
+            else:
+                tempVoice = VoiceCommand.NONE
+            
+            setCurrentVoice(tempVoice)
+            setVoice(True)
+
+            
 
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
             if re.search(r'\b(exit|quit)\b', transcript, re.I):
                 print('Exiting..')
                 break
-
+            
             num_chars_printed = 0
             
        
-            
-def main():
+def RunVoice():
     # See http://g.co/cloud/speech/docs/languages
     # for a list of supported languages.
+    global currentVoice
+
     language_code = 'en-US'  # a BCP-47 language tag
 
     client = speech.SpeechClient()
@@ -173,9 +207,15 @@ def main():
         responses = client.streaming_recognize(streaming_config, requests)
         
         num = num+1
-        print('num=', num)
+        #print('num=', num)
         # Now, put the transcription responses to use.
+        
         listen_print_loop(responses,num)
 
+def setCurrentVoice(tempVoice):
+    global currentVoice
+
+    currentVoice = tempVoice
+
 if __name__ == '__main__':
-    main()
+    RunVoice()

@@ -97,15 +97,6 @@ def updateLocation():
 	else:
 		currentPlayerLocation = Location.NONE
 
-	if(currentPlayerLocation == Location.CUTTINGBOARD):
-		print("Cutting Board")
-	elif(currentPlayerLocation == Location.STOVE):
-		print("Stove")
-	elif(currentPlayerLocation == Location.SUBMITSTATION):
-		print("Submit Station")
-	else:
-		print("None")
-
 def parseArgument():
 	global ball_size
 	global args
@@ -113,7 +104,7 @@ def parseArgument():
 	ap = argparse.ArgumentParser()
 	ap.add_argument("-t", "--tracker", type=str, default="kcf",
 		help="OpenCV object tracker type")
-	ap.add_argument("-s", "--size", type=float, required=True,
+	ap.add_argument("-s", "--size", type=float, default=3,
 		help="size of the balls")
 	args = vars(ap.parse_args())
 	ball_size = args["size"]
@@ -123,6 +114,7 @@ def startTracker():
 	global pixel_size
 	global ball_size
 	global args
+	global isPlayerCloseEnough
 
 	trackers = cv2.MultiTracker_create()
 
@@ -241,6 +233,7 @@ def startTracker():
 
 		if key == ord("r"):
 			init = True
+			isPlayerCloseEnough = [False, False, False]
 			trackers.clear()
 			trackers = cv2.MultiTracker_create()
 			print("Trackers reset.")
@@ -253,13 +246,26 @@ def startTracker():
 	vs.release()
 	cv2.destroyAllWindows()
 
-def runCode():
+def RunTracker():
+	global x
+	global y
+	global w
+	global h
+	global min_distance
+	global playerDistances
+	global name
+	global pixel_size
+	global isPlayerCloseEnough
+	global currentPlayerLocation
+	global OPENCV_OBJECT_TRACKERS
+	global args
+	
 	parseArgument()
 	initializeVariables()
 	startTracker()
 
 if __name__ == "__main__":
-	runCode()
+	RunTracker()
 
 # initialize a dictionary that maps strings to their corresponding
 # OpenCV object tracker implementations

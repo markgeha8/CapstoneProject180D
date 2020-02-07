@@ -4,15 +4,15 @@ import numpy as np
 import time
 import signal
 from enum import Enum
-from gameenums import *
-from localization import *
+from gameenums import Gesture, Location, VoiceCommand, MenuItem, Ingredient, IngredientStatus
+import localization 
+import voiceRecog
 
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 currentGesture = Gesture.NONE
-currentPlayerLocation = Location.NONE
-transcript = ""
 currentOrder = ""
+currentVoice = VoiceCommand.NONE
 currentPlate = list()
 points = 0
 
@@ -92,52 +92,82 @@ def RunGame():
 
 def gameLogic():
     global currentGesture
-    global currentPlayerLocation
-    global transcript
     global currentOrder
+    global currentVoice
     global currentPlate
     global points
 
     while True:
-        if ingredient_to_valid_location.get(transcript, Location.NONE) == Location.STOVE:
+        if(voiceRecog.newVoice):
+            currentVoice = voiceRecog.currentVoice
+            voiceRecog.setVoice(False)
+            print(str(currentVoice))
+
+        if(False):
+            if(localization.currentPlayerLocation == Location.CUTTINGBOARD):
+                print("Cutting board")
+            elif(localization.currentPlayerLocation == Location.STOVE):
+                print("Stove")
+            elif(localization.currentPlayerLocation == Location.SUBMITSTATION):
+                print("Submit Station")
+
+        if(True):
+            if(currentVoice == VoiceCommand.PLATE):
+                print("Commanding plate")
+            elif(currentVoice == VoiceCommand.SUBMIT):
+                print("Commanding submit")
+            elif(currentVoice == VoiceCommand.TRASH):
+                print("Commanding trash")
+            elif(currentVoice == Ingredient.RICE):
+                print("Ordering rice")
+            elif(currentVoice == Ingredient.FISH):
+                print("Ordering fish")
+            elif(currentVoice == Ingredient.SEAWEED):
+                print("Ordering seaweed")
+            elif(currentVoice == Ingredient.LETTUCE):
+                print("Ordering lettuce")
+            elif(currentVoice == Ingredient.TOMATO):
+                print("Ordering tomato")
+
+        if ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.STOVE:
             # Put the Ingredient into the pot to be cooked if valid Ingredient and the player is in proximity to the location
-            if (currentPlayerLocation == Location.STOVE):
-                location_to_current_ingredient[Location.STOVE] = ingredient(transcript, IngredientStatus.RAW, 0)
+            if (localization.currentPlayerLocation == Location.STOVE):
+                location_to_current_ingredient[Location.STOVE] = ingredient(currentVoice, IngredientStatus.RAW, 0)
 
             # Invalid action
             else:
                 #TODO(Charlotte): Action is invalid, play farting noise or something
-                print("sheet")
+                print("Sorry you cannot do that")
 
-        elif ingredient_to_valid_location.get(transcript, Location.NONE) == Location.CUTTINGBOARD:
+        elif ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.CUTTINGBOARD:
             # Put the Ingredient onto the cutting board to be chopped if valid Ingredient
-            if (currentPlayerLocation == Location.CUTTINGBOARD):
-                location_to_current_ingredient[Location.CUTTINGBOARD] = ingredient(transcript, IngredientStatus.RAW, 0)
+            if (localization.currentPlayerLocation == Location.CUTTINGBOARD):
+                location_to_current_ingredient[Location.CUTTINGBOARD] = ingredient(currentVoice, IngredientStatus.RAW, 0)
 
             # Invalid action
             else:
                 #TODO(Charlotte): Action is invalid, play farting noise or something
-                print("sheet")
+                print("Sorry you cannot do that")
 
-        elif (transcript == VoiceCommand.PLATE):
+        elif (currentVoice == VoiceCommand.PLATE):
             # Check if the ingredient exists and is cooked before allowing it to be plated
             if (
-                location_to_current_ingredient.get(currentPlayerLocation, Location.NONE) != Location.NONE
-                and location_to_current_ingredient[currentPlayerLocation].status == IngredientStatus.COOKED
+                location_to_current_ingredient.get(localization.currentPlayerLocation, Location.NONE) != Location.NONE
+                and location_to_current_ingredient[localization.currentPlayerLocation].status == IngredientStatus.COOKED
             ):
                 # Add the cooked ingredient to the plate
-                currentPlate.append(location_to_current_ingredient[currentPlayerLocation])
+                currentPlate.append(location_to_current_ingredient[localization.currentPlayerLocation])
                 # Remove the cooked ingredient from the location it existed before
-                location_to_current_ingredient[currentPlayerLocation] = None
+                location_to_current_ingredient[localization.currentPlayerLocation] = None
 
             # Invalid action
             else:
                 #TODO(Charlotte): Action is invalid, play farting noise or something
-                print("sheet")
+                print("Sorry you cannot do that")
 
-        elif (transcript == VoiceCommand.SUBMIT):
+        elif (currentVoice == VoiceCommand.SUBMIT):
                 # Check that the currentLocation of player is SUBMITSTATION
-                if currentPlayerLocation == Location.SUBMITSTATION:
+                if localization.currentPlayerLocation == Location.SUBMITSTATION:
                     # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
                     if currentPlate == menu_to_recipe[currentOrder]:
                         points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
@@ -148,29 +178,30 @@ def gameLogic():
                     currentPlate.clear()
                     currentOrder = MenuItem.SUSHI #TODO(Charlotte): randomly choose a MenuItem
 
-        elif (transcript == VoiceCommand.TRASH):
+        elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
             currentPlate.clear()
 
         if (
-            (currentGesture == Gesture.CHOP and currentPlayerLocation == Location.CUTTINGBOARD)
-            or (currentGesture == Gesture.COOK and currentPlayerLocation == Location.STOVE)
+            (currentGesture == Gesture.CHOP and localization.currentPlayerLocation == Location.CUTTINGBOARD)
+            or (currentGesture == Gesture.COOK and localization.currentPlayerLocation == Location.STOVE)
         ):
             if (
-                location_to_current_ingredient[currentPlayerLocation] != None
-                and location_to_current_ingredient[currentPlayerLocation].Status == IngredientStatus.RAW
+                location_to_current_ingredient[localization.currentPlayerLocation] != None
+                and location_to_current_ingredient[localization.currentPlayerLocation].Status == IngredientStatus.RAW
             ):
-                location_to_current_ingredient[currentPlayerLocation].progress += 1
+                location_to_current_ingredient[localization.currentPlayerLocation].progress += 1
 
-                if (location_to_current_ingredient[currentPlayerLocation].progress >= 10):
-                    location_to_current_ingredient[currentPlayerLocation].status = IngredientStatus.COOKED
+                if (location_to_current_ingredient[localization.currentPlayerLocation].progress >= 10):
+                    location_to_current_ingredient[localization.currentPlayerLocation].status = IngredientStatus.COOKED
 
-        print(points)
+        currentVoice = VoiceCommand.NONE
+        #print(points)
 
 def gestureProcessing():
     #TODO(Bennett): use the game-enums.py file to grab the gesture enum to send to me.
     global currentGesture
-    
+    tempGesture = ""
     while True:
         try:
             data, _ = serv.recvfrom(4096)
@@ -179,16 +210,20 @@ def gestureProcessing():
         if not data:
             currentGesture = Gesture.NONE
             continue
-        currentGesture = data.decode()
+        tempGesture = data.decode()
+
+        if(tempGesture == "chop"):
+            currentGesture = Gesture.CHOP
+        elif(tempGesture == "cook"):
+            currentGesture = Gesture.CHOP
+        else:
+            currentGesture = Gesture.NONE
 
 def imageRecognition():
-    global currentPlayerLocation
-    runCode()
+    localization.RunTracker()
 
 def voiceRecognition():
-    #TODO(Wendy): Set the currentVoiceCommand global to something
-    # For PLATE, SUBMIT, TRASH, and NONE this will just be VoiceCommand
-    global transcript
+    voiceRecog.RunVoice()
 
 if __name__ == "__main__":
     #signal.alarm(120)
