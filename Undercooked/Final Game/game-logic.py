@@ -5,6 +5,7 @@ import time
 import signal
 from enum import Enum
 from gameenums import *
+from localization import *
 
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -101,7 +102,7 @@ def gameLogic():
         if ingredient_to_valid_location.get(transcript, Location.NONE) == Location.STOVE:
             # Put the Ingredient into the pot to be cooked if valid Ingredient and the player is in proximity to the location
             if (currentPlayerLocation == Location.STOVE):
-                location_to_current_ingredient[Location.STOVE] = ingredient(currentVoiceIngredient, IngredientStatus.RAW, 0)
+                location_to_current_ingredient[Location.STOVE] = ingredient(transcript, IngredientStatus.RAW, 0)
 
             # Invalid action
             else:
@@ -125,7 +126,7 @@ def gameLogic():
                 and location_to_current_ingredient[currentPlayerLocation].status == IngredientStatus.COOKED
             ):
                 # Add the cooked ingredient to the plate
-                currentPlate.add(location_to_current_ingredient[currentPlayerLocation])
+                currentPlate.append(location_to_current_ingredient[currentPlayerLocation])
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[currentPlayerLocation] = None
 
@@ -156,13 +157,13 @@ def gameLogic():
             or (currentGesture == Gesture.COOK and currentPlayerLocation == Location.STOVE)
         ):
             if (
-                location_to_current_item[currentPlayerLocation] != None
-                and location_to_current_item[currentPlayerLocation].Status == IngredientStatus.RAW
+                location_to_current_ingredient[currentPlayerLocation] != None
+                and location_to_current_ingredient[currentPlayerLocation].Status == IngredientStatus.RAW
             ):
-                location_to_current_item[currentPlayerLocation].progress += 1
+                location_to_current_ingredient[currentPlayerLocation].progress += 1
 
-                if (location_to_current_item[currentPlayerLocation].progress >= 10):
-                    location_to_current_item[currentPlayerLocation].status = IngredientStatus.COOKED
+                if (location_to_current_ingredient[currentPlayerLocation].progress >= 10):
+                    location_to_current_ingredient[currentPlayerLocation].status = IngredientStatus.COOKED
 
         print(points)
 
@@ -181,8 +182,8 @@ def gestureProcessing():
         currentGesture = data.decode()
 
 def imageRecognition():
-    #TODO(Mark): Set the currentPlayerLocation global to something
     global currentPlayerLocation
+    runCode()
 
 def voiceRecognition():
     #TODO(Wendy): Set the currentVoiceCommand global to something
