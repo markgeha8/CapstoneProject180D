@@ -226,7 +226,7 @@ def voiceRecognition():
     voiceRecog.RunVoice()
 
 if __name__ == "__main__":
-    #signal.alarm(120)
+    #signal.alarm(120)    #POTENTIAL FIX https://stackoverflow.com/questions/20775624/end-python-code-after-60-seconds?noredirect=1&lq=1
     try:
         RunGame()
     except TimeoutException:
