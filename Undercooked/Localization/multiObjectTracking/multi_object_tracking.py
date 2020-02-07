@@ -65,10 +65,20 @@ trackers = cv2.MultiTracker_create()
 # if a video path was not supplied, grab the reference to the web cam
 print("[INFO] starting video stream...")
 
-vs = cv2.VideoCapture(0)
+cams_test = 500
+findCamera = False
+i = 0
+while(i < cams_test and (not(findCamera))):
+	vs = cv2.VideoCapture(i)
+	test, frame = vs.read()
+	if (test and (not(i == 0))):
+		print("i = ", str(i), " /// result: ", str(test))
+		findCamera = True
+	i = i + 1
 
 currentFrame = 0
 
+print("Please press 's' to begin selecting objects for game.")
 init = True
 while(True):
     # Capture frame-by-frame
