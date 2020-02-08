@@ -41,6 +41,7 @@ while truth == True:
             send_data = "cook"
 
     client.sendto(send_data.encode(), ('192.168.1.182',8080))
+    print(send_data)
     send_data = "none"
     time.sleep(0.175)
 
