@@ -112,7 +112,7 @@ def gameLogic():
             elif(localization.currentPlayerLocation == Location.SUBMITSTATION):
                 print("Submit Station")
 
-        if(False): #Debugging Voice
+        if(True): #Debugging Voice
             if(currentVoice == VoiceCommand.PLATE):
                 print("Commanding plate")
             elif(currentVoice == VoiceCommand.SUBMIT):
@@ -130,7 +130,7 @@ def gameLogic():
             elif(currentVoice == Ingredient.TOMATO):
                 print("Ordering tomato")
 
-        if(True): #Debugging Gesture
+        if(False): #Debugging Gesture
             if(currentGesture == Gesture.CHOP):
                 print("Chopping")
             elif(currentGesture == Gesture.COOK):

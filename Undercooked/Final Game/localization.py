@@ -124,12 +124,15 @@ def startTracker():
 	cams_test = 500
 	findCamera = False
 	i = 0
+	count = 0
 	while(i < cams_test and (not(findCamera))):
 		vs = cv2.VideoCapture(i)
 		test, frame = vs.read()
-		if (test and (not(i == 0))):
+		if (test):
 			print("i = ", str(i), " /// result: ", str(test))
-			findCamera = True
+			if(count == 0):
+				findCamera = True
+			count = count + 1
 		i = i + 1
 
 	currentFrame = 0

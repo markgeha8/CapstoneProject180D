@@ -11,4 +11,4 @@ client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 while True:
-    client.sendto(send_data.encode(), ('192.168.1.182',8080))
+    client.sendto(send_data.encode(), ('172.20.10.6',8080))
