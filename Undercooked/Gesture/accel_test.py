@@ -17,6 +17,7 @@ start = time.time()
 send_data = "none"
 
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(send_data.encode(), ('192.168.1.182',8080))
 
 
 while truth == True:
@@ -46,7 +47,8 @@ while truth == True:
         cook = False
 
     client.sendto(send_data.encode(), ('192.168.1.182',8080))
-
+    send_data = "none"
+    time.sleep(0.175)
 
 
     """
@@ -104,5 +106,3 @@ while truth == True:
         truth = false
 
         """
-    send_data = "none"
-    time.sleep(0.175)
