@@ -1,5 +1,4 @@
 import time
-import IMU
 import socket
 from socket import AF_INET, SOCK_DGRAM
 import threading
