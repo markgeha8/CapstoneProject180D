@@ -107,4 +107,4 @@ while truth == True:
 
         """
 
-    time.sleep(0.35)
+    time.sleep(0.175)
