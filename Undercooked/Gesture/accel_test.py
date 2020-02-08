@@ -2,6 +2,7 @@ import time
 import IMU
 import socket
 from socket import AF_INET, SOCK_DGRAM
+import threading
 
 IMU.detectIMU()#Detect if BerryIMUv1 or BerryIMUv2 is connected.
 IMU.initIMU()#Initialise the accelerometer, gyroscope and compass
@@ -21,30 +22,50 @@ send_data = "chop"
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client.sendto(send_data.encode(), ('192.168.1.182',8080))
 
+def getGesture():
+    global send_data
+    global IMU
 
-while truth == True:
-    ACCx = IMU.readACCx()*.244/1000
-    ACCy = IMU.readACCy()*.244/1000
-    ACCz = IMU.readACCz()*.244/1000
-    print("X = "+str(ACCx)+"G     "+"Y = "+str(ACCy)+"G     "+"Z = "+str(ACCz)+"G     ")
-    print("Time is: " +str(time.time() - start))
+    while True:
+        ACCx = IMU.readACCx()*.244/1000
+        ACCy = IMU.readACCy()*.244/1000
+        ACCz = IMU.readACCz()*.244/1000
+        print("X = "+str(ACCx)+"G     "+"Y = "+str(ACCy)+"G     "+"Z = "+str(ACCz)+"G     ")
+        print("Time is: " +str(time.time() - start))
 
 
-    if ((ACCx>2) or (ACCy>2)):
-        if ACCy>ACCx:
-            print("cutting motion detected")
-            #cut_num = cut_num+1
-            send_data = "chop"
-        if ACCx>ACCy:
-            print("cooking motion detected")
-            #cook_num = cook_num+1
-            send_data = "cook"
+        if ((ACCx>2) or (ACCy>2)):
+            if ACCy>ACCx:
+                print("cutting motion detected")
+                #cut_num = cut_num+1
+                send_data = "chop"
+            elif ACCx>ACCy:
+                print("cooking motion detected")
+                #cook_num = cook_num+1
+                send_data = "cook"
+            else:
+                send_data = "none"
 
-    client.sendto(send_data.encode(), ('192.168.1.182',8080))
-    print(send_data)
-    send_data = "none"
-    time.sleep(0.175)
+def sendGesture():
+    global send_data
 
+    while True:
+        client.sendto(send_data.encode(), ('192.168.1.182',8080))
+        print(send_data)
+        send_data = "none"
+        time.sleep(0.175)
+
+if __name__ == '__main__':
+    t1 = threading.Thread(target=getGesture, args=()) 
+    t2 = threading.Thread(target=sendGesture, args=())
+
+    t1.start()
+    t2.start()
+
+    t1.join()
+    t2.join()
+
+    print("Done!")
 
     """
     #initial detection
