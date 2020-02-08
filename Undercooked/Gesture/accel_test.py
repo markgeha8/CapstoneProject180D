@@ -45,6 +45,7 @@ def getGesture():
                 send_data = "cook"
             else:
                 send_data = "none"
+        time.sleep(0.175)
 
 def sendGesture():
     global send_data
@@ -55,8 +56,9 @@ def sendGesture():
         send_data = "none"
         time.sleep(0.175)
 
+
 if __name__ == '__main__':
-    t1 = threading.Thread(target=getGesture, args=()) 
+    t1 = threading.Thread(target=getGesture, args=())
     t2 = threading.Thread(target=sendGesture, args=())
 
     t1.start()
