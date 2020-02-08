@@ -37,8 +37,6 @@ while truth == True:
             cook_num = cook_num+1
             cook = True
 
-
-
     if(cut == True):
         send_data = "chop"
         cut = False
@@ -106,5 +104,5 @@ while truth == True:
         truth = false
 
         """
-
+    send_data = ""
     time.sleep(0.175)
