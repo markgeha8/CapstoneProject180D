@@ -27,7 +27,7 @@ while truth == True:
     print("Time is: " +str(time.time() - start))
 
 
-    if ((ACCx>6) or (ACCy>6)):
+    if ((ACCx>4.5) or (ACCy>4.5)):
         if ACCy>ACCx:
             print("cutting motion detected")
             cut_num = cut_num+1
