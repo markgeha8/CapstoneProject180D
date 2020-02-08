@@ -47,7 +47,7 @@ while truth == True:
         send_data = "cook"
         cook = False
 
-    client.sendto(send_data.encode(), ('172.20.10.6',8080))
+    client.sendto(send_data.encode(), ('192.168.1.182',8080))
 
 
 
