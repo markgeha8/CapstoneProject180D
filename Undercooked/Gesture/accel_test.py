@@ -50,7 +50,7 @@ def sendGesture():
     global send_data
 
     while True:
-        client.sendto(send_data.encode(), ('192.168.1.182',8080))
+        client.sendto(send_data.encode(), ('172.20.10.6',8080))
         print(send_data)
         send_data = "none"
         time.sleep(0.175)

@@ -171,8 +171,6 @@ def listen_print_loop(responses, num):
             setCurrentVoice(tempVoice)
             setVoice(True)
 
-            
-
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
             if re.search(r'\b(exit|quit)\b', transcript, re.I):

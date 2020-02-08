@@ -10,6 +10,8 @@ import voiceRecog
 
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+serv.settimeout(10)
+
 currentGesture = Gesture.NONE
 currentOrder = ""
 currentVoice = VoiceCommand.NONE
@@ -66,8 +68,7 @@ def SetupGame():
 def RunGame():
     SetupGame()
 
-    global serv 
-    serv.bind(('172.20.10.6', 8080))
+    global serv
 
     # create threads
     t1 = threading.Thread(target=imageRecognition, args=()) 
@@ -209,11 +210,12 @@ def gameLogic():
 def gestureProcessing():
     #TODO(Bennett): use the game-enums.py file to grab the gesture enum to send to me.
     global currentGesture
-    tempGesture = ""
     while True:
+        tempGesture = ""
         try:
             data, _ = serv.recvfrom(4096)
         except socket.timeout:
+            print("Timeout without connecting to Client")
             continue
         if not data:
             currentGesture = Gesture.NONE
@@ -221,8 +223,10 @@ def gestureProcessing():
         tempGesture = data.decode()
 
         if(tempGesture == "chop"):
+            print("Chop")
             currentGesture = Gesture.CHOP
         elif(tempGesture == "cook"):
+            print("Cook")
             currentGesture = Gesture.COOK
         else:
             currentGesture = Gesture.NONE
@@ -235,6 +239,9 @@ def voiceRecognition():
 
 if __name__ == "__main__":
     #signal.alarm(120)    #POTENTIAL FIX https://stackoverflow.com/questions/20775624/end-python-code-after-60-seconds?noredirect=1&lq=1
+    
+    serv.bind(('172.20.10.6', 8080))
+
     try:
         RunGame()
     except TimeoutException:
