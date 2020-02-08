@@ -14,7 +14,7 @@ near_stove = False
 start = 0
 md = False
 start = time.time()
-send_data = ""
+send_data = "none"
 
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -104,5 +104,5 @@ while truth == True:
         truth = false
 
         """
-    send_data = ""
+    send_data = "none"
     time.sleep(0.175)
