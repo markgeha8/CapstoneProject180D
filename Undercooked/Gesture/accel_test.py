@@ -1,5 +1,6 @@
 import time
 import IMU
+import socket
 IMU.detectIMU()#Detect if BerryIMUv1 or BerryIMUv2 is connected.
 IMU.initIMU()#Initialise the accelerometer, gyroscope and compass
 truth = True
@@ -13,7 +14,9 @@ near_stove = False
 start = 0
 md = False
 start = time.time()
+send_data = ""
 
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 while truth == True:
@@ -23,6 +26,33 @@ while truth == True:
     print("X = "+str(ACCx)+"G     "+"Y = "+str(ACCy)+"G     "+"Z = "+str(ACCz)+"G     ")
     print("Time is: " +str(time.time() - start))
 
+
+    initial detection
+    if ((ACCx>6) or (ACCy>6)):
+        if ACCy>ACCx:
+            print("cutting motion detected")
+            cut_num = cut_num+1
+            cut = True
+        if ACCx>ACCy:
+            print("cooking motion detected")
+            cook_num = cook_num+1
+            cook = True
+
+
+
+    if(cut == True):
+        send_data = "chop"
+        cut = False
+
+    if(cook == True):
+        send_data = "cook"
+        cook = False
+
+    client.sendto(send_data.encode(), ('172.20.10.6',8080))
+
+
+
+    """
     #initial detection
     if ((ACCx>5) or (ACCy>5)) and (md==False) and (cut==False) and (cook==False):
         if ACCy>5 and md == False:
@@ -38,9 +68,11 @@ while truth == True:
 
     #Cutting - must cut 10 motions to be done
     if (cut == True) and (time.time()-start < 6):
-        if ACCy>5:
-            cut_num = cut_num+1
-            print("cutting motion detected" + str(cut_num) + "/10")
+        if ACCy>6:
+            #cut_num = cut_num+1
+            print("chop")
+            send_data = "chop"
+
         if cut_num == 10:
             print("ingredient cut")
             start = time.time()
@@ -74,6 +106,6 @@ while truth == True:
         print("took too long")
         truth = false
 
-
+        """
 
     time.sleep(0.03)
