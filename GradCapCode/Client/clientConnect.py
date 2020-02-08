@@ -64,7 +64,7 @@ def establishServerConnections():
     while True:
         #Test print of IP address
         ip = get_ip_address('wlan0')
-        
+
         while(connect):
             input("Press Enter to connect...")
             connectToToken()
