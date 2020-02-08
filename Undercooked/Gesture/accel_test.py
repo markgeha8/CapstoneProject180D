@@ -27,7 +27,6 @@ while truth == True:
     print("Time is: " +str(time.time() - start))
 
 
-    initial detection
     if ((ACCx>6) or (ACCy>6)):
         if ACCy>ACCx:
             print("cutting motion detected")
