@@ -33,20 +33,12 @@ while truth == True:
     if ((ACCx>2) or (ACCy>2)):
         if ACCy>ACCx:
             print("cutting motion detected")
-            cut_num = cut_num+1
-            cut = True
+            #cut_num = cut_num+1
+            send_data = "chop"
         if ACCx>ACCy:
             print("cooking motion detected")
-            cook_num = cook_num+1
-            cook = True
-
-    if(cut == True):
-        send_data = "chop"
-        cut = False
-
-    if(cook == True):
-        send_data = "cook"
-        cook = False
+            #cook_num = cook_num+1
+            send_data = "cook"
 
     client.sendto(send_data.encode(), ('192.168.1.182',8080))
     send_data = "none"
