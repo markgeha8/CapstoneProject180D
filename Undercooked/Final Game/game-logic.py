@@ -134,8 +134,8 @@ def gameLogic():
                 print("Chopping")
             elif(currentGesture == Gesture.COOK):
                 print("Cooking")
-            elif(currentGesture == Gesture.NONE):
-                print("Not doing anything")
+            #elif(currentGesture == Gesture.NONE):
+            #    print("Not doing anything")
 
         if ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.STOVE:
             # Put the Ingredient into the pot to be cooked if valid Ingredient and the player is in proximity to the location
