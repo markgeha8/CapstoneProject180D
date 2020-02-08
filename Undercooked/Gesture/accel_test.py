@@ -1,6 +1,8 @@
 import time
 import IMU
 import socket
+from socket import AF_INET, SOCK_DGRAM
+
 IMU.detectIMU()#Detect if BerryIMUv1 or BerryIMUv2 is connected.
 IMU.initIMU()#Initialise the accelerometer, gyroscope and compass
 truth = True
