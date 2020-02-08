@@ -103,7 +103,7 @@ def gameLogic():
             voiceRecog.setVoice(False)
             print(str(currentVoice))
 
-        if(False):
+        if(False): #Debugging Localization
             if(localization.currentPlayerLocation == Location.CUTTINGBOARD):
                 print("Cutting board")
             elif(localization.currentPlayerLocation == Location.STOVE):
@@ -111,7 +111,7 @@ def gameLogic():
             elif(localization.currentPlayerLocation == Location.SUBMITSTATION):
                 print("Submit Station")
 
-        if(True):
+        if(False): #Debugging Voice
             if(currentVoice == VoiceCommand.PLATE):
                 print("Commanding plate")
             elif(currentVoice == VoiceCommand.SUBMIT):
@@ -128,6 +128,14 @@ def gameLogic():
                 print("Ordering lettuce")
             elif(currentVoice == Ingredient.TOMATO):
                 print("Ordering tomato")
+
+        if(True): #Debugging Gesture
+            if(currentGesture == Gesture.CHOP):
+                print("Chopping")
+            elif(currentGesture == Gesture.COOK):
+                print("Cooking")
+            elif(currentGesture == Gesture.NONE):
+                print("Not doing anything")
 
         if ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.STOVE:
             # Put the Ingredient into the pot to be cooked if valid Ingredient and the player is in proximity to the location
@@ -215,7 +223,7 @@ def gestureProcessing():
         if(tempGesture == "chop"):
             currentGesture = Gesture.CHOP
         elif(tempGesture == "cook"):
-            currentGesture = Gesture.CHOP
+            currentGesture = Gesture.COOK
         else:
             currentGesture = Gesture.NONE
 
