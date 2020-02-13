@@ -24,7 +24,10 @@ class ingredient():
         self.status = status
         self.progress = progress
     def __eq__(self,other):
-        return ((self.name == other.name) and (self.status == other.status) and (self.progress == other.progress))
+        if (not(other == None)):
+            return ((self.name == other.name) and (self.status == other.status) and (self.progress == other.progress))
+        else:
+            return False
 
 menu_to_recipe = {
     MenuItem.SUSHI: [
@@ -135,8 +138,6 @@ def gameLogic():
                 print("Chopping")
             elif(currentGesture == Gesture.COOK):
                 print("Cooking")
-            #elif(currentGesture == Gesture.NONE):
-            #    print("Not doing anything")
 
         if ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.STOVE:
             # Put the Ingredient into the pot to be cooked if valid Ingredient and the player is in proximity to the location
@@ -160,19 +161,21 @@ def gameLogic():
 
         elif (currentVoice == VoiceCommand.PLATE):
             # Check if the ingredient exists and is cooked before allowing it to be plated
+            print(not(location_to_current_ingredient.get(localization.currentPlayerLocation, None) == None))
             if (
-                location_to_current_ingredient.get(localization.currentPlayerLocation, Location.NONE) != Location.NONE
+                not(location_to_current_ingredient.get(localization.currentPlayerLocation, None) == None)
                 and location_to_current_ingredient[localization.currentPlayerLocation].status == IngredientStatus.COOKED
             ):
                 # Add the cooked ingredient to the plate
                 currentPlate.append(location_to_current_ingredient[localization.currentPlayerLocation])
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[localization.currentPlayerLocation] = None
+                print("Plated")
 
             # Invalid action
             else:
                 #TODO(Charlotte): Action is invalid, play farting noise or something
-                print("Sorry you cannot do that")
+                print("Plate: Sorry you cannot do that")
 
         elif (currentVoice == VoiceCommand.SUBMIT):
                 # Check that the currentLocation of player is SUBMITSTATION
@@ -180,9 +183,9 @@ def gameLogic():
                     # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
                     if currentPlate == menu_to_recipe[currentOrder]:
                         points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
-                    elif currentPlate != menu_to_recipe[currentOrder]:
+                    elif not(currentPlate == menu_to_recipe[currentOrder]):
                         points -= 2
-
+                    print(points)
                     # clear the currentPlate and update new currentOrder
                     currentPlate.clear()
                     currentOrder = MenuItem.SUSHI #TODO(Charlotte): randomly choose a MenuItem
@@ -196,16 +199,16 @@ def gameLogic():
             or (currentGesture == Gesture.COOK and localization.currentPlayerLocation == Location.STOVE)
         ):
             if (
-                location_to_current_ingredient[localization.currentPlayerLocation] != None
-                and location_to_current_ingredient[localization.currentPlayerLocation].Status == IngredientStatus.RAW
+                not(location_to_current_ingredient[localization.currentPlayerLocation] == Ingredient.NONE)
+                and location_to_current_ingredient[localization.currentPlayerLocation].status == IngredientStatus.RAW
             ):
                 location_to_current_ingredient[localization.currentPlayerLocation].progress += 1
 
                 if (location_to_current_ingredient[localization.currentPlayerLocation].progress >= 10):
                     location_to_current_ingredient[localization.currentPlayerLocation].status = IngredientStatus.COOKED
+                    print("Item is cooked")
 
         currentVoice = VoiceCommand.NONE
-        #print(points)
 
 def gestureProcessing():
     #TODO(Bennett): use the game-enums.py file to grab the gesture enum to send to me.
