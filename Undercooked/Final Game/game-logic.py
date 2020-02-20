@@ -6,6 +6,7 @@ import signal
 from enum import Enum
 from gameenums import Gesture, Location, VoiceCommand, MenuItem, Ingredient, IngredientStatus
 import localization 
+import colorDetect
 import voiceRecog
 
 # Globals
@@ -108,12 +109,19 @@ def gameLogic():
             print(str(currentVoice))
 
         if(False): #Debugging Localization
-            if(localization.currentPlayerLocation == Location.CUTTINGBOARD):
-                print("Cutting board")
-            elif(localization.currentPlayerLocation == Location.STOVE):
-                print("Stove")
-            elif(localization.currentPlayerLocation == Location.SUBMITSTATION):
-                print("Submit Station")
+            if(colorDetect.currentPlayerOneLocation == Location.CUTTINGBOARD):
+                print("Player One is at the Cutting Board")
+            elif(colorDetect.currentPlayerOneLocation == Location.STOVE):
+                print("Player One is at the Stove")
+            elif(colorDetect.currentPlayerOneLocation == Location.SUBMITSTATION):
+                print("Player One is at the Submit Station")
+
+            if(colorDetect.currentPlayerTwoLocation == Location.CUTTINGBOARD):
+                print("Player Two is at the Cutting Board")
+            elif(colorDetect.currentPlayerTwoLocation == Location.STOVE):
+                print("Player Two is at the Stove")
+            elif(colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION):
+                print("Player Two is at the Submit Station")
 
         if(True): #Debugging Voice
             if(currentVoice == VoiceCommand.PLATE):
@@ -236,6 +244,7 @@ def gestureProcessing():
 
 def imageRecognition():
     localization.RunTracker()
+    colorDetect.StartTracker()
 
 def voiceRecognition():
     voiceRecog.RunVoice()
