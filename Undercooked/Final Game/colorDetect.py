@@ -32,8 +32,12 @@ global pixelConstant
 global ballRadius
 
 global name
-global playerDistances
-global isPlayerCloseEnough
+global playerDistancesOne
+global playerDistancesTwo
+global isPlayerOneCloseEnough
+global isPlayerTwoCloseEnough
+global currentPlayerOneLocation
+global currentPlayerTwoLocation
 global minDistance
 
 def initializeGlobals():
@@ -47,24 +51,32 @@ def initializeGlobals():
     global pixelConstant
     global ballRadius
     global name
-    global playerDistances
-    global isPlayerCloseEnough
+    global playerDistancesOne
+    global playerDistancesTwo
+    global isPlayerOneCloseEnough
+    global isPlayerTwoCloseEnough
+    global currentPlayerOneLocation
+    global currentPlayerTwoLocation
     global minDistance
 
-    #Colors go [Yellow]
-    colorLower = [(20,100,100)]
-    colorUpper = [(30,255,255)]
+    #Colors go [Yellow (GOOD), Blue (GOOD), Orange(NOT GOOD), Purple (GOOD), Green (GOOD)]
+    colorLower = [(20,150,150),(94,80,2),(5,100,100),(161,155,84),(25,52,72)]
+    colorUpper = [(30,255,255),(126,255,255),(15,255,255),(179,255,255),(102,255,255)]
     maxIter = len(colorLower)
-    x = [0.0,0.0,0.0]
-    y = [0.0,0.0,0.0]
-    radius = [0.0,0.0,0.0]
-    center = [None,None,None]
+    x = [0.0,0.0,0.0,0.0,0.0]
+    y = [0.0,0.0,0.0,0.0,0.0]
+    radius = [0.0,0.0,0.0,0.0,0.0]
+    center = [None,None,None,None,None]
     pixelConstant = 0
     ballRadius = 1.5 #Inches
     name = ["Cutting Board","Stove","Turn-it-in Counter"]
-    playerDistances = [0.0,0.0,0.0]
-    isPlayerCloseEnough = [False, False, False]
-    minDistance = 4 #Inches
+    playerDistancesOne = [0.0,0.0,0.0,0.0,0.0]
+    playerDistancesTwo = [0.0,0.0,0.0,0.0,0.0]
+    isPlayerOneCloseEnough = [False, False, False, False, False]
+    isPlayerTwoCloseEnough = [False, False, False, False, False]
+    currentPlayerOneLocation = Location.NONE
+    currentPlayerTwoLocation = Location.NONE
+    minDistance = 6 #Inches
 
 def findACamera():
     global vs
@@ -111,46 +123,71 @@ def drawCircle(cnts,iter):
     pixelConstant = ballRadius/radius[iter]
 
 def measureDistances():
-    global playerDistances
+    global playerDistancesOne
+    global playerDistancesTwo
     global pixelConstant
     global x, y
     global maxIter
+    
+    playerOnePos = maxIter - 2
+    playerTwoPos = maxIter - 1
 
-    for i in range (maxIter):
-    	distance = math.sqrt((x[maxIter - 1]-x[i])*(x[maxIter - 1]-x[i]) + (y[maxIter - 1]-y[i])*(y[maxIter - 1]-y[i]))
-    	playerDistances[i] = math.fabs(distance)*pixelConstant
+    for i in range(maxIter):
+        distanceOne = math.sqrt((x[playerOnePos]-x[i])*(x[playerOnePos]-x[i]) + (y[playerOnePos]-y[i])*(y[playerOnePos]-y[i]))
+        playerDistancesOne[i] = math.fabs(distanceOne)*pixelConstant
+        distanceTwo = math.sqrt((x[playerTwoPos]-x[i])*(x[playerTwoPos]-x[i]) + (y[playerTwoPos]-y[i])*(y[playerTwoPos]-y[i]))
+        playerDistancesTwo[i] = math.fabs(distanceTwo)*pixelConstant
 
 def checkDistances():
-    global playerDistances
+    global playerDistancesOne
+    global playerDistancesTwo
     global x, y
     global maxIter
     global minDistance
     global name
+    global isPlayerOneCloseEnough
+    global isPlayerTwoCloseEnough
 
     measureDistances()
+
     for iter in range (maxIter):
-    	if(playerDistances[iter] <= minDistance):
-    		#print("Player is close enough to ", name[iter])
-    		isPlayerCloseEnough[iter] = True
-    	else:
-    		isPlayerCloseEnough[iter] = False
+        if(playerDistancesOne[iter] <= minDistance):
+            isPlayerOneCloseEnough[iter] = True
+        else:
+            isPlayerOneCloseEnough[iter] = False
+
+        if(playerDistancesTwo[iter] <= minDistance):
+            isPlayerTwoCloseEnough[iter] = True
+        else:
+            isPlayerTwoCloseEnough[iter] = False
 
 def updateLocation():
-	global currentPlayerLocation
-	global isPlayerCloseEnough 
+    global currentPlayerOneLocation
+    global currentPlayerTwoLocation
+    global isPlayerOneCloseEnough
+    global isPlayerTwoCloseEnough
 
-	checkDistances()
+    checkDistances()
 
-	if(isPlayerCloseEnough[0]):
-	    #print("Yes")
-	    currentPlayerLocation = Location.CUTTINGBOARD
-	#elif(isPlayerCloseEnough[1]):
-	#	currentPlayerLocation = Location.STOVE
-	#elif(isPlayerCloseEnough[2]):
-	#	currentPlayerLocation = Location.SUBMITSTATION
-	else:
-	    #print("No")
-	    currentPlayerLocation = Location.NONE
+    if(isPlayerOneCloseEnough[0]):
+        currentPlayerOneLocation = Location.CUTTINGBOARD
+    elif(isPlayerOneCloseEnough[1]):
+        currentPlayerOneLocation = Location.STOVE
+        print("One at Stove")
+    elif(isPlayerOneCloseEnough[2]):
+        currentPlayerOneLocation = Location.SUBMITSTATION
+    else:
+        currentPlayerOneLocation = Location.NONE
+
+    if(isPlayerTwoCloseEnough[0]):
+        currentPlayerTwoLocation = Location.CUTTINGBOARD
+    elif(isPlayerTwoCloseEnough[1]):
+        currentPlayerTwoLocation = Location.STOVE
+        print("Two at Stove")
+    elif(isPlayerTwoCloseEnough[2]):
+        currentPlayerTwoLocation = Location.SUBMITSTATION
+    else:
+        currentPlayerTwoLocation = Location.NONE
 
 def runTracker():
     global frame
