@@ -1,13 +1,16 @@
 import socket
 import threading
 import numpy as np
-import time
-import signal
 from enum import Enum
 from gameenums import Gesture, Location, VoiceCommand, MenuItem, Ingredient, IngredientStatus
 import localization 
 import colorDetect
 import voiceRecog
+import os
+import time
+from datetime import datetime
+from threading import Timer
+
 
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -59,11 +62,6 @@ location_to_valid_ingredient = {
     Location.CUTTINGBOARD: {Ingredient.FISH, Ingredient.SEAWEED, Ingredient.LETTUCE, Ingredient.TOMATO},
     Location.STOVE: {Ingredient.RICE}
 }
-
-class TimeoutException(Exception):   # Custom exception class
-    pass
-def timeout_handler(signum, frame):  # Custom signal handler
-    raise TimeoutException
 
 def SetupGame():
     global currentOrder
@@ -249,12 +247,12 @@ def imageRecognition():
 def voiceRecognition():
     voiceRecog.RunVoice()
 
-if __name__ == "__main__":
-    #signal.alarm(120)    #POTENTIAL FIX https://stackoverflow.com/questions/20775624/end-python-code-after-60-seconds?noredirect=1&lq=1
-    
-    serv.bind(('172.20.10.6', 8080))
+def exitfunc():
+    print ("Game Over")
+    print ("Score: ", points)
+    os._exit(0)
 
-    try:
-        RunGame()
-    except TimeoutException:
-        print("Game Over")
+if __name__ == "__main__":
+    serv.bind(('172.20.10.6', 8080))
+    Timer(120, exitfunc).start() # exit in 2 minutes
+    RunGame()
