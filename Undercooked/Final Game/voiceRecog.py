@@ -30,6 +30,54 @@ newVoice = False
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
+# Valid word maps
+riceDict ={
+    'rice':True,
+    'right': True,
+}
+
+fishDict ={
+    'fish':True,
+}
+
+seaweedDict ={
+    'seaweed': True,
+    'siri': True,
+    'CV':True,
+}
+
+lettuceDict = {
+    'lettuce':True,
+    'lattice':True,
+    'latin':True,
+}
+
+tomatoDict = {
+    'tomato':True,
+    'turn':True,
+}
+
+plateDict ={
+    'plate': True,
+    'prate':True,
+    'pray': True,
+    'play':True,
+
+}
+
+trashDict ={
+    'trash':True,
+    'trust':True,
+    'trish':True,
+    'try':True,
+}
+
+submitDict={
+    'submit':True,
+    'Summit':True,
+    'some':True,
+    'something':True,
+}
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
     def __init__(self, rate, chunk):
@@ -153,28 +201,28 @@ def listen_print_loop(responses, num):
 
         else:
             spokenWord = transcript + overwrite_chars
-            if(removeSpaces(spokenWord) == "plate"):
+            if(plateDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = VoiceCommand.PLATE
                 print("Plate")
-            elif(removeSpaces(spokenWord) == "submit"):
+            elif(submitDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = VoiceCommand.SUBMIT
                 print("Submit")
-            elif(removeSpaces(spokenWord) == "trash"):
+            elif(trashDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = VoiceCommand.TRASH
                 print("Trash")
-            elif(removeSpaces(spokenWord) == "rice"):
+            elif(riceDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.RICE
                 print("Rice")
-            elif(removeSpaces(spokenWord) == "fish"):
+            elif(fishDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.FISH
                 print("Fish")
-            elif(removeSpaces(spokenWord) == "seaweed"):
+            elif(seaweedDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.SEAWEED
                 print("Seaweed")
-            elif(removeSpaces(spokenWord) == "lettuce"):
+            elif(lattuceDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.LETTUCE
                 print("Lettuce")
-            elif(removeSpaces(spokenWord) == "tomato"):
+            elif(tomatoDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.TOMATO
                 print("Tomato")
             else:
