@@ -99,6 +99,10 @@ def setVoice(trofa):
 
     newVoice = trofa
 
+def removeSpaces(phrase):
+    phrase = phrase.replace(' ','')
+    return phrase
+
 def listen_print_loop(responses, num):
     """Iterates through server responses and prints them.
 
@@ -149,28 +153,28 @@ def listen_print_loop(responses, num):
 
         else:
             spokenWord = transcript + overwrite_chars
-            if(spokenWord == "plate" or spokenWord == " plate"):
+            if(removeSpaces(spokenWord) == "plate"):
                 tempVoice = VoiceCommand.PLATE
                 print("Plate")
-            elif(spokenWord == "submit" or spokenWord == " submit"):
+            elif(removeSpaces(spokenWord) == "submit"):
                 tempVoice = VoiceCommand.SUBMIT
                 print("Submit")
-            elif(spokenWord == "trash" or spokenWord == " trash"):
+            elif(removeSpaces(spokenWord) == "trash"):
                 tempVoice = VoiceCommand.TRASH
                 print("Trash")
-            elif(spokenWord == "rice" or spokenWord == " rice"):
+            elif(removeSpaces(spokenWord) == "rice"):
                 tempVoice = Ingredient.RICE
                 print("Rice")
-            elif(spokenWord == "fish" or spokenWord == " fish"):
+            elif(removeSpaces(spokenWord) == "fish"):
                 tempVoice = Ingredient.FISH
                 print("Fish")
-            elif(spokenWord == "seaweed" or spokenWord == " seaweed"):
+            elif(removeSpaces(spokenWord) == "seaweed"):
                 tempVoice = Ingredient.SEAWEED
                 print("Seaweed")
-            elif(spokenWord == "lettuce" or spokenWord == " lettuce"):
+            elif(removeSpaces(spokenWord) == "lettuce"):
                 tempVoice = Ingredient.LETTUCE
                 print("Lettuce")
-            elif(spokenWord == "tomato" or spokenWord == " tomato"):
+            elif(removeSpaces(spokenWord) == "tomato"):
                 tempVoice = Ingredient.TOMATO
                 print("Tomato")
             else:
