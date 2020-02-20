@@ -1,12 +1,16 @@
 import socket
 import threading
 import numpy as np
-import time
-import signal
 from enum import Enum
 from gameenums import Gesture, Location, VoiceCommand, MenuItem, Ingredient, IngredientStatus
 import localization 
+import colorDetect
 import voiceRecog
+import os
+import time
+from datetime import datetime
+from threading import Timer
+
 
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -59,11 +63,6 @@ location_to_valid_ingredient = {
     Location.STOVE: {Ingredient.RICE}
 }
 
-class TimeoutException(Exception):   # Custom exception class
-    pass
-def timeout_handler(signum, frame):  # Custom signal handler
-    raise TimeoutException
-
 def SetupGame():
     global currentOrder
     currentOrder = MenuItem.SUSHI
@@ -108,12 +107,19 @@ def gameLogic():
             print(str(currentVoice))
 
         if(False): #Debugging Localization
-            if(localization.currentPlayerLocation == Location.CUTTINGBOARD):
-                print("Cutting board")
-            elif(localization.currentPlayerLocation == Location.STOVE):
-                print("Stove")
-            elif(localization.currentPlayerLocation == Location.SUBMITSTATION):
-                print("Submit Station")
+            if(colorDetect.currentPlayerOneLocation == Location.CUTTINGBOARD):
+                print("Player One is at the Cutting Board")
+            elif(colorDetect.currentPlayerOneLocation == Location.STOVE):
+                print("Player One is at the Stove")
+            elif(colorDetect.currentPlayerOneLocation == Location.SUBMITSTATION):
+                print("Player One is at the Submit Station")
+
+            if(colorDetect.currentPlayerTwoLocation == Location.CUTTINGBOARD):
+                print("Player Two is at the Cutting Board")
+            elif(colorDetect.currentPlayerTwoLocation == Location.STOVE):
+                print("Player Two is at the Stove")
+            elif(colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION):
+                print("Player Two is at the Submit Station")
 
         if(True): #Debugging Voice
             if(currentVoice == VoiceCommand.PLATE):
@@ -236,16 +242,17 @@ def gestureProcessing():
 
 def imageRecognition():
     localization.RunTracker()
+    colorDetect.StartTracker()
 
 def voiceRecognition():
     voiceRecog.RunVoice()
 
-if __name__ == "__main__":
-    #signal.alarm(120)    #POTENTIAL FIX https://stackoverflow.com/questions/20775624/end-python-code-after-60-seconds?noredirect=1&lq=1
-    
-    serv.bind(('172.20.10.6', 8080))
+def exitfunc():
+    print ("Game Over")
+    print ("Score: ", points)
+    os._exit(0)
 
-    try:
-        RunGame()
-    except TimeoutException:
-        print("Game Over")
+if __name__ == "__main__":
+    serv.bind(('172.20.10.6', 8080))
+    Timer(120, exitfunc).start() # exit in 2 minutes
+    RunGame()

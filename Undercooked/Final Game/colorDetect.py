@@ -245,10 +245,10 @@ def runTracker():
     vs.release()
     cv2.destroyAllWindows()
 
-def startTracker():
+def StartTracker():
     initializeGlobals()
     findACamera()
     runTracker()
 
 if __name__ == "__main__":
-    startTracker()
+    StartTracker()
