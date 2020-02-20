@@ -31,6 +31,7 @@ global center
 global pixelConstant
 global ballRadius
 
+global name
 global playerDistances
 global isPlayerCloseEnough
 global minDistance
@@ -45,19 +46,22 @@ def initializeGlobals():
     global center
     global pixelConstant
     global ballRadius
+    global name
     global playerDistances
     global isPlayerCloseEnough
     global minDistance
 
-    colorLower = [(0,0,205),(0,0,0)]
-    colorUpper = [(255,255,255),(255,255,50)]
-    maxIter = 2
+    #Colors go [Yellow]
+    colorLower = [(20,100,100)]
+    colorUpper = [(30,255,255)]
+    maxIter = len(colorLower)
     x = [0.0,0.0,0.0]
     y = [0.0,0.0,0.0]
     radius = [0.0,0.0,0.0]
     center = [None,None,None]
     pixelConstant = 0
     ballRadius = 1.5 #Inches
+    name = ["Cutting Board","Stove","Turn-it-in Counter"]
     playerDistances = [0.0,0.0,0.0]
     isPlayerCloseEnough = [False, False, False]
     minDistance = 4 #Inches
@@ -121,14 +125,15 @@ def checkDistances():
     global x, y
     global maxIter
     global minDistance
+    global name
 
     measureDistances()
-    for i in range (maxIter):
-    	if(playerDistances[i] <= minDistance):
-    		#print("Player is close enough to ", name[i])
-    		isPlayerCloseEnough[i] = True
+    for iter in range (maxIter):
+    	if(playerDistances[iter] <= minDistance):
+    		#print("Player is close enough to ", name[iter])
+    		isPlayerCloseEnough[iter] = True
     	else:
-    		isPlayerCloseEnough[i] = False
+    		isPlayerCloseEnough[iter] = False
 
 def updateLocation():
 	global currentPlayerLocation
@@ -137,14 +142,14 @@ def updateLocation():
 	checkDistances()
 
 	if(isPlayerCloseEnough[0]):
-	    print("Yes")
+	    #print("Yes")
 	    currentPlayerLocation = Location.CUTTINGBOARD
 	#elif(isPlayerCloseEnough[1]):
 	#	currentPlayerLocation = Location.STOVE
 	#elif(isPlayerCloseEnough[2]):
 	#	currentPlayerLocation = Location.SUBMITSTATION
 	else:
-	    print("No")
+	    #print("No")
 	    currentPlayerLocation = Location.NONE
 
 def runTracker():
