@@ -141,32 +141,41 @@ def listen_print_loop(responses, num):
         overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
         if not result.is_final:
-            sys.stdout.write(transcript + overwrite_chars + '\r')
-            sys.stdout.flush()
+            #sys.stdout.write(transcript + overwrite_chars + '\r')
+            #sys.stdout.flush()
 
             num_chars_printed = len(transcript)
-            print()
+            #print()
 
         else:
             spokenWord = transcript + overwrite_chars
             if(spokenWord == "plate" or spokenWord == " plate"):
                 tempVoice = VoiceCommand.PLATE
+                print("Plate")
             elif(spokenWord == "submit" or spokenWord == " submit"):
                 tempVoice = VoiceCommand.SUBMIT
+                print("Submit")
             elif(spokenWord == "trash" or spokenWord == " trash"):
                 tempVoice = VoiceCommand.TRASH
+                print("Trash")
             elif(spokenWord == "rice" or spokenWord == " rice"):
                 tempVoice = Ingredient.RICE
+                print("Rice")
             elif(spokenWord == "fish" or spokenWord == " fish"):
                 tempVoice = Ingredient.FISH
+                print("Fish")
             elif(spokenWord == "seaweed" or spokenWord == " seaweed"):
                 tempVoice = Ingredient.SEAWEED
+                print("Seaweed")
             elif(spokenWord == "lettuce" or spokenWord == " lettuce"):
                 tempVoice = Ingredient.LETTUCE
+                print("Lettuce")
             elif(spokenWord == "tomato" or spokenWord == " tomato"):
                 tempVoice = Ingredient.TOMATO
+                print("Tomato")
             else:
                 tempVoice = VoiceCommand.NONE
+                print("Unrecognized")
             
             setCurrentVoice(tempVoice)
             setVoice(True)

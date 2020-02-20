@@ -40,6 +40,8 @@ global currentPlayerOneLocation
 global currentPlayerTwoLocation
 global minDistance
 
+global colors
+
 def initializeGlobals():
     global colorLower
     global colorUpper
@@ -58,10 +60,11 @@ def initializeGlobals():
     global currentPlayerOneLocation
     global currentPlayerTwoLocation
     global minDistance
+    global colors
 
-    #Colors go [Yellow (GOOD), Blue (GOOD), Orange(NOT GOOD), Purple (GOOD), Green (GOOD)]
-    colorLower = [(20,150,150),(94,80,2),(5,100,100),(161,155,84),(25,52,72)]
-    colorUpper = [(30,255,255),(126,255,255),(15,255,255),(179,255,255),(102,255,255)]
+    #Colors go [Yellow (BAD), Blue (GOOD), Orange(BAD), Purple (UNSTABLE), Green (UNSTABLE)]
+    colorLower = [(20,150,150),(94,80,2),(5,100,100),(127,10,10),(40,52,72)]
+    colorUpper = [(40,255,255),(126,255,255),(15,255,255),(170,255,255),(102,255,255)]
     maxIter = len(colorLower)
     x = [0.0,0.0,0.0,0.0,0.0]
     y = [0.0,0.0,0.0,0.0,0.0]
@@ -77,6 +80,7 @@ def initializeGlobals():
     currentPlayerOneLocation = Location.NONE
     currentPlayerTwoLocation = Location.NONE
     minDistance = 6 #Inches
+    colors = [(0,255,255),(255,0,0),(0,165,255),(139,0,139),(0,255,0)] #BGR rather than RGB
 
 def findACamera():
     global vs
@@ -107,6 +111,7 @@ def drawCircle(cnts,iter):
     global center
     global pixelConstant
     global ballRadius
+    global colors
 
     c = max(cnts, key=cv2.contourArea)
     ((x[iter], y[iter]), radius[iter]) = cv2.minEnclosingCircle(c)
@@ -117,8 +122,8 @@ def drawCircle(cnts,iter):
         # draw the circle and centroid on the frame,
         # then update the list of tracked points
         cv2.circle(frame, (int(x[iter]), int(y[iter])), int(radius[iter]),
-            (0, 255, 255), 2)
-        cv2.circle(frame, center[iter], 5, (0, 0, 255), -1)
+            colors[iter], 2)
+        cv2.circle(frame, center[iter], 5, colors[iter], -1)
     
     pixelConstant = ballRadius/radius[iter]
 
