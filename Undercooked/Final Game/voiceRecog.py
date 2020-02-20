@@ -30,6 +30,54 @@ newVoice = False
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
+# Valid word maps
+riceDict ={
+    'rice':True,
+    'right': True,
+}
+
+fishDict ={
+    'fish':True,
+}
+
+seaweedDict ={
+    'seaweed': True,
+    'siri': True,
+    'CV':True,
+}
+
+lettuceDict = {
+    'lettuce':True,
+    'lattice':True,
+    'latin':True,
+}
+
+tomatoDict = {
+    'tomato':True,
+    'turn':True,
+}
+
+plateDict ={
+    'plate': True,
+    'prate':True,
+    'pray': True,
+    'play':True,
+
+}
+
+trashDict ={
+    'trash':True,
+    'trust':True,
+    'trish':True,
+    'try':True,
+}
+
+submitDict={
+    'submit':True,
+    'Summit':True,
+    'some':True,
+    'something':True,
+}
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
     def __init__(self, rate, chunk):
@@ -99,6 +147,10 @@ def setVoice(trofa):
 
     newVoice = trofa
 
+def removeSpaces(phrase):
+    phrase = phrase.replace(' ','')
+    return phrase
+
 def listen_print_loop(responses, num):
     """Iterates through server responses and prints them.
 
@@ -141,32 +193,41 @@ def listen_print_loop(responses, num):
         overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
         if not result.is_final:
-            sys.stdout.write(transcript + overwrite_chars + '\r')
-            sys.stdout.flush()
+            #sys.stdout.write(transcript + overwrite_chars + '\r')
+            #sys.stdout.flush()
 
             num_chars_printed = len(transcript)
-            print()
+            #print()
 
         else:
             spokenWord = transcript + overwrite_chars
-            if(spokenWord == "plate" or spokenWord == " plate"):
+            if(plateDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = VoiceCommand.PLATE
-            elif(spokenWord == "submit" or spokenWord == " submit"):
+                print("Plate")
+            elif(submitDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = VoiceCommand.SUBMIT
-            elif(spokenWord == "trash" or spokenWord == " trash"):
+                print("Submit")
+            elif(trashDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = VoiceCommand.TRASH
-            elif(spokenWord == "rice" or spokenWord == " rice"):
+                print("Trash")
+            elif(riceDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.RICE
-            elif(spokenWord == "fish" or spokenWord == " fish"):
+                print("Rice")
+            elif(fishDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.FISH
-            elif(spokenWord == "seaweed" or spokenWord == " seaweed"):
+                print("Fish")
+            elif(seaweedDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.SEAWEED
-            elif(spokenWord == "lettuce" or spokenWord == " lettuce"):
+                print("Seaweed")
+            elif(lattuceDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.LETTUCE
-            elif(spokenWord == "tomato" or spokenWord == " tomato"):
+                print("Lettuce")
+            elif(tomatoDict.get(removeSpaces(spokenWord)，False)):
                 tempVoice = Ingredient.TOMATO
+                print("Tomato")
             else:
                 tempVoice = VoiceCommand.NONE
+                print("Unrecognized")
             
             setCurrentVoice(tempVoice)
             setVoice(True)
