@@ -121,7 +121,7 @@ def gameLogic():
             elif(colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION):
                 print("Player Two is at the Submit Station")
 
-        if(True): #Debugging Voice
+        if(False): #Debugging Voice
             if(currentVoice == VoiceCommand.PLATE):
                 print("Commanding plate")
             elif(currentVoice == VoiceCommand.SUBMIT):
@@ -216,6 +216,8 @@ def gameLogic():
 
         currentVoice = VoiceCommand.NONE
 
+#Incoming string ""
+
 def gestureProcessing():
     #TODO(Bennett): use the game-enums.py file to grab the gesture enum to send to me.
     global currentGesture
@@ -250,9 +252,9 @@ def voiceRecognition():
 def exitfunc():
     print ("Game Over")
     print ("Score: ", points)
-    os._exit(0)
+    os._exit(1)
 
 if __name__ == "__main__":
-    serv.bind(('172.20.10.6', 8080))
-    Timer(120, exitfunc).start() # exit in 2 minutes
+    serv.bind(('131.179.4.10', 8080))
+    Timer(10, exitfunc).start() # exit in 2 minutes
     RunGame()

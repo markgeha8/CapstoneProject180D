@@ -42,14 +42,14 @@ fishDict ={
 
 seaweedDict ={
     'seaweed': True,
-    'siri': True,
+    'Siri': True,
     'CV':True,
 }
 
 lettuceDict = {
     'lettuce':True,
     'lattice':True,
-    'latin':True,
+    'Latin':True,
 }
 
 tomatoDict = {
@@ -201,28 +201,28 @@ def listen_print_loop(responses, num):
 
         else:
             spokenWord = transcript + overwrite_chars
-            if(plateDict.get(removeSpaces(spokenWord)，False)):
+            if(plateDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = VoiceCommand.PLATE
                 print("Plate")
-            elif(submitDict.get(removeSpaces(spokenWord)，False)):
+            elif(submitDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = VoiceCommand.SUBMIT
                 print("Submit")
-            elif(trashDict.get(removeSpaces(spokenWord)，False)):
+            elif(trashDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = VoiceCommand.TRASH
                 print("Trash")
-            elif(riceDict.get(removeSpaces(spokenWord)，False)):
+            elif(riceDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = Ingredient.RICE
                 print("Rice")
-            elif(fishDict.get(removeSpaces(spokenWord)，False)):
+            elif(fishDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = Ingredient.FISH
                 print("Fish")
-            elif(seaweedDict.get(removeSpaces(spokenWord)，False)):
+            elif(seaweedDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = Ingredient.SEAWEED
                 print("Seaweed")
-            elif(lattuceDict.get(removeSpaces(spokenWord)，False)):
+            elif(lettuceDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = Ingredient.LETTUCE
                 print("Lettuce")
-            elif(tomatoDict.get(removeSpaces(spokenWord)，False)):
+            elif(tomatoDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = Ingredient.TOMATO
                 print("Tomato")
             else:
