@@ -11,6 +11,7 @@ import time
 from datetime import datetime
 from threading import Timer
 import random
+from playsound import playsound
 
 # Global Constants
 numberOfGesturesUntilCooked = 10
@@ -178,10 +179,11 @@ def gameLogic():
                 or colorDetect.currentPlayerTwoLocation == Location.STOVE
             ):
                 location_to_current_ingredient[Location.STOVE] = ingredient(currentVoice, IngredientStatus.RAW, 0)
+                playsound('placeItem.mp3')
 
             # Invalid action
             else:
-                #TODO(Charlotte): Action is invalid, play farting noise or something
+                playsound('negative.mp3')
                 print("Sorry you cannot do that")
 
         elif ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.CUTTINGBOARD:
@@ -191,10 +193,11 @@ def gameLogic():
                 or colorDetect.currentPlayerTwoLocation == Location.CUTTINGBOARD
             ):
                 location_to_current_ingredient[Location.CUTTINGBOARD] = ingredient(currentVoice, IngredientStatus.RAW, 0)
+                playsound('placeItem.mp3')
 
             # Invalid action
             else:
-                #TODO(Charlotte): Action is invalid, play farting noise or something
+                playsound('negative.mp3')
                 print("Sorry you cannot do that")
 
         elif (currentVoice == VoiceCommand.PLATE):
@@ -206,10 +209,11 @@ def gameLogic():
                 and location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status == IngredientStatus.COOKED
             ):
                 # Add the cooked ingredient to the plate
+                playsound('placeItem.mp3')
                 currentPlate.append(location_to_current_ingredient[colorDetect.currentPlayerOneLocation])
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[colorDetect.currentPlayerOneLocation] = None
-                print("Plated", location_to_current_ingredient[colorDetect.currentPlayerOneLocation])
+                print("Plated ", location_to_current_ingredient[colorDetect.currentPlayerOneLocation])
                 print("Current items on plate: ")
                 for i in range(len(currentPlate)): 
                     print currentPlate[i].name
@@ -220,17 +224,18 @@ def gameLogic():
                 and location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status == IngredientStatus.COOKED
             ):
                 # Add the cooked ingredient to the plate
+                playsound('placeItem.mp3')
                 currentPlate.append(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation])
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[colorDetect.currentPlayerTwoLocation] = None
-                print("Plated", location_to_current_ingredient[colorDetect.currentPlayerTwoLocation])
+                print("Plated ", location_to_current_ingredient[colorDetect.currentPlayerTwoLocation])
                 print("Current items on plate: ")
                 for i in range(len(currentPlate)): 
                     print currentPlate[i].name
 
             # Invalid action
             else:
-                #TODO(Charlotte): Action is invalid, play farting noise or something
+                playsound('negative.mp3')
                 print("Plate: Sorry you cannot do that")
 
         elif (currentVoice == VoiceCommand.SUBMIT):
@@ -242,8 +247,10 @@ def gameLogic():
                     # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
                     if currentPlate == menu_to_recipe[currentOrder]:
                         points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
+                        playsound('positive.mp3')
                     elif not(currentPlate == menu_to_recipe[currentOrder]):
                         points -= 2
+                        playsound('negative.mp3')
                     print("Current points: ", points)
                     # clear the currentPlate and update new currentOrder
                     currentPlate.clear()
@@ -258,6 +265,8 @@ def gameLogic():
 
         elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
+            playsound('placeItem.mp3')
+            print("Current items on plate: None")
             currentPlate.clear()
 
         # Player One Gesture Recognition
@@ -274,6 +283,7 @@ def gameLogic():
                 if (location_to_current_ingredient[colorDetect.currentPlayerOneLocation].progress >= numberOfGesturesUntilCooked):
                     location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status = IngredientStatus.COOKED
                     print("Item is cooked")
+                    playsound('positive.mp3')
 
         # Player Two Gesture Recognition
         if (
@@ -289,6 +299,7 @@ def gameLogic():
                 if (location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].progress >= numberOfGesturesUntilCooked):
                     location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status = IngredientStatus.COOKED
                     print("Item is cooked")
+                    playsound('positive.mp3')
 
         currentVoice = VoiceCommand.NONE
 
