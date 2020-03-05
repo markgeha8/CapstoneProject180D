@@ -47,7 +47,7 @@ menu_to_recipe = {
     MenuItem.SALAD: [
         ingredient(Ingredient.LETTUCE, IngredientStatus.COOKED, numberOfGesturesUntilCooked), 
         ingredient(Ingredient.TOMATO, IngredientStatus.COOKED, numberOfGesturesUntilCooked)
-    ]
+    ],
     MenuItem.GRILLEDCHICKEN: [
         ingredient(Ingredient.CHICKEN, IngredientStatus.COOKED, numberOfGesturesUntilCooked),
         ingredient(Ingredient.RICE, IngredientStatus.COOKED, numberOfGesturesUntilCooked)
@@ -83,7 +83,7 @@ def RunGame():
     print("The order is: ", currentOrder)
     print("The ingredients are: ")
     for i in range(len(currentRecipe)): 
-        print currentRecipe[i].name
+        print (currentRecipe[i].name)
 
     global serv
 
@@ -216,7 +216,7 @@ def gameLogic():
                 print("Plated ", location_to_current_ingredient[colorDetect.currentPlayerOneLocation])
                 print("Current items on plate: ")
                 for i in range(len(currentPlate)): 
-                    print currentPlate[i].name
+                    print (currentPlate[i].name)
 
             # Player Two
             elif (
@@ -231,7 +231,7 @@ def gameLogic():
                 print("Plated ", location_to_current_ingredient[colorDetect.currentPlayerTwoLocation])
                 print("Current items on plate: ")
                 for i in range(len(currentPlate)): 
-                    print currentPlate[i].name
+                    print (currentPlate[i].name)
 
             # Invalid action
             else:
@@ -261,7 +261,7 @@ def gameLogic():
                     print("The next order is: ", currentOrder)
                     print("The ingredients are: ")
                     for i in range(len(currentRecipe)): 
-                        print currentRecipe[i].name
+                        print (currentRecipe[i].name)
 
         elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
