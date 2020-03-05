@@ -15,6 +15,7 @@ class Gesture(AutoName):
 class MenuItem(AutoName):
     SUSHI = auto()
     SALAD = auto()
+    GRILLEDCHICKEN = auto()
 
 # Ingredients
 class Ingredient(AutoName):
@@ -23,6 +24,7 @@ class Ingredient(AutoName):
     SEAWEED = auto()
     LETTUCE = auto()
     TOMATO = auto()
+    CHICKEN = auto()
     NONE = auto()
 
 # Ingredient Status
