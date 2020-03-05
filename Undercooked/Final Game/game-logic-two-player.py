@@ -78,7 +78,11 @@ def RunGame():
     
     #TODO(Charlotte): make sure this works correctly
     currentOrder = random.choice(list(menu_to_recipe))
-    print("The current order is: ", currentOrder)
+    currentRecipe = menu_to_recipe[currentOrder]
+    print("The order is: ", currentOrder)
+    print("The ingredients are: ")
+    for i in range(len(currentRecipe)): 
+        print currentRecipe[i].name
 
     global serv
 
@@ -206,6 +210,9 @@ def gameLogic():
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[colorDetect.currentPlayerOneLocation] = None
                 print("Plated", location_to_current_ingredient[colorDetect.currentPlayerOneLocation])
+                print("Current items on plate: ")
+                for i in range(len(currentPlate)): 
+                    print currentPlate[i].name
 
             # Player Two
             elif (
@@ -217,6 +224,9 @@ def gameLogic():
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[colorDetect.currentPlayerTwoLocation] = None
                 print("Plated", location_to_current_ingredient[colorDetect.currentPlayerTwoLocation])
+                print("Current items on plate: ")
+                for i in range(len(currentPlate)): 
+                    print currentPlate[i].name
 
             # Invalid action
             else:
@@ -234,18 +244,23 @@ def gameLogic():
                         points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
                     elif not(currentPlate == menu_to_recipe[currentOrder]):
                         points -= 2
-                    print(points)
+                    print("Current points: ", points)
                     # clear the currentPlate and update new currentOrder
                     currentPlate.clear()
     
                     #TODO(Charlotte): make sure this works correctly
                     currentOrder = random.choice(list(menu_to_recipe))
-                    print("The current order is: ", currentOrder)
+                    currentRecipe = menu_to_recipe[currentOrder]
+                    print("The next order is: ", currentOrder)
+                    print("The ingredients are: ")
+                    for i in range(len(currentRecipe)): 
+                        print currentRecipe[i].name
 
         elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
             currentPlate.clear()
 
+        # Player One Gesture Recognition
         if (
             (currentPlayerOneGesture == Gesture.CHOP and colorDetect.currentPlayerOneLocation == Location.CUTTINGBOARD)
             or (currentPlayerOneGesture == Gesture.COOK and colorDetect.currentPlayerOneLocation == Location.STOVE)
@@ -258,6 +273,21 @@ def gameLogic():
 
                 if (location_to_current_ingredient[colorDetect.currentPlayerOneLocation].progress >= numberOfGesturesUntilCooked):
                     location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status = IngredientStatus.COOKED
+                    print("Item is cooked")
+
+        # Player Two Gesture Recognition
+        if (
+            (currentPlayerTwoGesture == Gesture.CHOP and colorDetect.currentPlayerTwoLocation == Location.CUTTINGBOARD)
+            or (currentPlayerTwoGesture == Gesture.COOK and colorDetect.currentPlayerTwoLocation == Location.STOVE)
+        ):
+            if (
+                not(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation] == Ingredient.NONE)
+                and location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status == IngredientStatus.RAW
+            ):
+                location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].progress += 1
+
+                if (location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].progress >= numberOfGesturesUntilCooked):
+                    location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status = IngredientStatus.COOKED
                     print("Item is cooked")
 
         currentVoice = VoiceCommand.NONE
