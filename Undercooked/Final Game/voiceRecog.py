@@ -57,12 +57,16 @@ tomatoDict = {
     'turn':True,
 }
 
-plateDict ={
-    'plate': True,
-    'prate':True,
-    'pray': True,
-    'play':True,
+chickenDict = {
+    'chicken':True,
+}
 
+setDict ={
+    'set': True,
+    'sit':True,
+    'sat': True,
+    'sap':True,
+    'sip': True,
 }
 
 trashDict ={
@@ -201,9 +205,9 @@ def listen_print_loop(responses, num):
 
         else:
             spokenWord = transcript + overwrite_chars
-            if(plateDict.get(removeSpaces(spokenWord),False)):
+            if(setDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = VoiceCommand.PLATE
-                print("Plate")
+                print("Set")
             elif(submitDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = VoiceCommand.SUBMIT
                 print("Submit")
@@ -225,6 +229,9 @@ def listen_print_loop(responses, num):
             elif(tomatoDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = Ingredient.TOMATO
                 print("Tomato")
+            elif(chickenDict.get(removeSpaces(spokenWord),False)):
+                tempVoice = Ingredient.CHICKEN
+                print("Chicken")
             else:
                 tempVoice = VoiceCommand.NONE
                 print("Unrecognized")

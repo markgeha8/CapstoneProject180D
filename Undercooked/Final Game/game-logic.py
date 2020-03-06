@@ -253,6 +253,6 @@ def exitfunc():
     os._exit(0)
 
 if __name__ == "__main__":
-    serv.bind(('172.20.10.6', 8080))
+    serv.bind(('131.179.4.175', 8080))
     Timer(120, exitfunc).start() # exit in 2 minutes
     RunGame()

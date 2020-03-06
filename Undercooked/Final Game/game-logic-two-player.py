@@ -37,6 +37,8 @@ class ingredient():
             return ((self.name == other.name) and (self.status == other.status) and (self.progress == other.progress))
         else:
             return False
+    def __lt__(self,other):
+        return self.name.value < other.name.value
 
 menu_to_recipe = {
     MenuItem.SUSHI: [
@@ -119,14 +121,14 @@ def gameLogic():
 
     # Debugigng Variables
     debugLocalization = False
-    debugVoice = False
+    debugVoice = True
     debugGesture = False
 
     while True:
         if(voiceRecog.newVoice):
             currentVoice = voiceRecog.currentVoice
             voiceRecog.setVoice(False)
-            print(str(currentVoice))
+            #print(str(currentVoice))
 
         if(debugLocalization): #Debugging Localization
             if(colorDetect.currentPlayerOneLocation == Location.CUTTINGBOARD):
@@ -160,6 +162,8 @@ def gameLogic():
                 print("Ordering lettuce")
             elif(currentVoice == Ingredient.TOMATO):
                 print("Ordering tomato")
+            elif(currentVoice == Ingredient.CHICKEN):
+                print("Ordering chimkin")
 
         if(debugGesture): #Debugging Gesture
             if(currentPlayerOneGesture == Gesture.CHOP):
@@ -184,7 +188,6 @@ def gameLogic():
             # Invalid action
             else:
                 playsound('negative.mp3')
-                print("Sorry you cannot do that")
 
         elif ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.CUTTINGBOARD:
             # Put the Ingredient onto the cutting board to be chopped if valid Ingredient
@@ -198,37 +201,40 @@ def gameLogic():
             # Invalid action
             else:
                 playsound('negative.mp3')
-                print("Sorry you cannot do that")
 
         elif (currentVoice == VoiceCommand.PLATE):
             # Check if the ingredient exists and is cooked before allowing it to be plated
 
             # Player One
+            currentPlayerOneLocation = colorDetect.currentPlayerOneLocation
+            currentPlayerTwoLocation = colorDetect.currentPlayerTwoLocation
             if (
-                not(location_to_current_ingredient.get(colorDetect.currentPlayerOneLocation, None) == None)
-                and location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status == IngredientStatus.COOKED
+                not(currentPlayerOneLocation == Location.NONE)
+                and not(location_to_current_ingredient.get(currentPlayerOneLocation, None) == None)
+                and location_to_current_ingredient[currentPlayerOneLocation].status == IngredientStatus.COOKED
             ):
                 # Add the cooked ingredient to the plate
                 playsound('placeItem.mp3')
-                currentPlate.append(location_to_current_ingredient[colorDetect.currentPlayerOneLocation])
+                currentPlate.append(location_to_current_ingredient[currentPlayerOneLocation])
                 # Remove the cooked ingredient from the location it existed before
-                location_to_current_ingredient[colorDetect.currentPlayerOneLocation] = None
-                print("Plated ", location_to_current_ingredient[colorDetect.currentPlayerOneLocation])
+                location_to_current_ingredient[currentPlayerOneLocation] = None
+                print("Plated ", location_to_current_ingredient[currentPlayerOneLocation])
                 print("Current items on plate: ")
                 for i in range(len(currentPlate)): 
                     print (currentPlate[i].name)
 
             # Player Two
             elif (
-                not(location_to_current_ingredient.get(colorDetect.currentPlayerTwoLocation, None) == None)
-                and location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status == IngredientStatus.COOKED
+                not(currentPlayerTwoLocation == Location.NONE)
+                and not(location_to_current_ingredient.get(currentPlayerTwoLocation, None) == None)
+                and location_to_current_ingredient[currentPlayerTwoLocation].status == IngredientStatus.COOKED
             ):
                 # Add the cooked ingredient to the plate
                 playsound('placeItem.mp3')
-                currentPlate.append(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation])
+                currentPlate.append(location_to_current_ingredient[currentPlayerTwoLocation])
                 # Remove the cooked ingredient from the location it existed before
-                location_to_current_ingredient[colorDetect.currentPlayerTwoLocation] = None
-                print("Plated ", location_to_current_ingredient[colorDetect.currentPlayerTwoLocation])
+                location_to_current_ingredient[currentPlayerTwoLocation] = None
+                print("Plated ", location_to_current_ingredient[currentPlayerTwoLocation])
                 print("Current items on plate: ")
                 for i in range(len(currentPlate)): 
                     print (currentPlate[i].name)
@@ -236,7 +242,6 @@ def gameLogic():
             # Invalid action
             else:
                 playsound('negative.mp3')
-                print("Plate: Sorry you cannot do that")
 
         elif (currentVoice == VoiceCommand.SUBMIT):
                 # Check that the currentLocation of player is SUBMITSTATION
@@ -245,10 +250,18 @@ def gameLogic():
                     or colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION
                 ):
                     # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
-                    if currentPlate == menu_to_recipe[currentOrder]:
+                    print("Current Plate: ")
+                    for i in range(len(currentPlate)): 
+                        print (currentPlate[i].name)
+
+                    print("Current Recipe: ")
+                    for i in range(len( menu_to_recipe[currentOrder])): 
+                        print (menu_to_recipe[currentOrder][i].name)
+
+                    if currentPlate.sort() == menu_to_recipe[currentOrder].sort():
                         points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
                         playsound('positive.mp3')
-                    elif not(currentPlate == menu_to_recipe[currentOrder]):
+                    else:
                         points -= 2
                         playsound('negative.mp3')
                     print("Current points: ", points)
@@ -275,14 +288,14 @@ def gameLogic():
             or (currentPlayerOneGesture == Gesture.COOK and colorDetect.currentPlayerOneLocation == Location.STOVE)
         ):
             if (
-                not(location_to_current_ingredient[colorDetect.currentPlayerOneLocation] == Ingredient.NONE)
+                not(location_to_current_ingredient[colorDetect.currentPlayerOneLocation] == None)
                 and location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status == IngredientStatus.RAW
             ):
                 location_to_current_ingredient[colorDetect.currentPlayerOneLocation].progress += 1
 
                 if (location_to_current_ingredient[colorDetect.currentPlayerOneLocation].progress >= numberOfGesturesUntilCooked):
                     location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status = IngredientStatus.COOKED
-                    print("Item is cooked")
+                    print(location_to_current_ingredient[colorDetect.currentPlayerOneLocation].name, " is cooked")
                     playsound('positive.mp3')
 
         # Player Two Gesture Recognition
@@ -291,14 +304,14 @@ def gameLogic():
             or (currentPlayerTwoGesture == Gesture.COOK and colorDetect.currentPlayerTwoLocation == Location.STOVE)
         ):
             if (
-                not(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation] == Ingredient.NONE)
+                not(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation] == None)
                 and location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status == IngredientStatus.RAW
             ):
                 location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].progress += 1
 
                 if (location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].progress >= numberOfGesturesUntilCooked):
                     location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status = IngredientStatus.COOKED
-                    print("Item is cooked")
+                    print(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].name, " is cooked")
                     playsound('positive.mp3')
 
         currentVoice = VoiceCommand.NONE
@@ -311,21 +324,21 @@ def gestureProcessing():
         try:
             data, _ = serv.recvfrom(4096)
         except socket.timeout:
-            print("Timeout without connecting to Client")
+            #print("Timeout without connecting to Client")
             continue
         if not data:
             currentGesture = Gesture.NONE
             continue
         decodedData = data.decode().split(",")
-        playerNumer = decodedData[0]
+        playerNumber = decodedData[0]
         tempGesture = decodedData[1]
         currentGesture = Gesture.NONE
 
         if(tempGesture == "chop"):
-            print("Chop")
+            #print("Chop")
             currentGesture = Gesture.CHOP
         elif(tempGesture == "cook"):
-            print("Cook")
+            #print("Cook")
             currentGesture = Gesture.COOK
         if(playerNumber == "1"):
             currentPlayerOneGesture = currentGesture
@@ -335,7 +348,6 @@ def gestureProcessing():
         
 
 def imageRecognition():
-    localization.RunTracker()
     colorDetect.StartTracker()
 
 def voiceRecognition():
@@ -347,6 +359,6 @@ def exitfunc():
     os._exit(0)
 
 if __name__ == "__main__":
-    serv.bind(('172.20.10.6', 8080))
-    Timer(120, exitfunc).start() # exit in 2 minutes
+    serv.bind(('131.179.4.175', 8080))
+    Timer(240, exitfunc).start() # exit in 2 minutes
     RunGame()

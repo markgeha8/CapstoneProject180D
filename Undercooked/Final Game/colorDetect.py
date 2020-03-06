@@ -79,7 +79,7 @@ def initializeGlobals():
     isPlayerTwoCloseEnough = [False, False, False, False, False]
     currentPlayerOneLocation = Location.NONE
     currentPlayerTwoLocation = Location.NONE
-    minDistance = 6 #Inches
+    minDistance = 12 #Inches
     colors = [(0,255,255),(255,0,0),(0,165,255),(139,0,139),(0,255,0)] #BGR rather than RGB
 
 def findACamera():
@@ -178,7 +178,6 @@ def updateLocation():
         currentPlayerOneLocation = Location.CUTTINGBOARD
     elif(isPlayerOneCloseEnough[1]):
         currentPlayerOneLocation = Location.STOVE
-        print("One at Stove")
     elif(isPlayerOneCloseEnough[2]):
         currentPlayerOneLocation = Location.SUBMITSTATION
     else:
@@ -188,7 +187,6 @@ def updateLocation():
         currentPlayerTwoLocation = Location.CUTTINGBOARD
     elif(isPlayerTwoCloseEnough[1]):
         currentPlayerTwoLocation = Location.STOVE
-        print("Two at Stove")
     elif(isPlayerTwoCloseEnough[2]):
         currentPlayerTwoLocation = Location.SUBMITSTATION
     else:
