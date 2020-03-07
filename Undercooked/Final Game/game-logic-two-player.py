@@ -258,7 +258,7 @@ def gameLogic():
                     for i in range(len( menu_to_recipe[currentOrder])): 
                         print (menu_to_recipe[currentOrder][i].name)
 
-                    if currentPlate.sort() == menu_to_recipe[currentOrder].sort():
+                    if set(currentPlate) == set(menu_to_recipe[currentOrder]):
                         points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
                         playsound('positive.mp3')
                     else:
