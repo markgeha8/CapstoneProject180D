@@ -244,37 +244,37 @@ def gameLogic():
                 playsound('negative.mp3')
 
         elif (currentVoice == VoiceCommand.SUBMIT):
-                # Check that the currentLocation of player is SUBMITSTATION
-                if (
-                    colorDetect.currentPlayerOneLocation == Location.SUBMITSTATION
-                    or colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION
-                ):
-                    # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
-                    print("Current Plate: ")
-                    for i in range(len(currentPlate)): 
-                        print (currentPlate[i].name)
+            # Check that the currentLocation of player is SUBMITSTATION
+            if (
+                colorDetect.currentPlayerOneLocation == Location.SUBMITSTATION
+                or colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION
+            ):
+                # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
+                print("Current Plate: ")
+                for i in range(len(currentPlate)): 
+                    print (currentPlate[i].name)
 
-                    print("Current Recipe: ")
-                    for i in range(len( menu_to_recipe[currentOrder])): 
-                        print (menu_to_recipe[currentOrder][i].name)
+                print("Current Recipe: ")
+                for i in range(len( menu_to_recipe[currentOrder])): 
+                    print (menu_to_recipe[currentOrder][i].name)
 
-                    if set(currentPlate) == set(menu_to_recipe[currentOrder]):
-                        points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
-                        playsound('positive.mp3')
-                    else:
-                        points -= 2
-                        playsound('negative.mp3')
-                    print("Current points: ", points)
-                    # clear the currentPlate and update new currentOrder
-                    currentPlate.clear()
-    
-                    #TODO(Charlotte): make sure this works correctly
-                    currentOrder = random.choice(list(menu_to_recipe))
-                    currentRecipe = menu_to_recipe[currentOrder]
-                    print("The next order is: ", currentOrder)
-                    print("The ingredients are: ")
-                    for i in range(len(currentRecipe)): 
-                        print (currentRecipe[i].name)
+                if set(currentPlate) == set(menu_to_recipe[currentOrder]):
+                    points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
+                    playsound('positive.mp3')
+                else:
+                    points -= 2
+                    playsound('negative.mp3')
+                print("Current points: ", points)
+                # clear the currentPlate and update new currentOrder
+                currentPlate.clear()
+
+                #TODO(Charlotte): make sure this works correctly
+                currentOrder = random.choice(list(menu_to_recipe))
+                currentRecipe = menu_to_recipe[currentOrder]
+                print("The next order is: ", currentOrder)
+                print("The ingredients are: ")
+                for i in range(len(currentRecipe)): 
+                    print (currentRecipe[i].name)
 
         elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
