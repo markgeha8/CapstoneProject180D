@@ -33,54 +33,117 @@ CHUNK = int(RATE / 10)  # 100ms
 # Valid word maps
 riceDict ={
     'rice':True,
+    'ricerice': True,
     'right': True,
+    'rightright': True,
+    'rife': True,
+    'riferife': True,
 }
 
 fishDict ={
-    'fish':True,
+    'fish': True,
+    'fishfish': True,
 }
 
 seaweedDict ={
     'seaweed': True,
-    'Siri': True,
-    'CV':True,
+    'seaweedseaweed': True,
+    'siri': True,
+    'sirisiri': True,
+    'cv': True,
+    'cvcv': True,
 }
 
 lettuceDict = {
     'lettuce':True,
+    'lettucelettuce': True,
     'lattice':True,
-    'Latin':True,
+    'latticelattice': True,
+    'latin':True,
+    'latinlatin':True,
 }
 
 tomatoDict = {
     'tomato':True,
+    'tomatotomato':True,
     'turn':True,
+    'turnturn':True,
 }
 
 chickenDict = {
     'chicken':True,
+    'chickenchicken':True,
 }
 
-setDict ={
+plateDict ={
+    'plate': True,
+    'plateplate': True,
+    'plates': True,
+    'platesplates': True,
+    'play': True,
+    'playplay': True,
+    'plain': True,
+    'plainplain': True,
+    'plane': True,
+    'planeplane': True,
+    'plays': True,
+    'playsplays': True,
+    'playit': True,
+    'playitplaylit': True,
+    'quite': True,
+    'quitequite': True,
+    'quiet': True,
+    'quietquiet': True,
+    'weight': True,
+    'weightweight': True,
+    'rate': True,
+    'raterate': True,
+    'late': True,
+    'latelate': True,
+    'mate': True,
+    'matemate': True,
     'set': True,
-    'sit':True,
+    'setset': True,
+    'sit': True,
+    'sitsit': True,
     'sat': True,
-    'sap':True,
+    'satsat': True,
+    'sap': True,
+    'sapsap': True,
     'sip': True,
+    'sipsip': True,
+    'wait': True,
+    'waitwait': True,
+    'weight': True,
+    'weightweight': True,
+    'themet': True,
+    'themetthemet': True,
 }
 
 trashDict ={
-    'trash':True,
-    'trust':True,
-    'trish':True,
-    'try':True,
+    'trash': True,
+    'trashtrash': True,
+    'trust': True,
+    'trusttrust': True,
+    'trish': True,
+    'tristtrish': True,
+    'try': True,
+    'trytry': True,
 }
 
 submitDict={
     'submit':True,
-    'Summit':True,
-    'some':True,
-    'something':True,
+    'submitsubmit': True,
+    'summit': True,
+    'summitsummit': True,
+    'some': True,
+    'somesome': True,
+    'something': True,
+    'somethingsomething': True,
+    'someit': True,
+    'someitsomeit': True,
+    'admit': True,
+    'admitadmit': True,
 }
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
@@ -153,6 +216,7 @@ def setVoice(trofa):
 
 def removeSpaces(phrase):
     phrase = phrase.replace(' ','')
+    phrase = phrase.lower()
     return phrase
 
 def listen_print_loop(responses, num):
@@ -197,17 +261,17 @@ def listen_print_loop(responses, num):
         overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
         if not result.is_final:
-            #sys.stdout.write(transcript + overwrite_chars + '\r')
-            #sys.stdout.flush()
+            sys.stdout.write(transcript + overwrite_chars + '\r')
+            sys.stdout.flush()
 
             num_chars_printed = len(transcript)
-            #print()
+            print()
 
         else:
             spokenWord = transcript + overwrite_chars
-            if(setDict.get(removeSpaces(spokenWord),False)):
+            if(plateDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = VoiceCommand.PLATE
-                print("Set")
+                print("Plate")
             elif(submitDict.get(removeSpaces(spokenWord),False)):
                 tempVoice = VoiceCommand.SUBMIT
                 print("Submit")

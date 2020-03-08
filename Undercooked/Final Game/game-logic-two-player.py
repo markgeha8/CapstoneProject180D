@@ -121,7 +121,7 @@ def gameLogic():
 
     # Debugigng Variables
     debugLocalization = False
-    debugVoice = True
+    debugVoice = False
     debugGesture = False
 
     while True:
@@ -258,7 +258,33 @@ def gameLogic():
                 for i in range(len( menu_to_recipe[currentOrder])): 
                     print (menu_to_recipe[currentOrder][i].name)
 
-                if set(currentPlate) == set(menu_to_recipe[currentOrder]):
+                recipe = menu_to_recipe[currentOrder]
+                isPlateCorrect = False
+
+                if len(currentPlate) == len(recipe):
+                    counter = 0
+                    for i in range(len(currentPlate)):
+                        tempi = i - counter
+                        for j in range(len(recipe)):
+                            tempj = j - counter
+                            if currentPlate[tempi].name == recipe[tempj].name:
+                                currentPlate.pop(tempi)
+                                recipe.pop(tempj)
+                                counter = counter + 1
+                                break
+                    
+                    if len(recipe) == 0 and len(currentPlate) == 0:
+                        isPlateCorrect = True
+
+                print("Current Plate: ")
+                for i in range(len(currentPlate)): 
+                    print (currentPlate[i].name)
+
+                print("Current Recipe: ")
+                for i in range(len(recipe)): 
+                    print (recipe[i].name)
+
+                if isPlateCorrect:
                     points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
                     playsound('positive.mp3')
                 else:
@@ -359,6 +385,6 @@ def exitfunc():
     os._exit(0)
 
 if __name__ == "__main__":
-    serv.bind(('131.179.4.175', 8080))
+    serv.bind(('192.168.1.182', 8080))
     Timer(240, exitfunc).start() # exit in 2 minutes
     RunGame()
