@@ -258,6 +258,7 @@ def gameLogic():
                 for i in range(len( menu_to_recipe[currentOrder])): 
                     print (menu_to_recipe[currentOrder][i].name)
 
+                # TODO (Charlotte): See if this is the same object
                 recipe = menu_to_recipe[currentOrder]
                 isPlateCorrect = False
 
@@ -385,6 +386,6 @@ def exitfunc():
     os._exit(0)
 
 if __name__ == "__main__":
-    serv.bind(('192.168.1.182', 8080))
+    serv.bind(('131.179.5.251', 8080))
     Timer(240, exitfunc).start() # exit in 2 minutes
     RunGame()
