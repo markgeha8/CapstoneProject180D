@@ -456,7 +456,7 @@ def updateDisplay():
 
     currentPlateString = ""
     for i in range(len(currentPlate)): 
-        currentPlateString += ingredient_to_name[currentPlate[i].name] + " "
+        currentPlateString += ingredient_to_name[currentPlate[i].name] + ", "
 
     line1txt.set("Order: " + menuItem_enum_to_name[currentOrder])
     line2txt.set("Recipe: " + currentRecipeString)
