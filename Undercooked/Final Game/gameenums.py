@@ -27,6 +27,23 @@ class Ingredient(AutoName):
     CHICKEN = auto()
     NONE = auto()
 
+menuItem_enum_to_name = {
+    MenuItem.SUSHI: "Sushi",
+    MenuItem.SALAD: "Salad",
+    MenuItem.GRILLEDCHICKEN: "Grilled Chicken",
+}
+
+ingredient_enum_to_name = {
+    Ingredient.RICE: "Rice",
+    Ingredient.FISH: "Fish",
+    Ingredient.SEAWEED: "Seaweed",
+    Ingredient.LETTUCE: "Lettuce",
+    Ingredient.TOMATO: "Tomato",
+    Ingredient.CHICKEN: "Chicken",
+    Ingredient.NONE: "",
+}
+
+
 # Ingredient Status
 class IngredientStatus(AutoName):
     RAW = auto()
