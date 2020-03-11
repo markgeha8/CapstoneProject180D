@@ -79,7 +79,6 @@ def RunGame():
     # Set the first order
     global currentOrder
     
-    #TODO(Charlotte): make sure this works correctly
     currentOrder = random.choice(list(menu_to_recipe))
     currentRecipe = menu_to_recipe[currentOrder]
     print("The order is: ", currentOrder)
@@ -258,8 +257,7 @@ def gameLogic():
                 for i in range(len( menu_to_recipe[currentOrder])): 
                     print (menu_to_recipe[currentOrder][i].name)
 
-                # TODO (Charlotte): See if this is the same object
-                recipe = menu_to_recipe[currentOrder]
+                recipe = menu_to_recipe[currentOrder].copy()
                 isPlateCorrect = False
 
                 if len(currentPlate) == len(recipe):
@@ -286,7 +284,7 @@ def gameLogic():
                     print (recipe[i].name)
 
                 if isPlateCorrect:
-                    points += 10    #TODO(Charlotte): make number of points awarded based on time to complete
+                    points += 10
                     playsound('positive.mp3')
                 else:
                     points -= 2
@@ -295,7 +293,6 @@ def gameLogic():
                 # clear the currentPlate and update new currentOrder
                 currentPlate.clear()
 
-                #TODO(Charlotte): make sure this works correctly
                 currentOrder = random.choice(list(menu_to_recipe))
                 currentRecipe = menu_to_recipe[currentOrder]
                 print("The next order is: ", currentOrder)
