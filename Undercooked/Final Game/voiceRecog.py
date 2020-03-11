@@ -261,11 +261,11 @@ def listen_print_loop(responses, num):
         overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
         if not result.is_final:
-            sys.stdout.write(transcript + overwrite_chars + '\r')
-            sys.stdout.flush()
+            #sys.stdout.write(transcript + overwrite_chars + '\r')
+            #sys.stdout.flush()
 
             num_chars_printed = len(transcript)
-            print()
+            #print()
 
         else:
             spokenWord = transcript + overwrite_chars

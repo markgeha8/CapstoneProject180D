@@ -397,12 +397,12 @@ def setupDisplay():
     
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
-        currentRecipeString += currentRecipe[i].name + " "
+        currentRecipeString += str(currentRecipe[i].name) + " "
 
     window.title("Undercooked")
     window.geometry('650x500')
 
-    line1txt.set("Order: " + currentOrder)
+    line1txt.set("Order: " + str(currentOrder))
 
     line2txt.set("Recipe: " + currentRecipeString)
 
@@ -439,26 +439,28 @@ def setupDisplay():
 
     line10 = Label(window, text="Fish, Tomato, Lettuce", font=("Arial", 20), justify=LEFT)
     line10.pack()
+    
+    window.update()
 
 def updateDisplay():
     global currentOrder
     global currentPlate
-    global score
+    global points
 
     currentRecipe = menu_to_recipe[currentOrder]
 
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
-        currentRecipeString += currentRecipe[i].name + " "
+        currentRecipeString += str(currentRecipe[i].name) + " "
 
     currentPlateString = ""
     for i in range(len(currentPlate)): 
-        currentPlateString += currentPlate[i].name + " "
+        currentPlateString += str(currentPlate[i].name) + " "
 
-    line1txt.set("Order: " + currentOrder)
+    line1txt.set("Order: " + str(currentOrder))
     line2txt.set("Recipe: " + currentRecipeString)
     line3txt.set("Plate: " + currentPlateString)
-    line4txt.set("Score: " + str(score))
+    line4txt.set("Score: " + str(points))
 
     window.update()       
 
