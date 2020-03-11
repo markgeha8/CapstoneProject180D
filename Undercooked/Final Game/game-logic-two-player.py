@@ -397,7 +397,7 @@ def setupDisplay():
     
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
-        currentRecipeString += ingredient_to_name[currentRecipe[i].name] + " "
+        currentRecipeString += ingredient_to_name[currentRecipe[i].name] + ", "
 
     window.title("Undercooked")
     window.geometry('650x500')
@@ -451,11 +451,11 @@ def updateDisplay():
 
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
-        currentRecipeString += ingredient_to_name[currentRecipe[i].name] + " "
+        currentRecipeString += ingredient_to_name[currentRecipe[i].name] + ", "
 
     currentPlateString = ""
     for i in range(len(currentPlate)): 
-        currentPlateString += ingredient_to_name[currentPlate[i].name] + " "
+        currentPlateString += ingredient_to_name[currentPlate[i].name] + ", "
 
     line1txt.set("Order: " + menuItem_to_name[currentOrder])
     line2txt.set("Recipe: " + currentRecipeString)
