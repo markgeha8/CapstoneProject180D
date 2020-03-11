@@ -1,22 +1,20 @@
-import tkinter as tk
-from Pillow import ImageTk,Image  
+from tkinter import *
 
-#This creates the main window of an application
-window = tk.Tk()
-window.title("Join")
-window.geometry("300x300")
-window.configure(background='grey')
+window = Tk()
 
-path = "Aaron.jpg"
+window.title("Undercooked")
+window.geometry('650x500')
 
-#Creates a Tkinter-compatible photo image, which can be used everywhere Tkinter expects an image object.
-img = ImageTk.PhotoImage(Image.open(path))
+line1 = Label(window, text="Current Recipe: Sushi", font=("Arial", 20))
+line1.grid(column=0, row=0)
 
-#The Label widget is a standard Tkinter widget used to display a text or image on the screen.
-panel = tk.Label(window, image = img)
+line2 = Label(window, text="Ingredients: Fish, Rice, Seaweed", font=("Arial", 20))
+line2.grid(column=0, row=1)
 
-#The Pack geometry manager packs widgets in rows or columns.
-panel.pack(side = "bottom", fill = "both", expand = "yes")
+line3 = Label(window, text="Plate: Fish", font=("Arial", 20))
+line2.grid(column=0, row=2)
 
-#Start the GUI
+line4 = Label(window, text="Score: 10", font=("Arial", 20))
+line4.grid(column=0, row=3)
+
 window.mainloop()

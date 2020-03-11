@@ -12,6 +12,8 @@ from datetime import datetime
 from threading import Timer
 import random
 from playsound import playsound
+from tkinter import *  
+from PIL import ImageTk,Image
 
 # Global Constants
 numberOfGesturesUntilCooked = 10
@@ -93,21 +95,33 @@ def RunGame():
     t2 = threading.Thread(target=gestureProcessing, args=())
     t3 = threading.Thread(target=gameLogic, args=())
     t4 = threading.Thread(target=voiceRecognition, args=())
+    t5 = threading.Thread(target=guiDisplay, args=())
     
     # starting threads 
     t1.start() 
     t2.start()
     t3.start()
     t4.start()
+    t5.start()
 
     # wait until threads are completely executed 
     t1.join()
     t2.join()
     t3.join()
     t4.join()
+    t5.join()
     
     # both threads completely executed 
     print("Done!")
+
+def guiDisplay():
+    root = Tk()
+    canvas = Canvas(root, width = 300, height = 300)  
+    canvas.pack()  
+    img = ImageTk.PhotoImage(Image.open("ball.png"))  
+    canvas.create_image(20, 20, anchor=NW, image=img) 
+    root.mainloop()
+    root.mainloop() 
 
 def gameLogic():
     global numberOfGesturesUntilCooked
