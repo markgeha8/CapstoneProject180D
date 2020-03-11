@@ -89,7 +89,6 @@ def RunGame():
     global currentOrder
     
     currentOrder = random.choice(list(menu_to_recipe))
-    currentRecipe = menu_to_recipe[currentOrder]
 
     setupDisplay()
 
@@ -443,9 +442,10 @@ def setupDisplay():
 
 def updateDisplay():
     global currentOrder
-    global currentRecipe
     global currentPlate
     global score
+
+    currentRecipe = menu_to_recipe[currentOrder]
 
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
