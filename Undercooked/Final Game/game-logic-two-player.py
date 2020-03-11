@@ -21,6 +21,7 @@ numberOfGesturesUntilCooked = 10
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serv.settimeout(10)
+ipadd = '172.20.10.6'
 
 currentPlayerOneGesture = Gesture.NONE
 currentPlayerTwoGesture = Gesture.NONE
@@ -115,13 +116,7 @@ def RunGame():
     print("Done!")
 
 def guiDisplay():
-    root = Tk()
-    canvas = Canvas(root, width = 300, height = 300)  
-    canvas.pack()  
-    img = ImageTk.PhotoImage(Image.open("ball.png"))  
-    canvas.create_image(20, 20, anchor=NW, image=img) 
-    root.mainloop()
-    root.mainloop() 
+    print("Hello")
 
 def gameLogic():
     global numberOfGesturesUntilCooked
@@ -359,6 +354,7 @@ def gestureProcessing():
     global currentPlayerTwoGesture
     while True:
         tempGesture = ""
+        playerNumber = ""
         try:
             data, _ = serv.recvfrom(4096)
         except socket.timeout:
@@ -368,8 +364,9 @@ def gestureProcessing():
             currentGesture = Gesture.NONE
             continue
         decodedData = data.decode().split(",")
-        playerNumber = decodedData[0]
-        tempGesture = decodedData[1]
+        if(len(decodedData) == 2):
+            playerNumber = decodedData[0]
+            tempGesture = decodedData[1]
         currentGesture = Gesture.NONE
 
         if(tempGesture == "chop"):
@@ -397,6 +394,6 @@ def exitfunc():
     os._exit(0)
 
 if __name__ == "__main__":
-    serv.bind(('131.179.5.251', 8080))
+    serv.bind((ipadd, 8080))
     Timer(240, exitfunc).start() # exit in 2 minutes
     RunGame()
