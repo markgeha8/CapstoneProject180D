@@ -23,6 +23,12 @@ serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serv.settimeout(10)
 ipadd = '172.20.10.6'
 
+window = Tk()
+line1txt = StringVar()
+line2txt = StringVar()
+line3txt = StringVar()
+line4txt = StringVar()
+
 currentPlayerOneGesture = Gesture.NONE
 currentPlayerTwoGesture = Gesture.NONE
 currentOrder = ""
@@ -84,10 +90,8 @@ def RunGame():
     
     currentOrder = random.choice(list(menu_to_recipe))
     currentRecipe = menu_to_recipe[currentOrder]
-    print("The order is: ", currentOrder)
-    print("The ingredients are: ")
-    for i in range(len(currentRecipe)): 
-        print (currentRecipe[i].name)
+
+    setupDisplay()
 
     global serv
 
@@ -380,7 +384,82 @@ def gestureProcessing():
         elif(playerNumber == "2"):
             currentPlayerTwoGesture = currentGesture
 
-        
+def setupDisplay():
+    global window
+    global line1txt
+    global line2txt
+    global line3txt
+    global line4txt
+
+    global currentOrder
+    global currentRecipe
+    global points
+    
+    currentRecipeString = ""
+    for i in range(len(currentRecipe)): 
+        currentRecipeString += currentRecipe[i].name + " "
+
+    window.title("Undercooked")
+    window.geometry('650x500')
+
+    line1txt.set("Order: " + currentOrder)
+
+    line2txt.set("Recipe: " + currentRecipeString)
+
+    line3txt.set("Plate: ")
+
+    line4txt.set("Score: " + str(points))
+
+    line1 = Label(window, textvariable=line1txt, font=("Arial", 20), justify=LEFT)
+    line1.pack()
+
+    line2 = Label(window, textvariable=line2txt, font=("Arial", 20), justify=LEFT)
+    line2.pack()
+
+    line3 = Label(window, textvariable=line3txt, font=("Arial", 20), justify=LEFT)
+    line3.pack()
+
+    line4 = Label(window, textvariable=line4txt, font=("Arial", 20), justify=LEFT)
+    line4.pack()
+
+    line5 = Label(window, text="________________________________", font=("Arial", 20), justify=LEFT)
+    line5.pack()
+
+    line6 = Label(window, text="Items cooked on stove:", font=("Arial", 20), justify=LEFT)
+    line6.pack()
+
+    line7 = Label(window, text="Chicken, Rice, Seaweed", font=("Arial", 20), justify=LEFT)
+    line7.pack()
+
+    line8 = Label(window, text="________________________________", font=("Arial", 20), justify=LEFT)
+    line8.pack()
+
+    line9 = Label(window, text="Items chopped on cuttingboard:", font=("Arial", 20), justify=LEFT)
+    line9.pack()
+
+    line10 = Label(window, text="Fish, Tomato, Lettuce", font=("Arial", 20), justify=LEFT)
+    line10.pack()
+
+def updateDisplay():
+    global currentOrder
+    global currentRecipe
+    global currentPlate
+    global score
+
+    currentRecipeString = ""
+    for i in range(len(currentRecipe)): 
+        currentRecipeString += currentRecipe[i].name + " "
+
+    currentPlateString = ""
+    for i in range(len(currentPlate)): 
+        currentPlateString += currentPlate[i].name + " "
+
+    line1txt.set("Order: " + currentOrder)
+    line2txt.set("Recipe: " + currentRecipeString)
+    line3txt.set("Plate: " + currentPlateString)
+    line4txt.set("Score: " + str(score))
+
+    window.update()       
 
 def imageRecognition():
     colorDetect.StartTracker()
