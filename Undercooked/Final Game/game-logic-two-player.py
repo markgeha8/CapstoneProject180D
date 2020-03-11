@@ -392,8 +392,9 @@ def setupDisplay():
     global line4txt
 
     global currentOrder
-    global currentRecipe
     global points
+
+    currentRecipe = menu_to_recipe[currentOrder]
     
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
