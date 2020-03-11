@@ -100,27 +100,22 @@ def RunGame():
     t2 = threading.Thread(target=gestureProcessing, args=())
     t3 = threading.Thread(target=gameLogic, args=())
     t4 = threading.Thread(target=voiceRecognition, args=())
-    t5 = threading.Thread(target=guiDisplay, args=())
     
     # starting threads 
+    t3.setDaemon(True)
     t1.start() 
     t2.start()
     t3.start()
     t4.start()
-    t5.start()
 
     # wait until threads are completely executed 
     t1.join()
     t2.join()
     t3.join()
     t4.join()
-    t5.join()
     
     # both threads completely executed 
     print("Done!")
-
-def guiDisplay():
-    print("Hello")
 
 def gameLogic():
     global numberOfGesturesUntilCooked
@@ -230,10 +225,11 @@ def gameLogic():
                 currentPlate.append(location_to_current_ingredient[currentPlayerOneLocation])
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[currentPlayerOneLocation] = None
-                print("Plated ", location_to_current_ingredient[currentPlayerOneLocation])
-                print("Current items on plate: ")
-                for i in range(len(currentPlate)): 
-                    print (currentPlate[i].name)
+                #print("Plated ", location_to_current_ingredient[currentPlayerOneLocation])
+                #print("Current items on plate: ")
+                #for i in range(len(currentPlate)): 
+                #    print (currentPlate[i].name)
+                updateDisplay()
 
             # Player Two
             elif (
@@ -246,10 +242,11 @@ def gameLogic():
                 currentPlate.append(location_to_current_ingredient[currentPlayerTwoLocation])
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[currentPlayerTwoLocation] = None
-                print("Plated ", location_to_current_ingredient[currentPlayerTwoLocation])
-                print("Current items on plate: ")
-                for i in range(len(currentPlate)): 
-                    print (currentPlate[i].name)
+                #print("Plated ", location_to_current_ingredient[currentPlayerTwoLocation])
+                #print("Current items on plate: ")
+                #for i in range(len(currentPlate)): 
+                #    print (currentPlate[i].name)
+                updateDisplay()
 
             # Invalid action
             else:
@@ -302,22 +299,26 @@ def gameLogic():
                 else:
                     points -= 2
                     playsound('negative.mp3')
-                print("Current points: ", points)
+                #print("Current points: ", points)
                 # clear the currentPlate and update new currentOrder
+                
                 currentPlate.clear()
 
                 currentOrder = random.choice(list(menu_to_recipe))
-                currentRecipe = menu_to_recipe[currentOrder]
-                print("The next order is: ", currentOrder)
-                print("The ingredients are: ")
-                for i in range(len(currentRecipe)): 
-                    print (currentRecipe[i].name)
+                #currentRecipe = menu_to_recipe[currentOrder]
+                #print("The next order is: ", currentOrder)
+                #print("The ingredients are: ")
+                #for i in range(len(currentRecipe)): 
+                #    print (currentRecipe[i].name)
+
+                updateDisplay()
 
         elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
             playsound('placeItem.mp3')
-            print("Current items on plate: None")
+            #print("Current items on plate: None")
             currentPlate.clear()
+            updateDisplay()
 
         # Player One Gesture Recognition
         if (
@@ -398,7 +399,7 @@ def setupDisplay():
     
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
-        currentRecipeString += ingredient_enum_to_name[currentRecipe[i].name] + " "
+        currentRecipeString += ingredient_enum_to_name[currentRecipe[i].name] + ", "
 
     window.title("Undercooked")
     window.geometry('650x500')
@@ -447,16 +448,21 @@ def updateDisplay():
     global currentOrder
     global currentPlate
     global points
+    global line1txt
+    global line2txt
+    global line3txt
+    global line4txt
+    global window
 
     currentRecipe = menu_to_recipe[currentOrder]
 
     currentRecipeString = ""
     for i in range(len(currentRecipe)): 
-        currentRecipeString += ingredient_enum_to_name[currentRecipe[i].name] + " "
+        currentRecipeString += ingredient_enum_to_name[currentRecipe[i].name] + ", "
 
     currentPlateString = ""
     for i in range(len(currentPlate)): 
-        currentPlateString += ingredient_to_name[currentPlate[i].name] + ", "
+        currentPlateString += ingredient_enum_to_name[currentPlate[i].name] + ", "
 
     line1txt.set("Order: " + menuItem_enum_to_name[currentOrder])
     line2txt.set("Recipe: " + currentRecipeString)
