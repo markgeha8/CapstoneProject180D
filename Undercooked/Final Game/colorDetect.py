@@ -93,7 +93,6 @@ def findACamera():
         vs = cv2.VideoCapture(i)
         test, _ = vs.read()
         if (test):
-            print("i = ", str(i), " /// result: ", str(test))
             if(count == 0): #Determines attached camera or local camera
                 findCamera = True
             count = count + 1

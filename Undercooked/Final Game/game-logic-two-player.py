@@ -21,7 +21,7 @@ numberOfGesturesUntilCooked = 10
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serv.settimeout(10)
-ipadd = '172.20.10.6'
+ipadd = '192.168.1.105'
 
 window = Tk()
 line1txt = StringVar()
@@ -98,20 +98,20 @@ def RunGame():
     # create threads
     t1 = threading.Thread(target=imageRecognition, args=()) 
     t2 = threading.Thread(target=gestureProcessing, args=())
-    t3 = threading.Thread(target=gameLogic, args=())
+    #t3 = threading.Thread(target=gameLogic, args=())
     t4 = threading.Thread(target=voiceRecognition, args=())
     
     # starting threads 
-    t3.setDaemon(True)
     t1.start() 
     t2.start()
-    t3.start()
+    #t3.start()
     t4.start()
+    gameLogic()
 
     # wait until threads are completely executed 
     t1.join()
     t2.join()
-    t3.join()
+    #t3.join()
     t4.join()
     
     # both threads completely executed 
@@ -313,6 +313,9 @@ def gameLogic():
 
                 updateDisplay()
 
+            else:
+                playsound('negative.mp3')
+
         elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
             playsound('placeItem.mp3')
@@ -401,6 +404,8 @@ def setupDisplay():
     for i in range(len(currentRecipe)): 
         currentRecipeString += ingredient_enum_to_name[currentRecipe[i].name] + ", "
 
+    currentRecipeString = currentRecipeString[:len(currentRecipeString)-2]
+
     window.title("Undercooked")
     window.geometry('650x500')
 
@@ -460,9 +465,13 @@ def updateDisplay():
     for i in range(len(currentRecipe)): 
         currentRecipeString += ingredient_enum_to_name[currentRecipe[i].name] + ", "
 
+    currentRecipeString = currentRecipeString[:len(currentRecipeString)-2]
+
     currentPlateString = ""
     for i in range(len(currentPlate)): 
         currentPlateString += ingredient_enum_to_name[currentPlate[i].name] + ", "
+    
+    currentPlateString = currentPlateString[:len(currentPlateString)-2]
 
     line1txt.set("Order: " + menuItem_enum_to_name[currentOrder])
     line2txt.set("Recipe: " + currentRecipeString)
