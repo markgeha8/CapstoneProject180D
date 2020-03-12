@@ -446,6 +446,15 @@ def setupDisplay():
 
     line10 = Label(window, text="Fish, Tomato, Lettuce", font=("Arial", 20), justify=LEFT)
     line10.pack()
+
+    line11 = Label(window, text="________________________________", font=("Arial", 20), justify=LEFT)
+    line11.pack()
+
+    line12 = Label(window, text="Voice Commands:", font=("Arial", 20), justify=LEFT)
+    line12.pack()
+
+    line13 = Label(window, text="Ingredients, Plate, Trash, Submit", font=("Arial", 20), justify=LEFT)
+    line13.pack()
     
     window.update()
 
