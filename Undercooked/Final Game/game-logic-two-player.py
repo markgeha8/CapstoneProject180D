@@ -21,7 +21,7 @@ numberOfGesturesUntilCooked = 10
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serv.settimeout(10)
-ipadd = '192.168.1.105'
+ipadd = '131.179.5.17'
 
 window = Tk()
 line1txt = StringVar()
@@ -275,7 +275,7 @@ def gameLogic():
                     for i in range(len(currentPlate)):
                         tempi = i - counter
                         for j in range(len(recipe)):
-                            tempj = j - counter
+                            tempj = j
                             if currentPlate[tempi].name == recipe[tempj].name:
                                 currentPlate.pop(tempi)
                                 recipe.pop(tempj)

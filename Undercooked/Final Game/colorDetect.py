@@ -63,8 +63,8 @@ def initializeGlobals():
     global colors
 
     #Colors go [Yellow (BAD), Blue (GOOD), Orange(BAD), Purple (UNSTABLE), Green (UNSTABLE)]
-    colorLower = [(20,150,150),(94,80,2),(5,100,100),(127,10,10),(40,52,72)]
-    colorUpper = [(40,255,255),(126,255,255),(15,255,255),(170,255,255),(102,255,255)]
+    colorLower = [(20,150,150),(94,120,2),(5,100,100),(127,10,10),(40,52,72)]
+    colorUpper = [(40,255,255),(126,240,255),(15,255,255),(170,255,255),(102,255,255)]
     maxIter = len(colorLower)
     x = [0.0,0.0,0.0,0.0,0.0]
     y = [0.0,0.0,0.0,0.0,0.0]
