@@ -21,7 +21,7 @@ numberOfGesturesUntilCooked = 10
 # Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serv.settimeout(10)
-ipadd = '131.179.5.17'
+ipadd = '192.168.1.105'
 
 window = Tk()
 line1txt = StringVar()

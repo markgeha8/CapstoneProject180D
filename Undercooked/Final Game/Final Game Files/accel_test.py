@@ -17,10 +17,11 @@ near_stove = False
 start = 0
 md = False
 start = time.time()
-send_data = "None"
+send_data = "1,None"
+ipadd = '131.179.5.17'
 
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-client.sendto(send_data.encode(), ('192.168.1.182',8080))
+client.sendto(send_data.encode(), (ipadd,8080))
 
 def getGesture():
     global send_data
@@ -38,22 +39,22 @@ def getGesture():
             if ACCy>ACCx:
                 print("cutting motion detected")
                 #cut_num = cut_num+1
-                send_data = "chop"
+                send_data = "1,chop"
             elif ACCx>ACCy:
                 print("cooking motion detected")
                 #cook_num = cook_num+1
-                send_data = "cook"
+                send_data = "1,cook"
             else:
-                send_data = "none"
+                send_data = "1,none"
         time.sleep(0.175)
 
 def sendGesture():
     global send_data
 
     while True:
-        client.sendto(send_data.encode(), ('172.20.10.6',8080))
+        client.sendto(send_data.encode(), (ipadd,8080))
         print(send_data)
-        send_data = "none"
+        send_data = "1,none"
         time.sleep(0.175)
 
 
