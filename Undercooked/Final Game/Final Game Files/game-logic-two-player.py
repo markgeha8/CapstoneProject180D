@@ -18,17 +18,19 @@ from PIL import ImageTk,Image
 # Global Constants
 numberOfGesturesUntilCooked = 10
 
-# Globals
+# Socket Globals
 serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serv.settimeout(10)
 ipadd = '192.168.1.105'
 
+# Graphics Globals
 window = Tk()
 line1txt = StringVar()
 line2txt = StringVar()
 line3txt = StringVar()
 line4txt = StringVar()
 
+# Game State Globals
 currentPlayerOneGesture = Gesture.NONE
 currentPlayerTwoGesture = Gesture.NONE
 currentOrder = ""
@@ -36,6 +38,7 @@ currentVoice = VoiceCommand.NONE
 currentPlate = list()
 points = 0
 
+# Ingredient class
 class ingredient():
     def __init__(self, name, status, progress):
         self.name = name
@@ -49,6 +52,7 @@ class ingredient():
     def __lt__(self,other):
         return self.name.value < other.name.value
 
+# Dictionaries for maintaining game state
 menu_to_recipe = {
     MenuItem.SUSHI: [
         ingredient(Ingredient.RICE, IngredientStatus.COOKED, numberOfGesturesUntilCooked), 
@@ -95,26 +99,23 @@ def RunGame():
 
     global serv
 
-    # create threads
+    # Create threads
     t1 = threading.Thread(target=imageRecognition, args=()) 
     t2 = threading.Thread(target=gestureProcessing, args=())
-    #t3 = threading.Thread(target=gameLogic, args=())
-    t4 = threading.Thread(target=voiceRecognition, args=())
+    t3 = threading.Thread(target=voiceRecognition, args=())
     
-    # starting threads 
+    # Start up threads, game logic should run in main thread
     t1.start() 
     t2.start()
-    #t3.start()
-    t4.start()
+    t3.start()
     gameLogic()
 
-    # wait until threads are completely executed 
+    # Wait until threads have exited
     t1.join()
     t2.join()
-    #t3.join()
-    t4.join()
+    t3.join()
     
-    # both threads completely executed 
+    # All threads executed 
     print("Done!")
 
 def gameLogic():
@@ -126,18 +127,20 @@ def gameLogic():
     global currentPlate
     global points
 
-    # Debugigng Variables
+    # Debugging Variables
     debugLocalization = False
     debugVoice = False
     debugGesture = False
 
     while True:
+
+        # Update global voice variable if a new voice command has been sent by voice file
         if(voiceRecog.newVoice):
             currentVoice = voiceRecog.currentVoice
             voiceRecog.setVoice(False)
-            #print(str(currentVoice))
 
-        if(debugLocalization): #Debugging Localization
+        # Debugging Localization
+        if(debugLocalization):
             if(colorDetect.currentPlayerOneLocation == Location.CUTTINGBOARD):
                 print("Player One is at the Cutting Board")
             elif(colorDetect.currentPlayerOneLocation == Location.STOVE):
@@ -152,7 +155,8 @@ def gameLogic():
             elif(colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION):
                 print("Player Two is at the Submit Station")
 
-        if(debugVoice): #Debugging Voice
+        # Debugging Voice
+        if(debugVoice):
             if(currentVoice == VoiceCommand.PLATE):
                 print("Commanding plate")
             elif(currentVoice == VoiceCommand.SUBMIT):
@@ -172,7 +176,8 @@ def gameLogic():
             elif(currentVoice == Ingredient.CHICKEN):
                 print("Ordering chimkin")
 
-        if(debugGesture): #Debugging Gesture
+        # Debugging Gesture
+        if(debugGesture):
             if(currentPlayerOneGesture == Gesture.CHOP):
                 print("Chopping")
             elif(currentPlayerOneGesture == Gesture.COOK):
@@ -183,6 +188,7 @@ def gameLogic():
             elif(currentPlayerTwoGesture == Gesture.COOK):
                 print("Cooking")
 
+        # Voice command is an ingredient that should be put on a stove
         if ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.STOVE:
             # Put the Ingredient into the pot to be cooked if valid Ingredient and the player is in proximity to the location
             if (
@@ -196,6 +202,7 @@ def gameLogic():
             else:
                 playsound('negative.mp3')
 
+        # Voice command is an ingredient that should be put on a cutting board
         elif ingredient_to_valid_location.get(currentVoice, Location.NONE) == Location.CUTTINGBOARD:
             # Put the Ingredient onto the cutting board to be chopped if valid Ingredient
             if (
@@ -209,6 +216,7 @@ def gameLogic():
             else:
                 playsound('negative.mp3')
 
+        # Voice command is plate
         elif (currentVoice == VoiceCommand.PLATE):
             # Check if the ingredient exists and is cooked before allowing it to be plated
 
@@ -223,12 +231,9 @@ def gameLogic():
                 # Add the cooked ingredient to the plate
                 playsound('placeItem.mp3')
                 currentPlate.append(location_to_current_ingredient[currentPlayerOneLocation])
+
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[currentPlayerOneLocation] = None
-                #print("Plated ", location_to_current_ingredient[currentPlayerOneLocation])
-                #print("Current items on plate: ")
-                #for i in range(len(currentPlate)): 
-                #    print (currentPlate[i].name)
                 updateDisplay()
 
             # Player Two
@@ -240,18 +245,16 @@ def gameLogic():
                 # Add the cooked ingredient to the plate
                 playsound('placeItem.mp3')
                 currentPlate.append(location_to_current_ingredient[currentPlayerTwoLocation])
+
                 # Remove the cooked ingredient from the location it existed before
                 location_to_current_ingredient[currentPlayerTwoLocation] = None
-                #print("Plated ", location_to_current_ingredient[currentPlayerTwoLocation])
-                #print("Current items on plate: ")
-                #for i in range(len(currentPlate)): 
-                #    print (currentPlate[i].name)
                 updateDisplay()
 
             # Invalid action
             else:
                 playsound('negative.mp3')
 
+        # Voice command is submit
         elif (currentVoice == VoiceCommand.SUBMIT):
             # Check that the currentLocation of player is SUBMITSTATION
             if (
@@ -259,14 +262,6 @@ def gameLogic():
                 or colorDetect.currentPlayerTwoLocation == Location.SUBMITSTATION
             ):
                 # Check currentPlate for matching with recipt of currentOrder, make sure all Ingredients are cooked and present
-                print("Current Plate: ")
-                for i in range(len(currentPlate)): 
-                    print (currentPlate[i].name)
-
-                print("Current Recipe: ")
-                for i in range(len( menu_to_recipe[currentOrder])): 
-                    print (menu_to_recipe[currentOrder][i].name)
-
                 recipe = menu_to_recipe[currentOrder].copy()
                 isPlateCorrect = False
 
@@ -285,32 +280,16 @@ def gameLogic():
                     if len(recipe) == 0 and len(currentPlate) == 0:
                         isPlateCorrect = True
 
-                print("Current Plate: ")
-                for i in range(len(currentPlate)): 
-                    print (currentPlate[i].name)
-
-                print("Current Recipe: ")
-                for i in range(len(recipe)): 
-                    print (recipe[i].name)
-
                 if isPlateCorrect:
                     points += 10
                     playsound('positive.mp3')
                 else:
                     points -= 2
                     playsound('negative.mp3')
-                #print("Current points: ", points)
-                # clear the currentPlate and update new currentOrder
                 
+                # Clear the plate and choose a new current order
                 currentPlate.clear()
-
                 currentOrder = random.choice(list(menu_to_recipe))
-                #currentRecipe = menu_to_recipe[currentOrder]
-                #print("The next order is: ", currentOrder)
-                #print("The ingredients are: ")
-                #for i in range(len(currentRecipe)): 
-                #    print (currentRecipe[i].name)
-
                 updateDisplay()
 
             else:
@@ -319,7 +298,6 @@ def gameLogic():
         elif (currentVoice == VoiceCommand.TRASH):
             # Throw out everything on the current plate
             playsound('placeItem.mp3')
-            #print("Current items on plate: None")
             currentPlate.clear()
             updateDisplay()
 
@@ -328,12 +306,14 @@ def gameLogic():
             (currentPlayerOneGesture == Gesture.CHOP and colorDetect.currentPlayerOneLocation == Location.CUTTINGBOARD)
             or (currentPlayerOneGesture == Gesture.COOK and colorDetect.currentPlayerOneLocation == Location.STOVE)
         ):
+            # if the player is in a location with a raw ingredient and doing the correct gesture, increase progress of ingredient
             if (
                 not(location_to_current_ingredient[colorDetect.currentPlayerOneLocation] == None)
                 and location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status == IngredientStatus.RAW
             ):
                 location_to_current_ingredient[colorDetect.currentPlayerOneLocation].progress += 1
-
+                
+                # update the ingredient to be in a cooked state
                 if (location_to_current_ingredient[colorDetect.currentPlayerOneLocation].progress >= numberOfGesturesUntilCooked):
                     location_to_current_ingredient[colorDetect.currentPlayerOneLocation].status = IngredientStatus.COOKED
                     print(location_to_current_ingredient[colorDetect.currentPlayerOneLocation].name, " is cooked")
@@ -344,19 +324,23 @@ def gameLogic():
             (currentPlayerTwoGesture == Gesture.CHOP and colorDetect.currentPlayerTwoLocation == Location.CUTTINGBOARD)
             or (currentPlayerTwoGesture == Gesture.COOK and colorDetect.currentPlayerTwoLocation == Location.STOVE)
         ):
+            # if the player is in a location with a raw ingredient and doing the correct gesture, increase progress of ingredient
             if (
                 not(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation] == None)
                 and location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status == IngredientStatus.RAW
             ):
                 location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].progress += 1
 
+                # update the ingredient to be in a cooked state
                 if (location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].progress >= numberOfGesturesUntilCooked):
                     location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].status = IngredientStatus.COOKED
                     print(location_to_current_ingredient[colorDetect.currentPlayerTwoLocation].name, " is cooked")
                     playsound('positive.mp3')
 
+        # set the voice command back to none until updated with a new command again
         currentVoice = VoiceCommand.NONE
 
+# Gesture recognition
 def gestureProcessing():
     global currentPlayerOneGesture
     global currentPlayerTwoGesture
@@ -366,7 +350,6 @@ def gestureProcessing():
         try:
             data, _ = serv.recvfrom(4096)
         except socket.timeout:
-            #print("Timeout without connecting to Client")
             continue
         if not data:
             currentGesture = Gesture.NONE
@@ -378,10 +361,8 @@ def gestureProcessing():
         currentGesture = Gesture.NONE
 
         if(tempGesture == "chop"):
-            #print("Chop")
             currentGesture = Gesture.CHOP
         elif(tempGesture == "cook"):
-            #print("Cook")
             currentGesture = Gesture.COOK
         if(playerNumber == "1"):
             currentPlayerOneGesture = currentGesture
@@ -502,5 +483,5 @@ def exitfunc():
 
 if __name__ == "__main__":
     serv.bind((ipadd, 8080))
-    Timer(180, exitfunc).start() # exit in 2 minutes
+    Timer(180, exitfunc).start() # exit in 3 minutes
     RunGame()
